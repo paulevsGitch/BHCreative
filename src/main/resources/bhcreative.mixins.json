@@ -1,0 +1,22 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "paulevs.bhcreative.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"PlayerBaseMixin"
+	],
+	"server": [],
+	"client": [
+		"ClientInteractionManagerMixin",
+		"AbstractClientPlayerMixin",
+		"PlayerInventoryMixin",
+		"CreateLevelMixin",
+		"GameOptionsMixin",
+		"LivingAccessor",
+		"MinecraftMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

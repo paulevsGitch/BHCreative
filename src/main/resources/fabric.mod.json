@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "bhcreative",
+	"version": "${version}",
+
+	"name": "BHCreative",
+	"description": "Simple creative mode",
+	"authors": [
+		"paulevs"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": "",
+		"issues": "",
+		"discord": ""
+	},
+
+	"license": "MIT",
+	"icon": "assets/bhcreative/icon.png",
+
+	"environment": "*",
+	"mixins": [
+		"bhcreative.mixins.json"
+	],
+
+	"depends": {
+		"minecraft": "1.0.0-beta.7.3",
+		"stationapi": "*"
+	}
+}
