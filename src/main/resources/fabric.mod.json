@@ -4,21 +4,27 @@
 	"version": "${version}",
 
 	"name": "BHCreative",
-	"description": "Simple creative mode",
+	"description": "Simple creative mode with API",
 	"authors": [
 		"paulevs"
 	],
 	"contact": {
-		"homepage": "",
-		"sources": "",
-		"issues": "",
-		"discord": ""
+		"homepage": "https://github.com/paulevsGitch/BHCreative/releases",
+		"sources": "https://github.com/paulevsGitch/BHCreative",
+		"issues": "https://github.com/paulevsGitch/BHCreative/issues",
+		"discord": "https://discord.gg/qxcP8EjkUC"
 	},
 
 	"license": "MIT",
 	"icon": "assets/bhcreative/icon.png",
 
 	"environment": "*",
+	"entrypoints": {
+		"stationapi:event_bus": [
+			"paulevs.bhcreative.listeners.VanillaTabListener",
+			"paulevs.bhcreative.listeners.InitListener"
+		]
+	},
 	"mixins": [
 		"bhcreative.mixins.json"
 	],

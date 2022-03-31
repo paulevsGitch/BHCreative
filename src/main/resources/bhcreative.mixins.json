@@ -13,8 +13,7 @@
 		"PlayerInventoryMixin",
 		"CreateLevelMixin",
 		"GameOptionsMixin",
-		"LivingAccessor",
-		"MinecraftMixin"
+		"LivingAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

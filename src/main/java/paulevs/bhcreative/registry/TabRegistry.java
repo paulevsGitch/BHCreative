@@ -1,5 +1,6 @@
 package paulevs.bhcreative.registry;
 
+import com.google.common.collect.Lists;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class TabRegistry extends Registry<CreativeTab> {
 	public static final TabRegistry INSTANCE = new TabRegistry(CreativeMod.id("tabs"));
-	public static List<CreativeTab> orderedTabs;
+	public static List<CreativeTab> orderedTabs = Lists.newArrayList();
 	
 	/**
 	 * Default registry constructor.

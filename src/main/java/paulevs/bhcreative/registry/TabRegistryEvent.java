@@ -7,15 +7,15 @@ import paulevs.bhcreative.api.CreativeTab;
 import java.util.function.BiConsumer;
 
 public class TabRegistryEvent extends Event {
-	public final BiConsumer<Identifier, CreativeTab> register;
+	private final BiConsumer<Identifier, CreativeTab> register;
 	public static final int ID = NEXT_ID.incrementAndGet();
 	
 	public TabRegistryEvent(BiConsumer<Identifier, CreativeTab> register) {
 		this.register = register;
 	}
 	
-	public final void register(Identifier id, CreativeTab tab) {
-		register.accept(id, tab);
+	public final void register(CreativeTab tab) {
+		register.accept(tab.getID(), tab);
 	}
 	
 	@Override

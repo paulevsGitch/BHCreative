@@ -20,10 +20,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import paulevs.bhcreative.interfaces.CreativePlayer;
-import paulevs.bhcreative.util.MHelper;
 import paulevs.bhcreative.api.CreativeTab;
-import paulevs.bhcreative.api.CreativeTabs;
+import paulevs.bhcreative.interfaces.CreativePlayer;
+import paulevs.bhcreative.registry.TabRegistry;
+import paulevs.bhcreative.util.MHelper;
 
 import java.util.List;
 
@@ -42,6 +42,9 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	@Unique private int creative_maxIndex;
 	@Unique private float creative_slider;
 	@Unique private boolean creative_drag;
+	
+	@Unique private int creative_maxTabIndex;
+	@Unique private int creative_pagesCount;
 	@Unique private int creative_tabIndex;
 	@Unique private int creative_tabPage;
 	
@@ -57,15 +60,17 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	
 	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerBase;)V", at = @At("TAIL"))
 	private void creative_initPlayerInventory(PlayerBase player, CallbackInfo info) {
-		CreativeTab tab = CreativeTabs.getTab(creative_tabPage, creative_tabIndex);
+		creative_creativeIcon = new ItemInstance(ItemBase.diamond);
+		creative_survivalIcon = new ItemInstance(BlockBase.WORKBENCH);
+		CreativeTab tab = TabRegistry.INSTANCE.getTabByIndex(0);
+		creative_tabKey = tab.getTranslationKey();
 		creative_items = tab.getItems();
 		creative_maxIndex = creative_getMaxIndex();
-		creative_tabKey = tab.getTranslationKey();
 		creative_rowIndex = 0;
 		creative_tabIndex = 0;
 		creative_tabPage = 0;
-		creative_creativeIcon = new ItemInstance(ItemBase.diamond);
-		creative_survivalIcon = new ItemInstance(BlockBase.WORKBENCH);
+		creative_updateMaxIndex();
+		creative_pagesCount = (int) Math.ceil(TabRegistry.INSTANCE.getTabsCount() / 7.0F);
 	}
 	
 	@Inject(method = "renderContainerBackground(F)V", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glDisable(I)V", shift = Shift.AFTER))
@@ -125,8 +130,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		else {
 			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
 			
-			int count = CreativeTabs.getTabCount(creative_tabPage);
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < creative_maxTabIndex; i++) {
 				if (i != creative_tabIndex) {
 					this.blit(posX + 4 + i * 24, posY - 21, 176, 0, 24, 24);
 				}
@@ -142,7 +146,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			this.blit(posX + 160, posY + 4, 208, 8, 9, 8);
-			if (creative_tabPage >= CreativeTabs.getPagesCount() - 1) {
+			if (creative_tabPage >= creative_pagesCount - 1) {
 				this.fill(posX + 160, posY + 4, posX + 160 + 9, posY + 4 + 8, CREATIVE_COLOR_FILLER);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
@@ -163,8 +167,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			creative_renderItem(creative_creativeIcon, posX + 173 + 4, posY + 114 + 4);
 			creative_renderItem(creative_survivalIcon, posX + 173 + 4, posY + 138 + 4);
 			
-			for (int i = 0; i < count; i++) {
-				CreativeTab tab = CreativeTabs.getTab(creative_tabPage, i);
+			for (int i = 0; i < creative_maxTabIndex; i++) {
+				CreativeTab tab = creative_getTab(creative_tabPage, i);
 				creative_renderItem(tab.getIcon(), posX + 8 + i * 24, posY - 17);
 			}
 			
@@ -211,8 +215,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			
 			int tabX = ((int) mouseX - posX - 4) / 24;
 			int tabY = (int) mouseY - posY + 21;
-			if (tabX >= 0 && tabX < count && tabY >= 0 && tabY < 24) {
-				CreativeTab tab = CreativeTabs.getTab(creative_tabPage, tabX);
+			if (tabX >= 0 && tabX < creative_maxTabIndex && tabY >= 0 && tabY < 24) {
+				CreativeTab tab = creative_getTab(creative_tabPage, tabX);
 				translated = TranslationStorage.getInstance().method_995(tab.getTranslationKey());
 				creative_renderString(translated);
 			}
@@ -364,7 +368,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			if (tabX >= 0 && tabX < 7 && tabY >= 0 && tabY < 24) {
 				creative_tabIndex = tabX;
 				
-				CreativeTab tab = CreativeTabs.getTab(creative_tabPage, creative_tabIndex);
+				CreativeTab tab = creative_getTab(creative_tabPage, creative_tabIndex);
 				creative_tabKey = tab.getTranslationKey();
 				creative_items = tab.getItems();
 				creative_maxIndex = creative_getMaxIndex();
@@ -382,9 +386,10 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 				if (creative_tabPage > 0 && buttonX >= 0 && buttonX < 9) {
 					creative_tabIndex = 0;
 					creative_tabPage--;
+					creative_updateMaxIndex();
 					
 					creative_playSound();
-					CreativeTab tab = CreativeTabs.getTab(creative_tabPage, creative_tabIndex);
+					CreativeTab tab = creative_getTab(creative_tabPage, creative_tabIndex);
 					creative_rowIndex = 0;
 					creative_slider = 0F;
 					if (tab == null) {
@@ -398,12 +403,13 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 				}
 				
 				buttonX = (int) mouseX - posX - 160;
-				if ((creative_tabPage < (CreativeTabs.getPagesCount() - 1)) && buttonX >= 0 && buttonX < 9) {
+				if ((creative_tabPage < (creative_pagesCount - 1)) && buttonX >= 0 && buttonX < 9) {
 					creative_tabIndex = 0;
 					creative_tabPage++;
+					creative_updateMaxIndex();
 					
 					creative_playSound();
-					CreativeTab tab = CreativeTabs.getTab(creative_tabPage, creative_tabIndex);
+					CreativeTab tab = creative_getTab(creative_tabPage, creative_tabIndex);
 					creative_rowIndex = 0;
 					creative_slider = 0F;
 					if (tab == null) {
@@ -520,5 +526,14 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	@Unique
 	private void creative_playSound() {
 		this.minecraft.soundHelper.playSound("random.click", 1.0F, 1.0F);
+	}
+	
+	private void creative_updateMaxIndex() {
+		creative_maxTabIndex = TabRegistry.INSTANCE.getTabsCount() - creative_tabPage * 7;
+		if (creative_maxTabIndex > 7) creative_maxTabIndex = 7;
+	}
+	
+	private CreativeTab creative_getTab(int page, int index) {
+		return TabRegistry.INSTANCE.getTabByIndex(page * 7 + index);
 	}
 }
