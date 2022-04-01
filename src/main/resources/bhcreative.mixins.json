@@ -11,6 +11,7 @@
 		"ClientInteractionManagerMixin",
 		"AbstractClientPlayerMixin",
 		"PlayerInventoryMixin",
+		"GameRendererMixin",
 		"CreateLevelMixin",
 		"GameOptionsMixin",
 		"LivingAccessor"

@@ -15,6 +15,6 @@ public class ClientInteractionManagerMixin {
 	
 	@Inject(method = "method_1722", at = @At("HEAD"), cancellable = true)
 	private void creative_renderHud(CallbackInfoReturnable<Boolean> info) {
-		info.setReturnValue(!((CreativePlayer) minecraft.player).isCreative());
+		info.setReturnValue(!((CreativePlayer) minecraft.player).creative_isCreative());
 	}
 }

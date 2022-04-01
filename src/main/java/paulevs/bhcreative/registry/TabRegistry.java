@@ -4,13 +4,13 @@ import com.google.common.collect.Lists;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.Registry;
 import org.jetbrains.annotations.NotNull;
-import paulevs.bhcreative.CreativeMod;
+import paulevs.bhcreative.Creative;
 import paulevs.bhcreative.api.CreativeTab;
 
 import java.util.List;
 
 public class TabRegistry extends Registry<CreativeTab> {
-	public static final TabRegistry INSTANCE = new TabRegistry(CreativeMod.id("tabs"));
+	public static final TabRegistry INSTANCE = new TabRegistry(Creative.id("tabs"));
 	public static List<CreativeTab> orderedTabs = Lists.newArrayList();
 	
 	/**

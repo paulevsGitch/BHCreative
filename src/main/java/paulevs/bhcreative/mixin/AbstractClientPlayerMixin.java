@@ -24,7 +24,7 @@ public abstract class AbstractClientPlayerMixin extends PlayerBase {
 	
 	@Inject(method = "getCanSuffocate", at = @At("HEAD"), cancellable = true)
 	private void creative_getCanSuffocate(int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
-		if (((CreativePlayer) this).isCreative()) {
+		if (((CreativePlayer) this).creative_isCreative()) {
 			info.setReturnValue(false);
 			info.cancel();
 		}
@@ -33,14 +33,15 @@ public abstract class AbstractClientPlayerMixin extends PlayerBase {
 	@Inject(method = "method_136", at = @At("HEAD"), cancellable = true)
 	public void creative_onKeyPress(int i, boolean flag, CallbackInfo info) {
 		CreativePlayer player = (CreativePlayer) this;
-		if (player.isCreative()) {
-			if (flag && i == ((FlyOption) minecraft.options).getFlyKey().key) {
-				boolean fly = !player.isFlying();
-				player.setFlying(fly);
+		if (player.creative_isCreative()) {
+			if (flag && i == ((FlyOption) minecraft.options).creative_getFlyKey().key) {
+				boolean fly = !player.creative_isFlying();
+				player.creative_setFlying(fly);
 				if (fly) {
 					AbstractClientPlayer client = (AbstractClientPlayer) (Object) this;
-					client.setPositionAndAngles(client.x, client.y - client.standingEyeHeight + 0.01, client.z, client.yaw, client.pitch);
-					client.velocityY = Math.max(client.velocityY * 0.7, 0.01);
+					if (client.velocityY <= 0) client.velocityY = 0.01F;
+					//client.setPositionAndAngles(client.x, client.y - client.standingEyeHeight + 0.01, client.z, client.yaw, client.pitch);
+					//client.velocityY = Math.max(client.velocityY * 0.7, 0.01);
 				}
 				info.cancel();
 			}

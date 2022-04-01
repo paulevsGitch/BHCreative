@@ -275,7 +275,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	
 	@Unique
 	private boolean creative_isInCreative() {
-		return ((CreativePlayer) minecraft.player).isCreative();
+		return ((CreativePlayer) minecraft.player).creative_isCreative();
 	}
 	
 	@Unique

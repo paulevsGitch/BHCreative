@@ -31,7 +31,7 @@ public abstract class CreateLevelMixin extends ScreenBase {
 		}
 		else if (button.id == 0) {
 			if (minecraft.player != null) {
-				((CreativePlayer) minecraft.player).setCreative(creative);
+				((CreativePlayer) minecraft.player).creative_setCreative(creative);
 			}
 		}
 	}

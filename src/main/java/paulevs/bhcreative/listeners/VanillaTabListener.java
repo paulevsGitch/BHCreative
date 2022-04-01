@@ -7,7 +7,7 @@ import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.item.ItemConvertible;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
-import paulevs.bhcreative.CreativeMod;
+import paulevs.bhcreative.Creative;
 import paulevs.bhcreative.api.CreativeTab;
 import paulevs.bhcreative.api.SimpleTab;
 import paulevs.bhcreative.registry.TabRegistryEvent;
@@ -35,7 +35,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFullBlocks(TabRegistryEvent event) {
-		tabFullBlocks = new SimpleTab(CreativeMod.id("full_blocks"), (ItemConvertible) BlockBase.STONE);
+		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), (ItemConvertible) BlockBase.STONE);
 		event.register(tabFullBlocks);
 		
 		addItem(tabFullBlocks, "stone");
@@ -87,7 +87,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initNotFullBlocks(TabRegistryEvent event) {
-		tabOtherBlocks = new SimpleTab(CreativeMod.id("other_blocks"), (ItemConvertible) BlockBase.LADDER);
+		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), (ItemConvertible) BlockBase.LADDER);
 		event.register(tabOtherBlocks);
 		
 		addItem(tabOtherBlocks, "sapling");
@@ -119,7 +119,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initTools(TabRegistryEvent event) {
-		tabTools = new SimpleTab(CreativeMod.id("tools"), (ItemConvertible) ItemBase.ironPickaxe);
+		tabTools = new SimpleTab(Creative.id("tools"), (ItemConvertible) ItemBase.ironPickaxe);
 		event.register(tabTools);
 		
 		addItem(tabTools, "iron_shovel");
@@ -150,7 +150,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initWeapons(TabRegistryEvent event) {
-		tabWeapons = new SimpleTab(CreativeMod.id("weapons"), (ItemConvertible) ItemBase.ironSword);
+		tabWeapons = new SimpleTab(Creative.id("weapons"), (ItemConvertible) ItemBase.ironSword);
 		event.register(tabWeapons);
 		
 		addItem(tabWeapons, "bow");
@@ -183,7 +183,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initResources(TabRegistryEvent event) {
-		tabResources = new SimpleTab(CreativeMod.id("resources"), (ItemConvertible) ItemBase.ironIngot);
+		tabResources = new SimpleTab(Creative.id("resources"), (ItemConvertible) ItemBase.ironIngot);
 		event.register(tabResources);
 		
 		addItem(tabResources, "coal");
@@ -205,7 +205,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFood(TabRegistryEvent event) {
-		tabFood = new SimpleTab(CreativeMod.id("food"), (ItemConvertible) ItemBase.apple);
+		tabFood = new SimpleTab(Creative.id("food"), (ItemConvertible) ItemBase.apple);
 		event.register(tabFood);
 		
 		addItem(tabFood, "apple");
@@ -225,7 +225,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initItems(TabRegistryEvent event) {
-		tabItems = new SimpleTab(CreativeMod.id("other_items"), (ItemConvertible) ItemBase.slimeball);
+		tabItems = new SimpleTab(Creative.id("other_items"), (ItemConvertible) ItemBase.slimeball);
 		event.register(tabItems);
 		
 		addItem(tabItems, "painting");
