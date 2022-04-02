@@ -17,7 +17,8 @@ public class GameRendererMixin {
 	@Inject(method = "method_1850(F)V", at = @At("HEAD"), cancellable = true)
 	private void creative_cancelBobbing(float f, CallbackInfo info) {
 		if (minecraft.viewEntity instanceof PlayerBase) {
-			if (Creative.isInCreative((PlayerBase) minecraft.viewEntity)) {
+			PlayerBase player = (PlayerBase) minecraft.viewEntity;
+			if (Creative.isInCreative(player) && Creative.isFlying(player)) {
 				info.cancel();
 			}
 		}
