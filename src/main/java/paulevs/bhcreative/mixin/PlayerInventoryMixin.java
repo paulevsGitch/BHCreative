@@ -97,6 +97,9 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		creative_renderItem(creative_creativeIcon, posX + 173 + 4, posY + 114 + 4);
 		creative_renderItem(creative_survivalIcon, posX + 173 + 4, posY + 138 + 4);
 		
+		RenderHelper.disableLighting();
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
 		int tabX = (int) mouseX - posX - 173;
 		int tabY = (int) mouseY - posY - 114;
 		if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
@@ -189,6 +192,11 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 				creative_renderItem(item, x, y);
 			}
 			
+			RenderHelper.disableLighting();
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			String translated = TranslationStorage.getInstance().method_995(creative_tabKey);
+			this.textManager.drawText(translated, posX + 8, posY + 5, 0x373737);
+			
 			int slotX = MathHelper.floor((mouseX - posX - 8) / 18);
 			if (slotX >= 0) {
 				int slotY = MathHelper.floor((mouseY - posY - 14) / 18);
@@ -199,6 +207,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 					
 					int index = slotY * 8 + slotX + creative_rowIndex;
 					ItemInstance item = index < creative_items.size() ? creative_items.get(index) : null;
+					RenderHelper.disableLighting();
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					creative_renderName(item);
 				}
 				slotY = MathHelper.floor((mouseY - posY - 142) / 18);
@@ -206,12 +216,11 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 					int x = slotX * 18 + posX + 8;
 					int y = slotY * 18 + posY + 142;
 					creative_renderSlotOverlay(x, y);
+					RenderHelper.disableLighting();
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					creative_renderName(inventory.main[slotX]);
 				}
 			}
-			
-			String translated = TranslationStorage.getInstance().method_995(creative_tabKey);
-			this.textManager.drawText(translated, posX + 8, posY + 5, 0x373737);
 			
 			int tabX = ((int) mouseX - posX - 4) / 24;
 			int tabY = (int) mouseY - posY + 21;
