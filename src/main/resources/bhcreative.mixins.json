@@ -14,7 +14,9 @@
 		"GameRendererMixin",
 		"CreateLevelMixin",
 		"GameOptionsMixin",
-		"LivingAccessor"
+		"WalkingBaseMixin",
+		"LivingAccessor",
+		"LivingMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
