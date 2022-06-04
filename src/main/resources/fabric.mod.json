@@ -20,7 +20,10 @@
 
 	"environment": "*",
 	"entrypoints": {
-		"stationapi:event_bus": [
+		"preLaunch": [
+			"paulevs.bhcreative.Creative"
+		],
+		"bhcreative:event_bus": [
 			"paulevs.bhcreative.listeners.VanillaTabListener",
 			"paulevs.bhcreative.listeners.InitListener"
 		]
