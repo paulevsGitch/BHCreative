@@ -1,6 +1,6 @@
 package paulevs.bhcreative.mixin;
 
-import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.BaseEntity;
 import net.minecraft.entity.WalkingBase;
 import net.minecraft.entity.player.PlayerBase;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +12,7 @@ import paulevs.bhcreative.Creative;
 
 @Mixin(WalkingBase.class)
 public class WalkingBaseMixin {
-	@Shadow protected EntityBase entity;
+	@Shadow protected BaseEntity entity;
 	
 	@Inject(method = "tickHandSwing()V", at = @At("HEAD"), cancellable = true)
 	protected void tickHandSwing(CallbackInfo info) {

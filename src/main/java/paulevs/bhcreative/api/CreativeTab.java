@@ -1,14 +1,14 @@
 package paulevs.bhcreative.api;
 
 import com.google.common.collect.Lists;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.registry.Identifier;
 
 import java.util.List;
 import java.util.Locale;
 
 public abstract class CreativeTab implements Comparable<CreativeTab> {
-	private final List<ItemInstance> items = Lists.newArrayList();
+	private final List<ItemStack> items = Lists.newArrayList();
 	private final String translationKey;
 	private final Identifier id;
 	
@@ -17,9 +17,9 @@ public abstract class CreativeTab implements Comparable<CreativeTab> {
 		this.id = id;
 	}
 	
-	public abstract ItemInstance getIcon();
+	public abstract ItemStack getIcon();
 	
-	public List<ItemInstance> getItems() {
+	public List<ItemStack> getItems() {
 		return items;
 	}
 	
@@ -27,7 +27,7 @@ public abstract class CreativeTab implements Comparable<CreativeTab> {
 		return translationKey;
 	}
 	
-	public void addItem(ItemInstance item) {
+	public void addItem(ItemStack item) {
 		items.add(item);
 	}
 	

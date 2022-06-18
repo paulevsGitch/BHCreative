@@ -2,9 +2,9 @@ package paulevs.bhcreative.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.mine_diver.unsafeevents.listener.ListenerPriority;
-import net.minecraft.block.BlockBase;
+import net.minecraft.block.BaseBlock;
 import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.item.ItemConvertible;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
@@ -36,7 +36,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFullBlocks(TabRegistryEvent event) {
-		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), (ItemConvertible) BlockBase.STONE);
+		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), (ItemConvertible) BaseBlock.STONE);
 		event.register(tabFullBlocks);
 		
 		addItem(tabFullBlocks, "stone");
@@ -88,7 +88,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initNotFullBlocks(TabRegistryEvent event) {
-		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), (ItemConvertible) BlockBase.LADDER);
+		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), (ItemConvertible) BaseBlock.LADDER);
 		event.register(tabOtherBlocks);
 		
 		addItem(tabOtherBlocks, "sapling");
@@ -257,14 +257,14 @@ public class VanillaTabListener {
 	private void addItem(CreativeTab tab, String name) {
 		Optional<ItemBase> optional = ItemRegistry.INSTANCE.get(Identifier.of(name));
 		if (!optional.isPresent()) return;
-		tab.addItem(new ItemInstance(optional.get()));
+		tab.addItem(new ItemStack(optional.get()));
 	}
 	
 	private void addItem(CreativeTab tab, String name, int variants) {
 		Optional<ItemBase> optional = ItemRegistry.INSTANCE.get(Identifier.of(name));
 		if (!optional.isPresent()) return;
 		for (byte i = 0; i < variants; i++) {
-			tab.addItem(new ItemInstance(optional.get(), 1, i));
+			tab.addItem(new ItemStack(optional.get(), 1, i));
 		}
 	}
 }

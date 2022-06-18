@@ -1,6 +1,6 @@
 package paulevs.bhcreative.mixin;
 
-import net.minecraft.block.BlockBase;
+import net.minecraft.block.BaseBlock;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.client.gui.screen.container.PlayerInventory;
 import net.minecraft.client.render.RenderHelper;
@@ -8,7 +8,7 @@ import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -34,7 +34,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	@Unique private static final String KEY_INVENTORY = "title.selectGame.inventory";
 	
 	@Unique private static ItemRenderer creative_itemRenderer = new ItemRenderer();
-	@Unique private List<ItemInstance> creative_items;
+	@Unique private List<ItemStack> creative_items;
 	@Unique private boolean creative_normalGUI;
 	@Unique private int creative_mouseDelta;
 	@Unique private String creative_tabKey;
@@ -48,8 +48,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	@Unique private int creative_tabIndex;
 	@Unique private int creative_tabPage;
 	
-	@Unique private ItemInstance creative_creativeIcon;
-	@Unique private ItemInstance creative_survivalIcon;
+	@Unique private ItemStack creative_creativeIcon;
+	@Unique private ItemStack creative_survivalIcon;
 	
 	public PlayerInventoryMixin(net.minecraft.container.ContainerBase container) {
 		super(container);
@@ -60,8 +60,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	
 	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerBase;)V", at = @At("TAIL"))
 	private void creative_initPlayerInventory(PlayerBase player, CallbackInfo info) {
-		creative_creativeIcon = new ItemInstance(ItemBase.diamond);
-		creative_survivalIcon = new ItemInstance(BlockBase.WORKBENCH);
+		creative_creativeIcon = new ItemStack(ItemBase.diamond);
+		creative_survivalIcon = new ItemStack(BaseBlock.WORKBENCH);
 		CreativeTab tab = TabRegistry.INSTANCE.getTabByIndex(0);
 		creative_tabKey = tab.getTranslationKey();
 		creative_items = tab.getItems();
@@ -178,7 +178,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			for (int i = 0; i < 56; i++) {
 				int index = creative_rowIndex + i;
 				if (index >= 0 && index < creative_items.size()) {
-					ItemInstance instance = creative_items.get(index);
+					ItemStack instance = creative_items.get(index);
 					int x = posX + (i & 7) * 18 + 8;
 					int y = posY + (i / 8) * 18 + 14;
 					creative_renderItem(instance, x, y);
@@ -186,7 +186,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			}
 			
 			for (int i = 0; i < 9; i++) {
-				ItemInstance item = inventory.main[i];
+				ItemStack item = inventory.main[i];
 				int x = posX + i * 18 + 8;
 				int y = posY + 142;
 				creative_renderItem(item, x, y);
@@ -206,7 +206,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 					creative_renderSlotOverlay(x, y);
 					
 					int index = slotY * 8 + slotX + creative_rowIndex;
-					ItemInstance item = index < creative_items.size() ? creative_items.get(index) : null;
+					ItemStack item = index < creative_items.size() ? creative_items.get(index) : null;
 					RenderHelper.disableLighting();
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					creative_renderName(item);
@@ -248,7 +248,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	}
 	
 	@Unique
-	private void creative_renderName(ItemInstance item) {
+	private void creative_renderName(ItemStack item) {
 		if (item == null) {
 			return;
 		}
@@ -288,7 +288,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	}
 	
 	@Unique
-	private void creative_renderItem(ItemInstance instance, int x, int y) {
+	private void creative_renderItem(ItemStack instance, int x, int y) {
 		if (instance == null) {
 			return;
 		}
@@ -447,7 +447,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			if (slotY >= 0 && slotY < 7 && slotX >= 0 && slotX < 8) {
 				int index = slotY * 8 + slotX + creative_rowIndex;
 				if (index < creative_items.size()) {
-					ItemInstance item = creative_items.get(index);
+					ItemStack item = creative_items.get(index);
 					boolean isSame = inventory.getCursorItem() != null && inventory.getCursorItem().isDamageAndIDIdentical(item);
 					if (inventory.getCursorItem() == null || ItemBase.byId[inventory.getCursorItem().itemId] == null || isSame) {
 						if (item != null) {
