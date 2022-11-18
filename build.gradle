@@ -27,10 +27,10 @@ repositories {
 		name = 'Babric'
 		url = 'https://maven.glass-launcher.net/babric'
 	}
-	// Used for mappings.
+	// Used for projects that do not have a maven repository, but do have a GitHub repository with working build scripts.
 	maven {
-		name = 'Glass Releases'
-		url = 'https://maven.glass-launcher.net/releases'
+		name = 'Jitpack'
+		url = 'https://jitpack.io'
 	}
 	// Used for StationAPI and HowManyItems.
 	maven {
@@ -42,14 +42,15 @@ repositories {
 		name = 'Froge'
 		url 'https://maven.minecraftforge.net/'
 	}
-	// Used for projects that do not have a maven repository, but do have a GitHub repository with working build scripts.
-	maven {
-		name = 'Jitpack'
-		url = 'https://jitpack.io'
-	}
 	mavenCentral()
 	flatDir {
 		dirs 'libs'
+	}
+}
+
+configurations.all {
+	resolutionStrategy {
+		force "com.github.paulevsGitch:StationAPI:${project.stapi_version}"
 	}
 }
 
