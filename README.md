@@ -111,6 +111,6 @@ tab.yourTabName.name=Your Tab Name
 Translations are located in:
 
 ```
-src\main\resources\assets\<yourmodid>\stationapi\lang
+src\main\resources\assets\<yourmodid>\lang
 ```
  The main lang file is en_US.lang

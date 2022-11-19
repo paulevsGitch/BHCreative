@@ -93,7 +93,10 @@ public class VanillaTabListener {
 		addItem(tabOtherBlocks, "detector_rail");
 		addItem(tabOtherBlocks, "sticky_piston");
 		addItem(tabOtherBlocks, "cobweb");
-		addItem(tabOtherBlocks, "tall_grass", 4);
+		//addItem(tabOtherBlocks, "tall_grass", 4);
+		addItem(tabOtherBlocks, "tall_grass");
+		addItem(tabOtherBlocks, "dead_bush");
+		addItem(tabOtherBlocks, "fern");
 		addItem(tabOtherBlocks, "piston");
 		addItem(tabOtherBlocks, "dandelion");
 		addItem(tabOtherBlocks, "rose");
@@ -258,7 +261,6 @@ public class VanillaTabListener {
 		if (item != null) {
 			tab.addItem(new ItemStack(item));
 		}
-		else System.out.println("Null: " + name);
 	}
 	
 	private void addItem(CreativeTab tab, String name, int variants) {
