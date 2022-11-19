@@ -1,19 +1,15 @@
 package paulevs.bhcreative.listeners;
 
-import net.mine_diver.unsafeevents.listener.EventListener;
-import net.mine_diver.unsafeevents.listener.ListenerPriority;
+import net.bhapi.event.EventListener;
+import net.bhapi.registry.CommonRegistries;
+import net.bhapi.util.Identifier;
 import net.minecraft.block.BaseBlock;
-import net.minecraft.item.ItemBase;
+import net.minecraft.item.BaseItem;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.item.ItemConvertible;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import paulevs.bhcreative.Creative;
 import paulevs.bhcreative.api.CreativeTab;
 import paulevs.bhcreative.api.SimpleTab;
 import paulevs.bhcreative.registry.TabRegistryEvent;
-
-import java.util.Optional;
 
 public class VanillaTabListener {
 	public static SimpleTab tabFullBlocks;
@@ -24,8 +20,9 @@ public class VanillaTabListener {
 	public static SimpleTab tabFood;
 	public static SimpleTab tabItems;
 	
-	@EventListener(priority = ListenerPriority.HIGHEST)
+	@EventListener
 	public void registerVanillaTabs(TabRegistryEvent event) {
+		Creative.LOGGER.info("Registering vanilla tabs");
 		initFullBlocks(event);
 		initNotFullBlocks(event);
 		initTools(event);
@@ -36,7 +33,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFullBlocks(TabRegistryEvent event) {
-		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), (ItemConvertible) BaseBlock.STONE);
+		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), new ItemStack(BaseBlock.STONE));
 		event.register(tabFullBlocks);
 		
 		addItem(tabFullBlocks, "stone");
@@ -88,7 +85,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initNotFullBlocks(TabRegistryEvent event) {
-		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), (ItemConvertible) BaseBlock.LADDER);
+		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), new ItemStack(BaseBlock.LADDER));
 		event.register(tabOtherBlocks);
 		
 		addItem(tabOtherBlocks, "sapling");
@@ -96,7 +93,7 @@ public class VanillaTabListener {
 		addItem(tabOtherBlocks, "detector_rail");
 		addItem(tabOtherBlocks, "sticky_piston");
 		addItem(tabOtherBlocks, "cobweb");
-		addItem(tabOtherBlocks, "grass", 4);
+		addItem(tabOtherBlocks, "tall_grass", 4);
 		addItem(tabOtherBlocks, "piston");
 		addItem(tabOtherBlocks, "dandelion");
 		addItem(tabOtherBlocks, "rose");
@@ -105,13 +102,13 @@ public class VanillaTabListener {
 		addItem(tabOtherBlocks, "torch");
 		addItem(tabOtherBlocks, "slab");
 		addItem(tabOtherBlocks, "fire");
-		addItem(tabOtherBlocks, "oak_stairs");
+		addItem(tabOtherBlocks, "wooden_stairs");
 		addItem(tabOtherBlocks, "farmland");
 		addItem(tabOtherBlocks, "ladder");
 		addItem(tabOtherBlocks, "rail");
 		addItem(tabOtherBlocks, "cobblestone_stairs");
 		addItem(tabOtherBlocks, "lever");
-		addItem(tabOtherBlocks, "oak_pressure_plate");
+		addItem(tabOtherBlocks, "wooden_pressure_plate");
 		addItem(tabOtherBlocks, "stone_pressure_plate");
 		addItem(tabOtherBlocks, "button");
 		addItem(tabOtherBlocks, "snow");
@@ -120,7 +117,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initTools(TabRegistryEvent event) {
-		tabTools = new SimpleTab(Creative.id("tools"), (ItemConvertible) ItemBase.ironPickaxe);
+		tabTools = new SimpleTab(Creative.id("tools"), new ItemStack(BaseItem.ironPickaxe));
 		event.register(tabTools);
 		
 		addItem(tabTools, "iron_shovel");
@@ -151,7 +148,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initWeapons(TabRegistryEvent event) {
-		tabWeapons = new SimpleTab(Creative.id("weapons"), (ItemConvertible) ItemBase.ironSword);
+		tabWeapons = new SimpleTab(Creative.id("weapons"), new ItemStack(BaseItem.ironSword));
 		event.register(tabWeapons);
 		
 		addItem(tabWeapons, "bow");
@@ -184,7 +181,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initResources(TabRegistryEvent event) {
-		tabResources = new SimpleTab(Creative.id("resources"), (ItemConvertible) ItemBase.ironIngot);
+		tabResources = new SimpleTab(Creative.id("resources"), new ItemStack(BaseItem.ironIngot));
 		event.register(tabResources);
 		
 		addItem(tabResources, "coal");
@@ -206,7 +203,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFood(TabRegistryEvent event) {
-		tabFood = new SimpleTab(Creative.id("food"), (ItemConvertible) ItemBase.apple);
+		tabFood = new SimpleTab(Creative.id("food"), new ItemStack(BaseItem.apple));
 		event.register(tabFood);
 		
 		addItem(tabFood, "apple");
@@ -226,12 +223,12 @@ public class VanillaTabListener {
 	}
 	
 	private void initItems(TabRegistryEvent event) {
-		tabItems = new SimpleTab(Creative.id("other_items"), (ItemConvertible) ItemBase.slimeball);
+		tabItems = new SimpleTab(Creative.id("other_items"), new ItemStack(BaseItem.slimeball));
 		event.register(tabItems);
 		
 		addItem(tabItems, "painting");
 		addItem(tabItems, "sign");
-		addItem(tabItems, "oak_door");
+		addItem(tabItems, "wooden_door");
 		addItem(tabItems, "bucket");
 		addItem(tabItems, "water_bucket");
 		addItem(tabItems, "lava_bucket");
@@ -239,7 +236,7 @@ public class VanillaTabListener {
 		addItem(tabItems, "saddle");
 		addItem(tabItems, "iron_door");
 		addItem(tabItems, "snowball");
-		addItem(tabItems, "oak_boat");
+		addItem(tabItems, "boat");
 		addItem(tabItems, "leather");
 		addItem(tabItems, "milk_bucket");
 		addItem(tabItems, "sugar_cane");
@@ -252,19 +249,22 @@ public class VanillaTabListener {
 		addItem(tabItems, "bed");
 		addItem(tabItems, "repeater");
 		addItem(tabItems, "map");
+		addItem(tabItems, "record_13");
+		addItem(tabItems, "record_cat");
 	}
 	
 	private void addItem(CreativeTab tab, String name) {
-		Optional<ItemBase> optional = ItemRegistry.INSTANCE.get(Identifier.of(name));
-		if (!optional.isPresent()) return;
-		tab.addItem(new ItemStack(optional.get()));
+		BaseItem item = CommonRegistries.ITEM_REGISTRY.get(Identifier.make(name));
+		if (item != null) {
+			tab.addItem(new ItemStack(item));
+		}
+		else System.out.println("Null: " + name);
 	}
 	
 	private void addItem(CreativeTab tab, String name, int variants) {
-		Optional<ItemBase> optional = ItemRegistry.INSTANCE.get(Identifier.of(name));
-		if (!optional.isPresent()) return;
-		for (byte i = 0; i < variants; i++) {
-			tab.addItem(new ItemStack(optional.get(), 1, i));
+		addItem(tab, name);
+		for (byte i = 1; i < variants; i++) {
+			addItem(tab, name + "_" + i);
 		}
 	}
 }

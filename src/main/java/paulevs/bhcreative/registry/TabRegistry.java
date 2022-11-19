@@ -1,31 +1,22 @@
 package paulevs.bhcreative.registry;
 
-import com.google.common.collect.Lists;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.registry.Registry;
-import org.jetbrains.annotations.NotNull;
-import paulevs.bhcreative.Creative;
+import net.bhapi.registry.Registry;
+import net.bhapi.util.Identifier;
 import paulevs.bhcreative.api.CreativeTab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TabRegistry extends Registry<CreativeTab> {
-	public static final TabRegistry INSTANCE = new TabRegistry(Creative.id("tabs"));
-	public static List<CreativeTab> orderedTabs = Lists.newArrayList();
+	public static final TabRegistry INSTANCE = new TabRegistry();
+	public static List<CreativeTab> orderedTabs = new ArrayList<>();
 	
-	/**
-	 * Default registry constructor.
-	 *
-	 * @param identifier registry's identifier.
-	 */
-	public TabRegistry(@NotNull Identifier identifier) {
-		super(identifier);
-	}
+	private TabRegistry() {}
 	
 	@Override
-	public void register(Identifier id, CreativeTab tab) {
-		super.register(id, tab);
+	public CreativeTab register(Identifier id, CreativeTab tab) {
 		orderedTabs.add(tab);
+		return super.register(id, tab);
 	}
 	
 	public CreativeTab getTabByIndex(int index) {

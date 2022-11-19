@@ -1,8 +1,8 @@
 package paulevs.bhcreative.api;
 
+import net.bhapi.util.Identifier;
+import net.minecraft.item.BaseItem;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.item.ItemConvertible;
-import net.modificationstation.stationapi.api.registry.Identifier;
 
 public class SimpleTab extends CreativeTab {
 	private final ItemStack icon;
@@ -12,8 +12,8 @@ public class SimpleTab extends CreativeTab {
 		this.icon = icon;
 	}
 	
-	public SimpleTab(Identifier id, ItemConvertible icon) {
-		this(id, new ItemStack(icon.asItem()));
+	public SimpleTab(Identifier id, BaseItem icon) {
+		this(id, new ItemStack(icon));
 	}
 
 	@Override

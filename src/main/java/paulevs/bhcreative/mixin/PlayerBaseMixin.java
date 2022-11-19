@@ -1,7 +1,7 @@
 package paulevs.bhcreative.mixin;
 
 import net.minecraft.entity.BaseEntity;
-import net.minecraft.entity.Living;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
@@ -17,7 +17,7 @@ import paulevs.bhcreative.interfaces.CreativePlayer;
 import paulevs.bhcreative.util.MHelper;
 
 @Mixin(PlayerBase.class)
-public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
+public abstract class PlayerBaseMixin extends LivingEntity implements CreativePlayer {
 	@Unique private static final float CREATIVE_MAX_SPEED = 0.4F;
 	@Unique private final Vec3f creative_flightSpeed = Vec3f.make(0, 0, 0);
 	@Unique private boolean creative_isCreative;
@@ -81,7 +81,7 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 			this.creative_setFlying(false);
 		}
 		else if (this.creative_isFlying() && !this.isSleeping()) {
-			LivingAccessor living = LivingAccessor.class.cast(this);
+			LivingEntityAccessor living = LivingEntityAccessor.class.cast(this);
 			float perpen = living.getPerpendicularMovement();
 			float parall = living.getParallelMovement();
 			float angle = this.yaw * MHelper.PI / 180.0F;
@@ -94,7 +94,7 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 			creative_flightSpeed.x = MHelper.clamp(creative_flightSpeed.x, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
 			creative_flightSpeed.z = MHelper.clamp(creative_flightSpeed.z, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
 			
-			boolean sneaking = this.method_1373();
+			boolean sneaking = this.isChild(); // isSneaking for players
 			
 			creative_flightSpeed.y *= 0.9F;
 			if (jumping) {
@@ -123,36 +123,6 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 				creative_flightSpeed.y = 0;
 				creative_flightSpeed.z = 0;
 			}
-			
-			/*this.onGround = false;
-			LivingAccessor living = LivingAccessor.class.cast(this);
-			float perpen = living.getPerpendicularMovement();
-			float parall = living.getParallelMovement();
-			float angle = this.yaw * MHelper.PI / 180.0F;
-			float sin = MathHelper.sin(angle);
-			float cos = MathHelper.cos(angle);
-			float dx = (perpen * cos - parall * sin);
-			float dz = (parall * cos + perpen * sin);
-			creative_flightSpeed.x = dx;
-			creative_flightSpeed.z = dz;
-			
-			boolean sneaking = this.method_1373();
-			if (this.jumping) {
-				creative_flightSpeed.y = 0.6F;
-			}
-			else if (sneaking) {
-				creative_flightSpeed.y = -0.6F;
-			}
-			else {
-				creative_flightSpeed.y = 0;
-			}
-			
-			this.velocityX = creative_flightSpeed.x;
-			this.velocityY = creative_flightSpeed.y;
-			this.velocityZ = creative_flightSpeed.z;*/
-			
-			//this.velocityY = 0;
-			//this.y += creative_flightSpeed.y;
 		}
 	}
 }
