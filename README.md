@@ -11,7 +11,7 @@
 				<p>
 					Dependencies:
 					<ul>
-						<li><a href="https://github.com/ModificationStation/StationAPI">Station API</a></li>
+						<li><a href="https://github.com/paulevsGitch/BHAPI">BHAPI</a></li>
 					</ul>
 				</p>
 			</td>		
@@ -77,7 +77,7 @@ To add your own creative tab you need to register listener first. All listeners 
 
 ```json
 "entrypoints": {
-	"bhcreative:event_bus": [
+	"bhcreative:events": [
 		"yourmodid.listeners.CreativeListener"
 	]
 }

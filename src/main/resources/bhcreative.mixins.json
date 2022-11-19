@@ -10,13 +10,13 @@
 	"client": [
 		"ClientInteractionManagerMixin",
 		"AbstractClientPlayerMixin",
+		"WalkingBaseEntityMixin",
+		"LivingEntityAccessor",
 		"PlayerInventoryMixin",
 		"GameRendererMixin",
+		"LivingEntityMixin",
 		"CreateLevelMixin",
-		"GameOptionsMixin",
-		"WalkingBaseMixin",
-		"LivingAccessor",
-		"LivingMixin"
+		"GameOptionsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

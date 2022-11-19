@@ -1,26 +1,22 @@
 package paulevs.bhcreative;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.bhapi.util.Identifier;
 import net.minecraft.entity.player.PlayerBase;
-import net.modificationstation.stationapi.api.StationAPI;
-import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.registry.ModID;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import paulevs.bhcreative.interfaces.CreativePlayer;
 
-import static net.modificationstation.stationapi.api.registry.Identifier.of;
-
-public class Creative implements PreLaunchEntrypoint {
-	public static final ModID MOD_ID = ModID.of("bhcreative");
+public class Creative {
+	public static final Logger LOGGER = LogManager.getLogger();
+	public static final String MOD_ID = "bhcreative";
 	
 	/**
-	 * Will return creative tab {@link Identifier} based on internal {@link ModID}.
+	 * Will return creative tab {@link Identifier} based on internal ModID.
 	 * @param name {@link String} name to construct ID.
 	 * @return created {@link Identifier}.
 	 */
 	public static final Identifier id(String name) {
-		return MOD_ID.id(name);
+		return Identifier.make(MOD_ID, name);
 	}
 	
 	/**
@@ -57,16 +53,5 @@ public class Creative implements PreLaunchEntrypoint {
 	 */
 	public static void setFlying(PlayerBase player, boolean flying) {
 		CreativePlayer.class.cast(player).creative_setFlying(flying);
-	}
-	
-	@Override
-	public void onPreLaunch() {
-		setupEntrypoint(id("event_bus"));
-	}
-	
-	private void setupEntrypoint(Identifier entrypoint) {
-		FabricLoader.getInstance().getEntrypointContainers(entrypoint.toString(), Object.class).forEach(entrypointContainer -> {
-			EntrypointManager.setup(entrypointContainer);
-		});
 	}
 }

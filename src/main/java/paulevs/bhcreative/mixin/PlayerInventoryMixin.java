@@ -7,7 +7,7 @@ import net.minecraft.client.render.RenderHelper;
 import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
+import net.minecraft.item.BaseItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.input.Keyboard;
@@ -60,7 +60,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	
 	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerBase;)V", at = @At("TAIL"))
 	private void creative_initPlayerInventory(PlayerBase player, CallbackInfo info) {
-		creative_creativeIcon = new ItemStack(ItemBase.diamond);
+		creative_creativeIcon = new ItemStack(BaseItem.diamond);
 		creative_survivalIcon = new ItemStack(BaseBlock.WORKBENCH);
 		CreativeTab tab = TabRegistry.INSTANCE.getTabByIndex(0);
 		creative_tabKey = tab.getTranslationKey();
@@ -292,8 +292,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		if (instance == null) {
 			return;
 		}
-		creative_itemRenderer.method_1487(this.textManager, this.minecraft.textureManager, instance, x, y);
-		creative_itemRenderer.method_1488(this.textManager, this.minecraft.textureManager, instance, x, y);
+		creative_itemRenderer.renderStackInGUI(this.textManager, this.minecraft.textureManager, instance, x, y);
+		creative_itemRenderer.renderStackInGUIWithDamage(this.textManager, this.minecraft.textureManager, instance, x, y);
 	}
 	
 	@Unique
@@ -328,8 +328,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
 			if (inventory.getCursorItem() != null) {
 				GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-				creative_itemRenderer.method_1487(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
-				creative_itemRenderer.method_1488(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
+				creative_itemRenderer.renderStackInGUI(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
+				creative_itemRenderer.renderStackInGUIWithDamage(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
 			}
 	
 			GL11.glDisable(32826);
@@ -449,7 +449,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 				if (index < creative_items.size()) {
 					ItemStack item = creative_items.get(index);
 					boolean isSame = inventory.getCursorItem() != null && inventory.getCursorItem().isDamageAndIDIdentical(item);
-					if (inventory.getCursorItem() == null || ItemBase.byId[inventory.getCursorItem().itemId] == null || isSame) {
+					if (inventory.getCursorItem() == null || isSame) {
 						if (item != null) {
 							if (isSame) {
 								inventory.getCursorItem().count++;
@@ -458,7 +458,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 								inventory.setCursorItem(item.copy());
 							}
 							if (button == 2) {
-								inventory.getCursorItem().count = ItemBase.byId[inventory.getCursorItem().itemId].getMaxStackSize();
+								inventory.getCursorItem().count = inventory.getCursorItem().getMaxStackSize();
 							}
 							return;
 						}

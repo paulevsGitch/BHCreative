@@ -1,5 +1,5 @@
 plugins {
-	id 'babric-loom' version '0.12.10'
+	id 'babric-loom' version '1.0.1'
 	id 'maven-publish'
 }
 
@@ -16,55 +16,34 @@ loom {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
-
 	// Used for the fabric toolchain in this project.
 	maven {
 		name = 'Babric'
 		url = 'https://maven.glass-launcher.net/babric'
+	}
+	// Used for mappings.
+	maven {
+		name = 'Glass Releases'
+		url = 'https://maven.glass-launcher.net/releases'
 	}
 	// Used for projects that do not have a maven repository, but do have a GitHub repository with working build scripts.
 	maven {
 		name = 'Jitpack'
 		url = 'https://jitpack.io'
 	}
-	// Used for StationAPI and HowManyItems.
-	maven {
-		name = 'Glass Snapshots'
-		url = 'https://maven.glass-launcher.net/snapshots'
-	}
-	// Used for a StationAPI dependency.
-	maven {
-		name = 'Froge'
-		url 'https://maven.minecraftforge.net/'
-	}
 	mavenCentral()
-	flatDir {
-		dirs 'libs'
-	}
-}
-
-configurations.all {
-	resolutionStrategy {
-		force "com.github.paulevsGitch:StationAPI:${project.stapi_version}"
-	}
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "com.github.paulevsGitch:BIN-Mappings-BH:${project.mappings}"
 	modImplementation "babric:fabric-loader:${project.loader_version}"
 
 	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
-	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
-
-	modImplementation "com.github.paulevsGitch:StationAPI:${project.stapi_version}"
-	modImplementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
+	implementation "com.google.code.gson:gson:2.10"
+	
+	modImplementation "com.github.paulevsGitch:BHAPI:${project.bhapi_version}"
 }
 
 processResources {

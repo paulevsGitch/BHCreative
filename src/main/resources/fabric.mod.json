@@ -20,11 +20,13 @@
 
 	"environment": "*",
 	"entrypoints": {
-		"preLaunch": [
-			"paulevs.bhcreative.Creative"
+		"bhcreative:events": [
+			"paulevs.bhcreative.listeners.VanillaTabListener"
 		],
-		"bhcreative:event_bus": [
-			"paulevs.bhcreative.listeners.VanillaTabListener",
+		"bhapi:common_events": [
+			"paulevs.bhcreative.listeners.InitListener"
+		],
+		"bhapi:client_events": [
 			"paulevs.bhcreative.listeners.InitListener"
 		]
 	},
@@ -34,6 +36,6 @@
 
 	"depends": {
 		"minecraft": "1.0.0-beta.7.3",
-		"stationapi": "*"
+		"bhapi": "*"
 	}
 }

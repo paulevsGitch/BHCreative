@@ -1,25 +1,23 @@
 package paulevs.bhcreative.registry;
 
-import net.mine_diver.unsafeevents.Event;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.bhapi.event.EventPriorities;
+import net.bhapi.event.RegistryEvent;
+import net.bhapi.util.Identifier;
 import paulevs.bhcreative.api.CreativeTab;
 
 import java.util.function.BiConsumer;
 
-public class TabRegistryEvent extends Event {
-	private final BiConsumer<Identifier, CreativeTab> register;
-	public static final int ID = NEXT_ID.incrementAndGet();
-	
+public class TabRegistryEvent extends RegistryEvent<Identifier, CreativeTab> {
 	public TabRegistryEvent(BiConsumer<Identifier, CreativeTab> register) {
-		this.register = register;
-	}
-	
-	public final void register(CreativeTab tab) {
-		register.accept(tab.getID(), tab);
+		super(register);
 	}
 	
 	@Override
-	protected int getEventID() {
-		return ID;
+	public int getPriority() {
+		return EventPriorities.AFTER_BLOCK_AND_ITEMS + 1;
+	}
+	
+	public void register(CreativeTab tab) {
+		this.register(tab.getID(), tab);
 	}
 }
