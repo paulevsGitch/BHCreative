@@ -2,7 +2,7 @@ package paulevs.bhcreative.listeners;
 
 import net.bhapi.BHAPI;
 import net.bhapi.client.ClientRegistries;
-import net.bhapi.client.event.AfterTextureLoadedEvent;
+import net.bhapi.event.AfterBlockAndItemsEvent;
 import net.bhapi.event.EventListener;
 import net.bhapi.event.EventRegistrationEvent;
 import paulevs.bhcreative.Creative;
@@ -19,7 +19,7 @@ public class InitListener {
 	}
 	
 	@EventListener
-	public static void afterInit2(AfterTextureLoadedEvent event) {
+	public static void afterInit2(AfterBlockAndItemsEvent event) {
 		Creative.LOGGER.info("Registering creative tabs");
 		BHAPI.processEntryPoints("bhcreative:events", ClientRegistries.EVENT_REGISTRY_POST);
 	}

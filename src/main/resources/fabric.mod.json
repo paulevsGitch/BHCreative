@@ -25,9 +25,6 @@
 		],
 		"bhapi:common_events": [
 			"paulevs.bhcreative.listeners.InitListener"
-		],
-		"bhapi:client_events": [
-			"paulevs.bhcreative.listeners.InitListener"
 		]
 	},
 	"mixins": [
