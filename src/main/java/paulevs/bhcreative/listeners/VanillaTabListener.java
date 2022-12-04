@@ -2,6 +2,7 @@ package paulevs.bhcreative.listeners;
 
 import net.bhapi.event.EventListener;
 import net.bhapi.registry.CommonRegistries;
+import net.bhapi.util.DyeUtil;
 import net.bhapi.util.Identifier;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.item.BaseItem;
@@ -10,6 +11,8 @@ import paulevs.bhcreative.Creative;
 import paulevs.bhcreative.api.CreativeTab;
 import paulevs.bhcreative.api.SimpleTab;
 import paulevs.bhcreative.registry.TabRegistryEvent;
+
+import java.util.Arrays;
 
 public class VanillaTabListener {
 	public static SimpleTab tabFullBlocks;
@@ -32,6 +35,13 @@ public class VanillaTabListener {
 		initItems(event);
 	}
 	
+	private boolean hasItem(SimpleTab tab, BaseItem item) {
+		for (ItemStack stack: tab.getItems()) {
+			if (stack.getType() == item) return true;
+		}
+		return false;
+	}
+	
 	private void initFullBlocks(TabRegistryEvent event) {
 		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), new ItemStack(BaseBlock.STONE));
 		event.register(tabFullBlocks);
@@ -47,8 +57,12 @@ public class VanillaTabListener {
 		addItem(tabFullBlocks, "gold_ore");
 		addItem(tabFullBlocks, "iron_ore");
 		addItem(tabFullBlocks, "coal_ore");
-		addItem(tabFullBlocks, "log", 3);
-		addItem(tabFullBlocks, "leaves", 3);
+		addItem(tabFullBlocks, "oak_log");
+		addItem(tabFullBlocks, "spruce_log");
+		addItem(tabFullBlocks, "birch_log");
+		addItem(tabFullBlocks, "oak_leaves");
+		addItem(tabFullBlocks, "spruce_leaves");
+		addItem(tabFullBlocks, "birch_leaves");
 		addItem(tabFullBlocks, "sponge");
 		addItem(tabFullBlocks, "glass");
 		addItem(tabFullBlocks, "lapis_ore");
@@ -56,10 +70,14 @@ public class VanillaTabListener {
 		addItem(tabFullBlocks, "dispenser");
 		addItem(tabFullBlocks, "sandstone");
 		addItem(tabFullBlocks, "note_block");
-		addItem(tabFullBlocks, "wool", 16);
+		
+		//addItem(tabFullBlocks, "wool", 16);
+		Arrays.stream(DyeUtil.BLOCK_NAMES).forEach(
+			color -> addItem(tabFullBlocks, color + "_wool")
+		);
+		
 		addItem(tabFullBlocks, "gold_block");
 		addItem(tabFullBlocks, "iron_block");
-		addItem(tabFullBlocks, "double_slab");
 		addItem(tabFullBlocks, "bricks");
 		addItem(tabFullBlocks, "tnt");
 		addItem(tabFullBlocks, "bookshelf");
@@ -88,35 +106,49 @@ public class VanillaTabListener {
 		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), new ItemStack(BaseBlock.LADDER));
 		event.register(tabOtherBlocks);
 		
-		addItem(tabOtherBlocks, "sapling");
-		addItem(tabOtherBlocks, "powered_rail");
-		addItem(tabOtherBlocks, "detector_rail");
-		addItem(tabOtherBlocks, "sticky_piston");
-		addItem(tabOtherBlocks, "cobweb");
-		//addItem(tabOtherBlocks, "tall_grass", 4);
-		addItem(tabOtherBlocks, "tall_grass");
+		addItem(tabOtherBlocks, "oak_sapling");
+		addItem(tabOtherBlocks, "spruce_sapling");
+		addItem(tabOtherBlocks, "birch_sapling");
+		
 		addItem(tabOtherBlocks, "dead_bush");
+		addItem(tabOtherBlocks, "tall_grass");
 		addItem(tabOtherBlocks, "fern");
-		addItem(tabOtherBlocks, "piston");
+		
 		addItem(tabOtherBlocks, "dandelion");
 		addItem(tabOtherBlocks, "rose");
+		
 		addItem(tabOtherBlocks, "brown_mushroom");
 		addItem(tabOtherBlocks, "red_mushroom");
+		addItem(tabOtherBlocks, "cactus");
+		
+		addItem(tabOtherBlocks, "cobweb");
+		
 		addItem(tabOtherBlocks, "torch");
-		addItem(tabOtherBlocks, "slab");
-		addItem(tabOtherBlocks, "fire");
-		addItem(tabOtherBlocks, "wooden_stairs");
-		addItem(tabOtherBlocks, "farmland");
-		addItem(tabOtherBlocks, "ladder");
-		addItem(tabOtherBlocks, "rail");
-		addItem(tabOtherBlocks, "cobblestone_stairs");
+		addItem(tabOtherBlocks, "redstone_torch");
 		addItem(tabOtherBlocks, "lever");
+		addItem(tabOtherBlocks, "ladder");
+		
+		addItem(tabOtherBlocks, "rail");
+		addItem(tabOtherBlocks, "powered_rail");
+		addItem(tabOtherBlocks, "detector_rail");
+		
+		addItem(tabOtherBlocks, "stone_slab");
+		addItem(tabOtherBlocks, "sandstone_slab");
+		addItem(tabOtherBlocks, "cobblestone_slab");
+		addItem(tabOtherBlocks, "wooden_slab");
+		
+		addItem(tabOtherBlocks, "wooden_stairs");
+		addItem(tabOtherBlocks, "cobblestone_stairs");
+		addItem(tabOtherBlocks, "fence");
+		addItem(tabOtherBlocks, "snow");
+		
+		addItem(tabOtherBlocks, "piston");
+		addItem(tabOtherBlocks, "sticky_piston");
+		
 		addItem(tabOtherBlocks, "wooden_pressure_plate");
 		addItem(tabOtherBlocks, "stone_pressure_plate");
 		addItem(tabOtherBlocks, "button");
-		addItem(tabOtherBlocks, "snow");
-		addItem(tabOtherBlocks, "cactus");
-		addItem(tabOtherBlocks, "fence");
+		
 	}
 	
 	private void initTools(TabRegistryEvent event) {
@@ -247,7 +279,7 @@ public class VanillaTabListener {
 		addItem(tabItems, "chest_minecart");
 		addItem(tabItems, "furnace_minecart");
 		addItem(tabItems, "compass");
-		addItem(tabItems, "dye");
+		addItem16(tabItems, "dye");
 		addItem(tabItems, "cake");
 		addItem(tabItems, "bed");
 		addItem(tabItems, "repeater");
@@ -263,10 +295,11 @@ public class VanillaTabListener {
 		}
 	}
 	
-	private void addItem(CreativeTab tab, String name, int variants) {
-		addItem(tab, name);
-		for (byte i = 1; i < variants; i++) {
-			addItem(tab, name + "_" + i);
+	private void addItem16(CreativeTab tab, String name) {
+		BaseItem item = CommonRegistries.ITEM_REGISTRY.get(Identifier.make(name));
+		if (item == null) return;
+		for (byte i = 0; i < 16; i++) {
+			tab.addItem(new ItemStack(item, 1, i));
 		}
 	}
 }
