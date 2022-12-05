@@ -35,13 +35,6 @@ public class VanillaTabListener {
 		initItems(event);
 	}
 	
-	private boolean hasItem(SimpleTab tab, BaseItem item) {
-		for (ItemStack stack: tab.getItems()) {
-			if (stack.getType() == item) return true;
-		}
-		return false;
-	}
-	
 	private void initFullBlocks(TabRegistryEvent event) {
 		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), new ItemStack(BaseBlock.STONE));
 		event.register(tabFullBlocks);
