@@ -1,7 +1,6 @@
 package paulevs.bhcreative.listeners;
 
 import net.bhapi.BHAPI;
-import net.bhapi.client.ClientRegistries;
 import net.bhapi.event.AfterBlockAndItemsEvent;
 import net.bhapi.event.EventListener;
 import net.bhapi.event.EventRegistrationEvent;
@@ -13,7 +12,7 @@ import paulevs.bhcreative.registry.TabRegistryEvent;
 public class InitListener {
 	@EventListener
 	public void afterInit(EventRegistrationEvent event) {
-		if (!BHAPI.isClient()) return;
+		// if (!BHAPI.isClient()) return;
 		CommonRegistries.EVENT_REGISTRY.put(
 			TabRegistryEvent.class, () -> new TabRegistryEvent(TabRegistry.INSTANCE::register)
 		);

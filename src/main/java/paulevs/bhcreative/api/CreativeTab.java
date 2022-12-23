@@ -13,7 +13,7 @@ public abstract class CreativeTab implements Comparable<CreativeTab> {
 	private final Identifier id;
 	
 	public CreativeTab(Identifier id) {
-		this.translationKey = "tab." + id.toString();
+		this.translationKey = "tab." + id.toString().replace(':', '.');
 		this.id = id;
 	}
 	
