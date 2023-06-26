@@ -1,13 +1,15 @@
 package paulevs.bhcreative.mixin;
 
+import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.MathHelper;
 import net.minecraft.util.maths.Vec3f;
+import net.modificationstation.stationapi.api.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,6 +20,8 @@ import paulevs.bhcreative.util.MHelper;
 
 @Mixin(PlayerBase.class)
 public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
+	@Shadow public abstract void tickRiding();
+	
 	@Unique private static final float CREATIVE_MAX_SPEED = 0.4F;
 	@Unique private final Vec3f creative_flightSpeed = Vec3f.method_1293(0, 0, 0);
 	@Unique private boolean creative_isCreative;
@@ -44,8 +48,18 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 	
 	@Override
 	public void creative_setFlying(boolean flying) {
+		if (flying && !this.creative_isFlying) {
+			setPositionAndAngles(x, y, z, yaw, pitch);
+			velocityX = 0;
+			velocityY = 0;
+			velocityZ = 0;
+		}
+		else if (!flying && this.creative_isFlying) {
+			creative_flightSpeed.x = 0;
+			creative_flightSpeed.y = 0;
+			creative_flightSpeed.z = 0;
+		}
 		this.creative_isFlying = flying;
-		//this.onGround = false;
 	}
 	
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
@@ -77,52 +91,65 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 	
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void creative_tick(CallbackInfo info) {
-		if (!this.creative_isCreative()) {
+		if (!this.creative_isCreative()) return;
+		if (!this.creative_isFlying()) return;
+		
+		if (this.isSleeping() || this.vehicle != null) {
 			this.creative_setFlying(false);
+			return;
 		}
-		else if (this.creative_isFlying() && !this.isSleeping()) {
-			LivingEntityAccessor living = LivingEntityAccessor.class.cast(this);
-			float perpen = living.getPerpendicularMovement();
-			float parall = living.getParallelMovement();
-			float angle = this.yaw * MHelper.PI / 180.0F;
-			float sin = MathHelper.sin(angle);
-			float cos = MathHelper.cos(angle);
-			float dx = (perpen * cos - parall * sin);
-			float dz = (parall * cos + perpen * sin);
-			creative_flightSpeed.x = creative_flightSpeed.x * 0.9F + dx * 0.1F;
-			creative_flightSpeed.z = creative_flightSpeed.z * 0.9F + dz * 0.1F;
-			creative_flightSpeed.x = MHelper.clamp(creative_flightSpeed.x, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
-			creative_flightSpeed.z = MHelper.clamp(creative_flightSpeed.z, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
-			
-			boolean sneaking = this.method_1373();
-			
-			creative_flightSpeed.y *= 0.9F;
-			if (jumping) {
-				creative_flightSpeed.y += 0.1F;
-				if (creative_flightSpeed.y > CREATIVE_MAX_SPEED) {
-					creative_flightSpeed.y = CREATIVE_MAX_SPEED;
-				}
-			}
-			if (sneaking) {
-				creative_flightSpeed.y -= 0.1F;
-				if (creative_flightSpeed.y < -CREATIVE_MAX_SPEED) {
-					creative_flightSpeed.y = -CREATIVE_MAX_SPEED;
-				}
-			}
-			
-			this.velocityX = creative_flightSpeed.x;
-			this.velocityY = creative_flightSpeed.y;
-			this.velocityZ = creative_flightSpeed.z;
-			
-			if (this.onGround) {
-				this.creative_setFlying(false);
-				this.velocityX = 0;
-				this.velocityY = 0;
-				this.velocityZ = 0;
-				creative_flightSpeed.x = 0;
-				creative_flightSpeed.y = 0;
-				creative_flightSpeed.z = 0;
+		
+		if (this.onGround) {
+			this.creative_setFlying(false);
+			return;
+		}
+		
+		LivingEntityAccessor entity = (LivingEntityAccessor) this;
+		
+		float front = entity.creative_getFrontMovement();
+		float right = entity.creative_getRightMovement();
+		double angle = Math.toRadians(this.yaw);//(float) (this.yaw % 360.0) * MHelper.PI / 180.0F;
+		float sin = (float) Math.sin(angle);
+		float cos = (float) Math.cos(angle);
+		float dx = (front * cos - right * sin);
+		float dz = (right * cos + front * sin);
+		
+		creative_flightSpeed.x = MathHelper.lerp(0.1, creative_flightSpeed.x, dx * 0.5);
+		creative_flightSpeed.z = MathHelper.lerp(0.1, creative_flightSpeed.z, dz * 0.5);
+		//creative_flightSpeed.x = MHelper.clamp(creative_flightSpeed.x, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
+		//creative_flightSpeed.z = MHelper.clamp(creative_flightSpeed.z, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
+		
+		boolean sneaking = this.method_1373();
+		
+		dx = 0;
+		if (jumping) dx += 0.5F;
+		if (sneaking) dx -= 0.5F;
+		
+		creative_flightSpeed.y = MathHelper.lerp(0.1, creative_flightSpeed.y, dx);
+		
+		/*creative_flightSpeed.y *= 0.9F;
+		if (jumping) {
+			creative_flightSpeed.y += 0.1F;
+			if (creative_flightSpeed.y > CREATIVE_MAX_SPEED) {
+				creative_flightSpeed.y = CREATIVE_MAX_SPEED;
 			}
 		}
+		if (sneaking) {
+			creative_flightSpeed.y -= 0.1F;
+			if (creative_flightSpeed.y < -CREATIVE_MAX_SPEED) {
+				creative_flightSpeed.y = -CREATIVE_MAX_SPEED;
+			}
+		}*/
+		
+		this.velocityX = creative_flightSpeed.x;
+		this.velocityY = creative_flightSpeed.y;
+		this.velocityZ = creative_flightSpeed.z;
 	}
+	
+	/*@Inject(method = "canRemoveBlock", at = @At("HEAD"), cancellable = true)
+	private void creative_canRemoveBlock(BlockBase block, CallbackInfoReturnable<Boolean> info) {
+		if (this.creative_isCreative()) {
+			info.setReturnValue(true);
+		}
+	}*/
 }

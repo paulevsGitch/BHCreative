@@ -1,7 +1,6 @@
 package paulevs.bhcreative.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.modificationstation.stationapi.api.client.color.block.BlockColorProvider;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import paulevs.bhcreative.Creative;
 import paulevs.bhcreative.util.GrassPlacerItem;
