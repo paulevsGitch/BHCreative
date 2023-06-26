@@ -13,6 +13,8 @@ import paulevs.bhcreative.interfaces.CreativePlayer;
 
 @Mixin(CreateLevel.class)
 public abstract class CreateLevelMixin extends ScreenBase {
+	@Unique private static final String CREATIVE_KEY_SURVIVAL = "title.bhcreative:selectWorld.survival";
+	@Unique private static final String CREATIVE_KEY_CREATIVE = "title.bhcreative:selectWorld.creative";
 	@Unique private boolean creative = false;
 	
 	@SuppressWarnings("unchecked")
@@ -39,6 +41,6 @@ public abstract class CreateLevelMixin extends ScreenBase {
 	@Unique
 	private String creative_getButtonName() {
 		TranslationStorage storage = TranslationStorage.getInstance();
-		return storage.translate(creative ? "title.selectWorld.creative": "title.selectWorld.survival");
+		return storage.translate(creative ? CREATIVE_KEY_CREATIVE : CREATIVE_KEY_SURVIVAL);
 	}
 }

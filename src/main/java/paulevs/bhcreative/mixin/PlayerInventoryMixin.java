@@ -30,10 +30,10 @@ import java.util.List;
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin extends ContainerBase {
 	@Unique private static final int CREATIVE_COLOR_FILLER = MHelper.getColor(198, 198, 198, 128);
-	@Unique private static final String KEY_CREATIVE = "title.selectGame.creative";
-	@Unique private static final String KEY_INVENTORY = "title.selectGame.inventory";
+	@Unique private static final ItemRenderer CREATIVE_ITEM_RENDERER = new ItemRenderer();
+	@Unique private static final String CREATIVE_KEY_INVENTORY = "title.bhcreative:selectGame.inventory";
+	@Unique private static final String CREATIVE_KEY_CREATIVE = "title.bhcreative:selectGame.creative";
 	
-	@Unique private static final ItemRenderer creative_itemRenderer = new ItemRenderer();
 	@Unique private List<ItemInstance> creative_items;
 	@Unique private boolean creative_normalGUI;
 	@Unique private int creative_mouseDelta;
@@ -51,12 +51,12 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 	@Unique private ItemInstance creative_creativeIcon;
 	@Unique private ItemInstance creative_survivalIcon;
 	
+	@Shadow private float mouseX;
+	@Shadow private float mouseY;
+	
 	public PlayerInventoryMixin(net.minecraft.container.ContainerBase container) {
 		super(container);
 	}
-	
-	@Shadow private float mouseX;
-	@Shadow private float mouseY;
 	
 	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerBase;)V", at = @At("TAIL"))
 	private void creative_initPlayerInventory(PlayerBase player, CallbackInfo info) {
@@ -103,13 +103,13 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		int tabX = (int) mouseX - posX - 173;
 		int tabY = (int) mouseY - posY - 114;
 		if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-			String translated = TranslationStorage.getInstance().method_995(KEY_CREATIVE);
+			String translated = creative_translate(CREATIVE_KEY_CREATIVE);
 			creative_renderString(translated);
 		}
 		
 		tabY = (int) mouseY - posY - 138;
 		if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-			String translated = TranslationStorage.getInstance().method_995(KEY_INVENTORY);
+			String translated = creative_translate(CREATIVE_KEY_INVENTORY);
 			creative_renderString(translated);
 		}
 	}
@@ -194,7 +194,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			
 			RenderHelper.disableLighting();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			String translated = TranslationStorage.getInstance().method_995(creative_tabKey);
+			String translated = creative_translate(creative_tabKey);
 			this.textManager.drawText(translated, posX + 8, posY + 5, 0x373737);
 			
 			int slotX = MathHelper.floor((mouseX - posX - 8) / 18);
@@ -226,20 +226,20 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			int tabY = (int) mouseY - posY + 21;
 			if (tabX >= 0 && tabX < creative_maxTabIndex && tabY >= 0 && tabY < 24) {
 				CreativeTab tab = creative_getTab(creative_tabPage, tabX);
-				translated = TranslationStorage.getInstance().method_995(tab.getTranslationKey());
+				translated = creative_translate(tab.getTranslationKey());
 				creative_renderString(translated);
 			}
 			
 			tabX = (int) mouseX - posX - 173;
 			tabY = (int) mouseY - posY - 114;
 			if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-				translated = TranslationStorage.getInstance().method_995(KEY_CREATIVE);
+				translated = creative_translate(CREATIVE_KEY_CREATIVE);
 				creative_renderString(translated);
 			}
 			
 			tabY = (int) mouseY - posY - 138;
 			if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-				translated = TranslationStorage.getInstance().method_995(KEY_INVENTORY);
+				translated = creative_translate(CREATIVE_KEY_INVENTORY);
 				creative_renderString(translated);
 			}
 			
@@ -254,7 +254,7 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		}
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		String key = item.getTranslationKey();
-		String translated = TranslationStorage.getInstance().method_995(key);
+		String translated = creative_translate(key);
 		creative_renderString(translated.isEmpty() ? key : translated);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
@@ -292,8 +292,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		if (instance == null) {
 			return;
 		}
-		creative_itemRenderer.method_1488(this.textManager, this.minecraft.textureManager, instance, x, y);
-		creative_itemRenderer.method_1487(this.textManager, this.minecraft.textureManager, instance, x, y);
+		CREATIVE_ITEM_RENDERER.method_1487(this.textManager, this.minecraft.textureManager, instance, x, y);
+		CREATIVE_ITEM_RENDERER.method_1488(this.textManager, this.minecraft.textureManager, instance, x, y);
 	}
 	
 	@Unique
@@ -328,8 +328,8 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
 			if (inventory.getCursorItem() != null) {
 				GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-				creative_itemRenderer.method_1488(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
-				creative_itemRenderer.method_1487(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
+				CREATIVE_ITEM_RENDERER.method_1487(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
+				CREATIVE_ITEM_RENDERER.method_1488(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
 			}
 	
 			GL11.glDisable(32826);
@@ -537,12 +537,20 @@ public abstract class PlayerInventoryMixin extends ContainerBase {
 		this.minecraft.soundHelper.playSound("random.click", 1.0F, 1.0F);
 	}
 	
+	@Unique
 	private void creative_updateMaxIndex() {
 		creative_maxTabIndex = TabRegistry.getTabsCount() - creative_tabPage * 7;
 		if (creative_maxTabIndex > 7) creative_maxTabIndex = 7;
 	}
 	
+	@Unique
 	private CreativeTab creative_getTab(int page, int index) {
 		return TabRegistry.getTabByIndex(page * 7 + index);
+	}
+	
+	@Unique
+	private String creative_translate(String key) {
+		if (key == null) return "null";
+		return TranslationStorage.getInstance().translate(key, key);
 	}
 }

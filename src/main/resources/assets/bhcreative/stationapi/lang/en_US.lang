@@ -1,0 +1,12 @@
+tab.full_blocks.name=Minecraft Full Blocks
+tab.other_blocks.name=Minecraft Other Blocks
+tab.tools.name=Minecraft Tools
+tab.weapons.name=Minecraft Weapons
+tab.resources.name=Minecraft Resources
+tab.food.name=Minecraft Food
+tab.other_items.name=Minecraft Items
+title.selectWorld.survival=Survival
+title.selectWorld.creative=Creative
+title.selectGame.inventory.name=Inventory
+title.selectGame.creative.name=Creative
+key.fly=Fly

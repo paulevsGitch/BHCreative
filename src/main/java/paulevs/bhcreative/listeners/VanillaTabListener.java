@@ -88,44 +88,33 @@ public class VanillaTabListener {
 		
 		addItem(tabOtherBlocks, "sapling", 3);
 		
-		//addItem(tabOtherBlocks, "dead_bush");
-		//addItem(tabOtherBlocks, "grass", 3);
-		//addItem(tabOtherBlocks, "fern");
+		addItem(tabOtherBlocks, "dead_bush");
+		addItem(tabOtherBlocks, "bhcreative:tall_grass");
+		addItem(tabOtherBlocks, "bhcreative:fern");
 		
 		addItem(tabOtherBlocks, "dandelion");
 		addItem(tabOtherBlocks, "rose");
-		
 		addItem(tabOtherBlocks, "brown_mushroom");
 		addItem(tabOtherBlocks, "red_mushroom");
 		addItem(tabOtherBlocks, "cactus");
-		
 		addItem(tabOtherBlocks, "cobweb");
-		
 		addItem(tabOtherBlocks, "torch");
 		addItem(tabOtherBlocks, "redstone_torch");
 		addItem(tabOtherBlocks, "lever");
 		addItem(tabOtherBlocks, "ladder");
-		
 		addItem(tabOtherBlocks, "rail");
 		addItem(tabOtherBlocks, "powered_rail");
 		addItem(tabOtherBlocks, "detector_rail");
-		
-		addItem(tabOtherBlocks, "stone_slab");
-		addItem(tabOtherBlocks, "sandstone_slab");
-		addItem(tabOtherBlocks, "cobblestone_slab");
-		addItem(tabOtherBlocks, "wooden_slab");
-		
-		addItem(tabOtherBlocks, "wooden_stairs");
+		addItem(tabOtherBlocks, "slab", 4);
+		addItem(tabOtherBlocks, "oak_stairs");
 		addItem(tabOtherBlocks, "cobblestone_stairs");
-		addItem(tabOtherBlocks, "fence");
+		addItem(tabOtherBlocks, "oak_fence");
 		addItem(tabOtherBlocks, "snow");
-		
 		addItem(tabOtherBlocks, "piston");
 		addItem(tabOtherBlocks, "sticky_piston");
-		
-		addItem(tabOtherBlocks, "wooden_pressure_plate");
+		addItem(tabOtherBlocks, "oak_pressure_plate");
 		addItem(tabOtherBlocks, "stone_pressure_plate");
-		addItem(tabOtherBlocks, "button");
+		addItem(tabOtherBlocks, "stone_button");
 		
 	}
 	
@@ -229,8 +218,8 @@ public class VanillaTabListener {
 		addItem(tabFood, "cooked_porkchop");
 		addItem(tabFood, "golden_apple");
 		addItem(tabFood, "egg");
-		addItem(tabFood, "fish");
-		addItem(tabFood, "cooked_fish");
+		addItem(tabFood, "cod");
+		addItem(tabFood, "cooked_cod");
 		addItem(tabFood, "sugar");
 		addItem(tabFood, "cookie");
 	}
@@ -240,8 +229,8 @@ public class VanillaTabListener {
 		event.register(tabItems);
 		
 		addItem(tabItems, "painting");
-		addItem(tabItems, "sign");
-		addItem(tabItems, "wooden_door");
+		addItem(tabItems, "oak_sign");
+		addItem(tabItems, "oak_door");
 		addItem(tabItems, "bucket");
 		addItem(tabItems, "water_bucket");
 		addItem(tabItems, "lava_bucket");
@@ -249,7 +238,7 @@ public class VanillaTabListener {
 		addItem(tabItems, "saddle");
 		addItem(tabItems, "iron_door");
 		addItem(tabItems, "snowball");
-		addItem(tabItems, "boat");
+		addItem(tabItems, "oak_boat");
 		addItem(tabItems, "leather");
 		addItem(tabItems, "milk_bucket");
 		addItem(tabItems, "sugar_cane");
@@ -259,11 +248,11 @@ public class VanillaTabListener {
 		addItem(tabItems, "compass");
 		addItem(tabItems, "dye", 16);
 		addItem(tabItems, "cake");
-		addItem(tabItems, "bed");
+		addItem(tabItems, "red_bed");
 		addItem(tabItems, "repeater");
 		addItem(tabItems, "map");
-		addItem(tabItems, "record_13");
-		addItem(tabItems, "record_cat");
+		addItem(tabItems, "music_disc_13");
+		addItem(tabItems, "music_disc_cat");
 	}
 	
 	private void addItem(CreativeTab tab, String name) {
