@@ -1,7 +1,7 @@
 <table>
 	<tbody>
 		<tr>
-			<td width="210px"><img src="https://github.com/paulevsGitch/BHCreative/blob/main/src/main/resources/assets/bhcreative/icon.png"/></td>		
+			<td width="210px" style="text-align: center;"><img src="https://github.com/paulevsGitch/BHCreative/blob/main/src/main/resources/assets/bhcreative/icon.png"/></td>		
 			<td>
 				<h2 align="left">BHCreative</h2>
 				<a href="https://jitpack.io/#paulevsGitch/BHCreative"><img src="https://jitpack.io/v/paulevsGitch/BHCreative.svg"></a>
@@ -11,7 +11,7 @@
 				<p>
 					Dependencies:
 					<ul>
-						<li><a href="https://github.com/paulevsGitch/BHAPI">BHAPI</a></li>
+						<li><a href="https://github.com/ModificationStation/StationAPI">StationAPI</a></li>
 					</ul>
 				</p>
 			</td>		
@@ -44,27 +44,17 @@ modImplementation "com.github.paulevsGitch:BHCreative:${project.bhcreative_versi
 - Add version variable to your gradle.properties:
 
 ```
-bhcreative_version = d71a19b
+bhcreative_version = eb43f83
 ```
 You can use both version tags (like 0.1.0) and commit names (like d71a19b) as version variable
 
 2. **Adding dependency.**
 
 To add a dependency you need to add "suggests" entry to your fabric.mod.json.
+This allows mod to be optional.
 
 ```json
 "suggests": {
-	"bhcreative": "*"
-}
-```
-
-This allows mod to be optional dependency. If you need to add creative as a required dependency you can add same entry as for other mods:
-
-```json
-"depends": {
-	"minecraft": "1.0.0-beta.7.3",
-	"bhcore": "*",
-	"stationapi": "*",
 	"bhcreative": "*"
 }
 ```
@@ -77,7 +67,7 @@ To add your own creative tab you need to register listener first. All listeners 
 
 ```json
 "entrypoints": {
-	"bhcreative:events": [
+	"stationapi:event_bus_client": [
 		"yourmodid.listeners.CreativeListener"
 	]
 }
@@ -91,9 +81,7 @@ public class CreativeListener {
 	
 	@EventListener
 	public void onTabInit(TabRegistryEvent event) {
-		// ItemConvertible here is a tab icon. If you want custom icons
-		// you can extend tab class and implement your own icon rendering.
-		tab = new SimpleTab(new Identifier(yourModID, "yourTabName"), (ItemConvertible) ItemBase.apple);
+		tab = new SimpleTab(YOUR_MOD_ID.id("yourTabName"), ItemBase.apple); // Making tab
 		event.register(tab); // Registering tab
 		CreativeListener.tab.addItem(new ItemInstance(ItemBase.apple)); // Adding apple
 	}
@@ -111,6 +99,6 @@ tab.yourTabName.name=Your Tab Name
 Translations are located in:
 
 ```
-src\main\resources\assets\<yourmodid>\lang
+src\main\resources\assets\<yourmodid>\stationapi\lang
 ```
  The main lang file is en_US.lang
