@@ -1,22 +1,23 @@
 package paulevs.bhcreative;
 
-import net.bhapi.util.Identifier;
 import net.minecraft.entity.player.PlayerBase;
+import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.registry.ModID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import paulevs.bhcreative.interfaces.CreativePlayer;
 
 public class Creative {
 	public static final Logger LOGGER = LogManager.getLogger();
-	public static final String MOD_ID = "bhcreative";
+	public static final ModID MOD_ID = ModID.of("bhcreative");
 	
 	/**
 	 * Will return creative tab {@link Identifier} based on internal ModID.
 	 * @param name {@link String} name to construct ID.
 	 * @return created {@link Identifier}.
 	 */
-	public static final Identifier id(String name) {
-		return Identifier.make(MOD_ID, name);
+	public static Identifier id(String name) {
+		return MOD_ID.id(name);
 	}
 	
 	/**
@@ -25,7 +26,7 @@ public class Creative {
 	 * @return {@code true} if player is in creative.
 	 */
 	public static boolean isInCreative(PlayerBase player) {
-		return CreativePlayer.class.cast(player).creative_isCreative();
+		return CreativePlayer.cast(player).creative_isCreative();
 	}
 	
 	/**
@@ -34,7 +35,7 @@ public class Creative {
 	 * @param creative {@code boolean} mode state.
 	 */
 	public static void setCreative(PlayerBase player, boolean creative) {
-		CreativePlayer.class.cast(player).creative_setCreative(creative);
+		CreativePlayer.cast(player).creative_setCreative(creative);
 	}
 	
 	/**
@@ -43,7 +44,7 @@ public class Creative {
 	 * @return {@code true} if player is flying.
 	 */
 	public static boolean isFlying(PlayerBase player) {
-		return CreativePlayer.class.cast(player).creative_isFlying();
+		return CreativePlayer.cast(player).creative_isFlying();
 	}
 	
 	/**
@@ -52,6 +53,6 @@ public class Creative {
 	 * @param flying {@code boolean} state.
 	 */
 	public static void setFlying(PlayerBase player, boolean flying) {
-		CreativePlayer.class.cast(player).creative_setFlying(flying);
+		CreativePlayer.cast(player).creative_setFlying(flying);
 	}
 }

@@ -20,11 +20,9 @@
 
 	"environment": "*",
 	"entrypoints": {
-		"bhcreative:events": [
+		"stationapi:event_bus_client": [
+			"paulevs.bhcreative.listeners.InitListener",
 			"paulevs.bhcreative.listeners.VanillaTabListener"
-		],
-		"bhapi:common_events": [
-			"paulevs.bhcreative.listeners.InitListener"
 		]
 	},
 	"mixins": [
@@ -32,7 +30,6 @@
 	],
 
 	"depends": {
-		"minecraft": "1.0.0-beta.7.3",
-		"bhapi": "*"
+		"minecraft": "1.0.0-beta.7.3"
 	}
 }

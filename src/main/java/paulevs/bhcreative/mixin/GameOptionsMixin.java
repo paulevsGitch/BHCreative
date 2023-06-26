@@ -15,7 +15,7 @@ import paulevs.bhcreative.interfaces.FlyOption;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin implements FlyOption {
-	@Unique private KeyBinding creative_flyKey = new KeyBinding("key.fly", Keyboard.KEY_G);
+	@Unique private final KeyBinding creative_flyKey = new KeyBinding("key.fly", Keyboard.KEY_G);
 	@Unique private static final String KEY_CREATIVE_FLY = "key.bhcreative:fly";
 	@Unique private int creative_flyKeyIndex;
 	

@@ -11,7 +11,7 @@ import paulevs.bhcreative.interfaces.CreativePlayer;
 
 @Mixin(BaseClientInteractionManager.class)
 public class ClientInteractionManagerMixin {
-	@Shadow private Minecraft minecraft;
+	@Shadow protected Minecraft minecraft;
 	
 	@Inject(method = "method_1722", at = @At("HEAD"), cancellable = true)
 	private void creative_renderHud(CallbackInfoReturnable<Boolean> info) {

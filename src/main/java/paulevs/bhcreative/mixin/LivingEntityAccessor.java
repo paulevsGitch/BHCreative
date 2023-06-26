@@ -1,14 +1,14 @@
 package paulevs.bhcreative.mixin;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Living;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(LivingEntity.class)
+@Mixin(Living.class)
 public interface LivingEntityAccessor {
 	@Accessor("field_1060")
-	public float getPerpendicularMovement();
+	float getPerpendicularMovement();
 	
 	@Accessor("field_1029")
-	public float getParallelMovement();
+	float getParallelMovement();
 }

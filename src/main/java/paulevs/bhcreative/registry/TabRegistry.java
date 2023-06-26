@@ -1,29 +1,28 @@
 package paulevs.bhcreative.registry;
 
-import net.bhapi.registry.Registry;
-import net.bhapi.util.Identifier;
+import net.modificationstation.stationapi.api.registry.Identifier;
 import paulevs.bhcreative.api.CreativeTab;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class TabRegistry extends Registry<CreativeTab> {
-	public static final TabRegistry INSTANCE = new TabRegistry();
-	public static List<CreativeTab> orderedTabs = new ArrayList<>();
+public class TabRegistry {
+	private static Map<Identifier, CreativeTab> idToTab = new HashMap<>();
+	private static List<CreativeTab> orderedTabs = new ArrayList<>();
 	
-	private TabRegistry() {}
-	
-	@Override
-	public CreativeTab register(Identifier id, CreativeTab tab) {
+	public static CreativeTab register(Identifier id, CreativeTab tab) {
+		idToTab.put(id, tab);
 		orderedTabs.add(tab);
-		return super.register(id, tab);
+		return tab;
 	}
 	
-	public CreativeTab getTabByIndex(int index) {
+	public static CreativeTab getTabByIndex(int index) {
 		return orderedTabs.get(index);
 	}
 	
-	public int getTabsCount() {
+	public static int getTabsCount() {
 		return orderedTabs.size();
 	}
 }

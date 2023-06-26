@@ -1,7 +1,7 @@
 package paulevs.bhcreative.mixin;
 
-import net.minecraft.entity.BaseEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
@@ -17,9 +17,9 @@ import paulevs.bhcreative.interfaces.CreativePlayer;
 import paulevs.bhcreative.util.MHelper;
 
 @Mixin(PlayerBase.class)
-public abstract class PlayerBaseMixin extends LivingEntity implements CreativePlayer {
+public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 	@Unique private static final float CREATIVE_MAX_SPEED = 0.4F;
-	@Unique private final Vec3f creative_flightSpeed = Vec3f.make(0, 0, 0);
+	@Unique private final Vec3f creative_flightSpeed = Vec3f.method_1293(0, 0, 0);
 	@Unique private boolean creative_isCreative;
 	@Unique private boolean creative_isFlying;
 	
@@ -49,7 +49,7 @@ public abstract class PlayerBaseMixin extends LivingEntity implements CreativePl
 	}
 	
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-	private void creative_damage(BaseEntity target, int amount, CallbackInfoReturnable<Boolean> info) {
+	private void creative_damage(EntityBase target, int amount, CallbackInfoReturnable<Boolean> info) {
 		if (this.creative_isCreative()) {
 			info.setReturnValue(false);
 			info.cancel();
@@ -94,7 +94,7 @@ public abstract class PlayerBaseMixin extends LivingEntity implements CreativePl
 			creative_flightSpeed.x = MHelper.clamp(creative_flightSpeed.x, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
 			creative_flightSpeed.z = MHelper.clamp(creative_flightSpeed.z, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
 			
-			boolean sneaking = this.isChild(); // isSneaking for players
+			boolean sneaking = this.method_1373();
 			
 			creative_flightSpeed.y *= 0.9F;
 			if (jumping) {

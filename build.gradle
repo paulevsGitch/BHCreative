@@ -1,5 +1,5 @@
 plugins {
-	id 'babric-loom' version '1.0.1'
+	id 'babric-loom' version '0.12.10'
 	id 'maven-publish'
 }
 
@@ -16,6 +16,12 @@ loom {
 }
 
 repositories {
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
+
 	// Used for the fabric toolchain in this project.
 	maven {
 		name = 'Babric'
@@ -26,24 +32,37 @@ repositories {
 		name = 'Glass Releases'
 		url = 'https://maven.glass-launcher.net/releases'
 	}
+	// Used for StationAPI and HowManyItems.
+	maven {
+		name = 'Glass Snapshots'
+		url = 'https://maven.glass-launcher.net/snapshots'
+	}
+	// Used for a StationAPI dependency.
+	maven {
+		name = 'Froge'
+		url 'https://maven.minecraftforge.net/'
+	}
 	// Used for projects that do not have a maven repository, but do have a GitHub repository with working build scripts.
 	maven {
 		name = 'Jitpack'
 		url = 'https://jitpack.io'
 	}
 	mavenCentral()
+	flatDir {
+		dirs 'libs'
+	}
 }
 
 dependencies {
+	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "com.github.paulevsGitch:BIN-Mappings-BH:${project.mappings}"
+	mappings "net.glasslauncher:bin:${project.yarn_mappings}"
 	modImplementation "babric:fabric-loader:${project.loader_version}"
 
 	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
-	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
-	implementation "com.google.code.gson:gson:2.10"
-	
-	modImplementation "com.github.paulevsGitch:BHAPI:${project.bhapi_version}"
+	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
+
+	modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
 }
 
 processResources {
@@ -55,15 +74,10 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	// Loom also requires J17.
 	it.options.release = 17
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
 
@@ -73,19 +87,12 @@ jar {
 	}
 }
 
-// configure the maven publication
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			from components.java
 		}
 	}
-
 	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+	repositories {}
 }
