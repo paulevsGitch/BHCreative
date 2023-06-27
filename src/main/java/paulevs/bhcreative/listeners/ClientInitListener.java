@@ -1,6 +1,7 @@
 package paulevs.bhcreative.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.BlockBase;
 import net.minecraft.client.render.block.GrassColour;
 import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.client.event.color.item.ItemColorsRegisterEvent;
@@ -20,7 +21,7 @@ public class ClientInitListener {
 		event.itemColors.register(
 			(item, damage) -> GrassColour.get(0.5F, 0.5F),
 			CommonInitListener.tallGrass,
-			CommonInitListener.fern
+			CommonInitListener.fern, BlockBase.GRASS
 		);
 	}
 }

@@ -21,7 +21,6 @@ import paulevs.bhcreative.mixin.client.LivingEntityAccessor;
 public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 	@Shadow public abstract void tickRiding();
 	
-	@Unique private static final float CREATIVE_MAX_SPEED = 0.4F;
 	@Unique private final Vec3f creative_flightSpeed = Vec3f.method_1293(0, 0, 0);
 	@Unique private boolean creative_isCreative;
 	@Unique private boolean creative_isFlying;
@@ -106,20 +105,20 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 		
 		float front = entity.creative_getFrontMovement();
 		float right = entity.creative_getRightMovement();
-		double angle = Math.toRadians(this.yaw);//(float) (this.yaw % 360.0) * MHelper.PI / 180.0F;
+		double angle = Math.toRadians(this.yaw);
 		float sin = (float) Math.sin(angle);
 		float cos = (float) Math.cos(angle);
 		float dx = (front * cos - right * sin);
 		float dz = (right * cos + front * sin);
 		
-		creative_flightSpeed.x = MathHelper.lerp(0.15, creative_flightSpeed.x, dx * 0.5);
-		creative_flightSpeed.z = MathHelper.lerp(0.15, creative_flightSpeed.z, dz * 0.5);
+		creative_flightSpeed.x = MathHelper.lerp(0.15, creative_flightSpeed.x, dx * 0.4);
+		creative_flightSpeed.z = MathHelper.lerp(0.15, creative_flightSpeed.z, dz * 0.4);
 		
 		boolean sneaking = this.method_1373();
 		
 		dx = 0;
-		if (jumping) dx += 0.5F;
-		if (sneaking) dx -= 0.5F;
+		if (jumping) dx += 0.4F;
+		if (sneaking) dx -= 0.4F;
 		
 		creative_flightSpeed.y = MathHelper.lerp(0.2, creative_flightSpeed.y, dx);
 		
