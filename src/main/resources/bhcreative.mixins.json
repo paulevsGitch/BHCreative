@@ -18,8 +18,7 @@
 		"client.LivingEntityAccessor",
 		"client.GameRendererMixin",
 		"client.LivingEntityMixin",
-		"client.CreateLevelMixin",
-		"client.GameOptionsMixin"
+		"client.CreateLevelMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
