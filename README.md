@@ -1,7 +1,7 @@
-<table width="100%">
+<table style="width:100%">
 	<tbody>
 		<tr>
-			<td width="280px" style="text-align: center;"><img src="https://github.com/paulevsGitch/BHCreative/blob/main/src/main/resources/assets/bhcreative/icon.png"/></td>		
+			<td width="280px" style="text-align: center;"><img src="https://github.com/paulevsGitch/BHCreative/blob/stapi-2.0/src/main/resources/assets/bhcreative/icon.png"/></td>		
 			<td>
 				<h2 align="left">BHCreative</h2>
 				<a href="https://jitpack.io/#paulevsGitch/BHCreative"><img src="https://jitpack.io/v/paulevsGitch/BHCreative.svg"></a>
