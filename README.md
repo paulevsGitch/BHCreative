@@ -19,6 +19,15 @@
 	</tbody>
 </table>
 
+## Features
+
+- Separate worlds for creative and survival (button in world create option)
+- Ability to flight while in creative
+- Invulnerability while in creative
+- Fast block breaking without tools (no drops)
+- Infinity block placing
+- API for mods to add custom tabs
+
 ## How To Use
 
 ### Adding dependency
