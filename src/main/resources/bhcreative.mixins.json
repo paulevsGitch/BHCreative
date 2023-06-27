@@ -4,22 +4,22 @@
 	"package": "paulevs.bhcreative.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"AbstractBlockStateMixin",
-		"PlayerInventoryMixin",
-		"ItemInstanceMixin",
-		"PlayerBaseMixin",
-		"PlayerAPIMixin"
+		"common.AbstractBlockStateMixin",
+		"common.PlayerInventoryMixin",
+		"common.ItemInstanceMixin",
+		"common.PlayerBaseMixin",
+		"common.PlayerAPIMixin"
 	],
 	"client": [
-		"ClientInteractionManagerMixin",
-		"PlayerInventoryContainerMixin",
-		"AbstractClientPlayerMixin",
-		"WalkingBaseEntityMixin",
-		"LivingEntityAccessor",
-		"GameRendererMixin",
-		"LivingEntityMixin",
-		"CreateLevelMixin",
-		"GameOptionsMixin"
+		"client.ClientInteractionManagerMixin",
+		"client.PlayerInventoryContainerMixin",
+		"client.AbstractClientPlayerMixin",
+		"client.WalkingBaseEntityMixin",
+		"client.LivingEntityAccessor",
+		"client.GameRendererMixin",
+		"client.LivingEntityMixin",
+		"client.CreateLevelMixin",
+		"client.GameOptionsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -1,4 +1,4 @@
-package paulevs.bhcreative.mixin;
+package paulevs.bhcreative.mixin.common;
 
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.PlayerInventory;

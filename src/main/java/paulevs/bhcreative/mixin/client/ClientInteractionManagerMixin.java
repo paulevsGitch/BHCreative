@@ -1,4 +1,4 @@
-package paulevs.bhcreative.mixin;
+package paulevs.bhcreative.mixin.client;
 
 import net.minecraft.client.BaseClientInteractionManager;
 import net.minecraft.client.Minecraft;
