@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.BHCreative;
+import paulevs.bhcreative.registry.TabRegistry;
 import paulevs.bhcreative.registry.TabRegistryEvent;
 
 @Mixin(Minecraft.class)
@@ -79,5 +80,6 @@ public class MinecraftMixin {
 	private void creative_onGameInit(CallbackInfo info) {
 		BHCreative.LOGGER.info("Register creative tabs");
 		StationAPI.EVENT_BUS.post(new TabRegistryEvent());
+		TabRegistry.sort();
 	}
 }

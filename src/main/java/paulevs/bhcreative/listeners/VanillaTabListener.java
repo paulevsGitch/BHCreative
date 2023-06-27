@@ -1,6 +1,7 @@
 package paulevs.bhcreative.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.mine_diver.unsafeevents.listener.ListenerPriority;
 import net.minecraft.block.BlockBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
@@ -20,7 +21,7 @@ public class VanillaTabListener {
 	public static SimpleTab tabFood;
 	public static SimpleTab tabItems;
 	
-	@EventListener
+	@EventListener(priority = ListenerPriority.HIGHEST)
 	public void registerVanillaTabs(TabRegistryEvent event) {
 		BHCreative.LOGGER.info("Registering vanilla tabs");
 		initFullBlocks(event);
