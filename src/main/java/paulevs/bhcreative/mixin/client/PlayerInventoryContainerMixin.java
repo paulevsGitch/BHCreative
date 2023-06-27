@@ -103,14 +103,12 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 		int tabX = (int) mouseX - posX - 173;
 		int tabY = (int) mouseY - posY - 114;
 		if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-			String translated = creative_translate(CREATIVE_KEY_CREATIVE);
-			creative_renderString(translated);
+			creative_renderString(creative_translate(CREATIVE_KEY_CREATIVE));
 		}
 		
 		tabY = (int) mouseY - posY - 138;
 		if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-			String translated = creative_translate(CREATIVE_KEY_INVENTORY);
-			creative_renderString(translated);
+			creative_renderString(creative_translate(CREATIVE_KEY_INVENTORY));
 		}
 	}
 	
@@ -233,14 +231,12 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 			tabX = (int) mouseX - posX - 173;
 			tabY = (int) mouseY - posY - 114;
 			if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-				translated = creative_translate(CREATIVE_KEY_CREATIVE);
-				creative_renderString(translated);
+				creative_renderString(creative_translate(CREATIVE_KEY_CREATIVE));
 			}
 			
 			tabY = (int) mouseY - posY - 138;
 			if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
-				translated = creative_translate(CREATIVE_KEY_INVENTORY);
-				creative_renderString(translated);
+				creative_renderString(creative_translate(CREATIVE_KEY_INVENTORY));
 			}
 			
 			info.cancel();
@@ -254,8 +250,7 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 		}
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		String key = item.getTranslationKey();
-		String translated = TranslationStorage.getInstance().method_995(key);
-		creative_renderString(translated.isEmpty() ? key : translated);
+		creative_renderString(creative_translate_2(key));
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 	
@@ -552,5 +547,12 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 	private String creative_translate(String key) {
 		if (key == null) return "null";
 		return TranslationStorage.getInstance().translate(key, key);
+	}
+	
+	@Unique
+	private String creative_translate_2(String key) {
+		if (key == null) return "null";
+		String translated = TranslationStorage.getInstance().method_995(key);
+		return translated.isEmpty() ? key : translated;
 	}
 }
