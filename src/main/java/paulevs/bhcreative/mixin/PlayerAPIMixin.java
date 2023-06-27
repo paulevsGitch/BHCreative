@@ -13,7 +13,6 @@ import paulevs.bhcreative.Creative;
 public class PlayerAPIMixin {
 	@Inject(method = "getCurrentPlayerStrVsBlock", at = @At("HEAD"), cancellable = true)
 	private static void creative_getCurrentPlayerStrVsBlock(PlayerBase player, BlockBase block, float f, CallbackInfoReturnable<Float> info) {
-		System.out.println(player);
 		if (Creative.isInCreative(player)) {
 			info.setReturnValue(0F);
 		}
@@ -21,7 +20,6 @@ public class PlayerAPIMixin {
 	
 	@Inject(method = "canHarvestBlock", at = @At("HEAD"), cancellable = true)
 	private static void creative_canRemoveBlock(PlayerBase player, BlockBase block, CallbackInfoReturnable<Boolean> info) {
-		System.out.println(player);
 		if (Creative.isInCreative(player)) {
 			info.setReturnValue(true);
 		}

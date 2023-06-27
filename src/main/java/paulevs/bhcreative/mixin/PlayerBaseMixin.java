@@ -49,10 +49,9 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 	@Override
 	public void creative_setFlying(boolean flying) {
 		if (flying && !this.creative_isFlying) {
-			setPositionAndAngles(x, y, z, yaw, pitch);
-			velocityX = 0;
-			velocityY = 0;
-			velocityZ = 0;
+			creative_flightSpeed.x = velocityX;
+			creative_flightSpeed.y = velocityY;
+			creative_flightSpeed.z = velocityZ;
 		}
 		else if (!flying && this.creative_isFlying) {
 			creative_flightSpeed.x = 0;
@@ -114,10 +113,8 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 		float dx = (front * cos - right * sin);
 		float dz = (right * cos + front * sin);
 		
-		creative_flightSpeed.x = MathHelper.lerp(0.1, creative_flightSpeed.x, dx * 0.5);
-		creative_flightSpeed.z = MathHelper.lerp(0.1, creative_flightSpeed.z, dz * 0.5);
-		//creative_flightSpeed.x = MHelper.clamp(creative_flightSpeed.x, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
-		//creative_flightSpeed.z = MHelper.clamp(creative_flightSpeed.z, -CREATIVE_MAX_SPEED, CREATIVE_MAX_SPEED);
+		creative_flightSpeed.x = MathHelper.lerp(0.15, creative_flightSpeed.x, dx * 0.5);
+		creative_flightSpeed.z = MathHelper.lerp(0.15, creative_flightSpeed.z, dz * 0.5);
 		
 		boolean sneaking = this.method_1373();
 		
@@ -125,31 +122,10 @@ public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
 		if (jumping) dx += 0.5F;
 		if (sneaking) dx -= 0.5F;
 		
-		creative_flightSpeed.y = MathHelper.lerp(0.1, creative_flightSpeed.y, dx);
-		
-		/*creative_flightSpeed.y *= 0.9F;
-		if (jumping) {
-			creative_flightSpeed.y += 0.1F;
-			if (creative_flightSpeed.y > CREATIVE_MAX_SPEED) {
-				creative_flightSpeed.y = CREATIVE_MAX_SPEED;
-			}
-		}
-		if (sneaking) {
-			creative_flightSpeed.y -= 0.1F;
-			if (creative_flightSpeed.y < -CREATIVE_MAX_SPEED) {
-				creative_flightSpeed.y = -CREATIVE_MAX_SPEED;
-			}
-		}*/
+		creative_flightSpeed.y = MathHelper.lerp(0.2, creative_flightSpeed.y, dx);
 		
 		this.velocityX = creative_flightSpeed.x;
 		this.velocityY = creative_flightSpeed.y;
 		this.velocityZ = creative_flightSpeed.z;
 	}
-	
-	/*@Inject(method = "canRemoveBlock", at = @At("HEAD"), cancellable = true)
-	private void creative_canRemoveBlock(BlockBase block, CallbackInfoReturnable<Boolean> info) {
-		if (this.creative_isCreative()) {
-			info.setReturnValue(true);
-		}
-	}*/
 }

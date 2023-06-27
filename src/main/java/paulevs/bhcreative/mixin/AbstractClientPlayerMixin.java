@@ -38,35 +38,17 @@ public abstract class AbstractClientPlayerMixin extends PlayerBase {
 		CreativePlayer player = (CreativePlayer) this;
 		
 		if (flag) {
-			if (creative_count > 0) {
-				System.out.println("Double Jump!");
+			long time = System.currentTimeMillis();
+			creative_timeout = time - creative_timeout;
+			if (creative_count > 0 && creative_timeout < 500) {
 				player.creative_setFlying(!player.creative_isFlying());
 				creative_count = 0;
 			}
-			else creative_timeout = System.currentTimeMillis();
+			creative_timeout = System.currentTimeMillis();
+			creative_count = 0;
 		}
 		else {
-			long time = System.currentTimeMillis();
-			creative_timeout = time - creative_timeout;
-			if (creative_timeout < 200) creative_count++;
-			creative_timeout = time;
-		}
-		
-		if (flag && this.jumping && player.creative_isCreative() && i == minecraft.options.jumpKey.key) {
-			//if (creative_timeout)
-			//player.creative_setFlying(true);
-			//info.cancel();
-			/*if (flag && i == ((FlyOption) minecraft.options).creative_getFlyKey().key) {
-				boolean fly = !player.creative_isFlying();
-				player.creative_setFlying(fly);
-				if (fly) {
-					AbstractClientPlayer client = (AbstractClientPlayer) (Object) this;
-					if (client.velocityY <= 0) client.velocityY = 0.01F;
-					//client.setPositionAndAngles(client.x, client.y - client.standingEyeHeight + 0.01, client.z, client.yaw, client.pitch);
-					//client.velocityY = Math.max(client.velocityY * 0.7, 0.01);
-				}
-				info.cancel();
-			}*/
+			creative_count++;
 		}
 	}
 }
