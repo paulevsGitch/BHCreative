@@ -8,13 +8,16 @@ import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitType;
+import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.block.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.BHCreative;
+import paulevs.bhcreative.registry.TabRegistryEvent;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
@@ -66,5 +69,15 @@ public class MinecraftMixin {
 		if (i != 0 || !BHCreative.isInCreative(this.player)) return;
 		if (this.hitResult == null || this.hitResult.type != HitType.field_789) return;
 		this.attackCooldown = 100;
+	}
+	
+	@Inject(method = "run", at = @At(
+		value = "INVOKE",
+		target = "Lnet/minecraft/client/Minecraft;init()V",
+		shift = Shift.AFTER
+	))
+	private void creative_onGameInit(CallbackInfo info) {
+		BHCreative.LOGGER.info("Register creative tabs");
+		StationAPI.EVENT_BUS.post(new TabRegistryEvent());
 	}
 }

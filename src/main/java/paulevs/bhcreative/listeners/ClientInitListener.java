@@ -14,12 +14,6 @@ import paulevs.bhcreative.registry.TabRegistryEvent;
 
 public class ClientInitListener {
 	@EventListener
-	public void postInit(PostInitEvent event) {
-		BHCreative.LOGGER.info("Register creative tabs");
-		StationAPI.EVENT_BUS.post(new TabRegistryEvent());
-	}
-	
-	@EventListener
 	public void preInit(PreInitEvent event) {
 		FabricLoader.getInstance().getEntrypointContainers("bhcreative:event_bus", Object.class).forEach(EntrypointManager::setup);
 	}
