@@ -18,7 +18,8 @@
 		"client.LivingEntityAccessor",
 		"client.GameRendererMixin",
 		"client.LivingEntityMixin",
-		"client.CreateLevelMixin"
+		"client.CreateLevelMixin",
+		"client.MinecraftMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
