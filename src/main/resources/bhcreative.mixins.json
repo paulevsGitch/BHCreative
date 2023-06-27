@@ -5,16 +5,17 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"AbstractBlockStateMixin",
+		"PlayerInventoryMixin",
 		"ItemInstanceMixin",
 		"PlayerBaseMixin",
 		"PlayerAPIMixin"
 	],
 	"client": [
 		"ClientInteractionManagerMixin",
+		"PlayerInventoryContainerMixin",
 		"AbstractClientPlayerMixin",
 		"WalkingBaseEntityMixin",
 		"LivingEntityAccessor",
-		"PlayerInventoryMixin",
 		"GameRendererMixin",
 		"LivingEntityMixin",
 		"CreateLevelMixin",

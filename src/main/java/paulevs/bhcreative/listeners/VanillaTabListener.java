@@ -258,15 +258,11 @@ public class VanillaTabListener {
 	private void addItem(CreativeTab tab, String name) {
 		ItemBase item = ItemRegistry.INSTANCE.get(Identifier.of(name));
 		if (item != null) tab.addItem(new ItemInstance(item));
-		else System.out.println("NO ITEM: " + name);
 	}
 	
 	private void addItem(CreativeTab tab, String name, int meta) {
 		ItemBase item = ItemRegistry.INSTANCE.get(Identifier.of(name));
-		if (item == null) {
-			System.out.println("NO ITEM: " + name);
-			return;
-		}
+		if (item == null) return;
 		for (byte i = 0; i < meta; i++) {
 			tab.addItem(new ItemInstance(item, 1, i));
 		}

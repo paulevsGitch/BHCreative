@@ -1,6 +1,5 @@
 package paulevs.bhcreative.mixin;
 
-import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
@@ -16,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.bhcreative.interfaces.CreativePlayer;
-import paulevs.bhcreative.util.MHelper;
 
 @Mixin(PlayerBase.class)
 public abstract class PlayerBaseMixin extends Living implements CreativePlayer {
