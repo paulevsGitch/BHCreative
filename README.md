@@ -26,6 +26,7 @@
 - Invulnerability while in creative
 - Fast block breaking without tools (no drops)
 - Infinity block placing
+- Pick block from the world with middle mouse button
 - API for mods to add custom tabs
 
 ## How To Use
@@ -53,7 +54,7 @@ modImplementation "com.github.paulevsGitch:BHCreative:${project.bhcreative_versi
 - Add version variable to your gradle.properties:
 
 ```
-bhcreative_version = eb43f83
+bhcreative_version = 0.2.2
 ```
 You can use both version tags (like 0.1.0) and commit names (like d71a19b) as version variable
 
