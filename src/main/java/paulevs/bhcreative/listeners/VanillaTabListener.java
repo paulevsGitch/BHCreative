@@ -6,7 +6,7 @@ import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
-import paulevs.bhcreative.Creative;
+import paulevs.bhcreative.BHCreative;
 import paulevs.bhcreative.api.CreativeTab;
 import paulevs.bhcreative.api.SimpleTab;
 import paulevs.bhcreative.registry.TabRegistryEvent;
@@ -22,7 +22,7 @@ public class VanillaTabListener {
 	
 	@EventListener
 	public void registerVanillaTabs(TabRegistryEvent event) {
-		Creative.LOGGER.info("Registering vanilla tabs");
+		BHCreative.LOGGER.info("Registering vanilla tabs");
 		initFullBlocks(event);
 		initNotFullBlocks(event);
 		initTools(event);
@@ -33,7 +33,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFullBlocks(TabRegistryEvent event) {
-		tabFullBlocks = new SimpleTab(Creative.id("full_blocks"), new ItemInstance(BlockBase.STONE));
+		tabFullBlocks = new SimpleTab(BHCreative.id("full_blocks"), new ItemInstance(BlockBase.STONE));
 		event.register(tabFullBlocks);
 		
 		addItem(tabFullBlocks, "stone");
@@ -83,7 +83,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initNotFullBlocks(TabRegistryEvent event) {
-		tabOtherBlocks = new SimpleTab(Creative.id("other_blocks"), new ItemInstance(BlockBase.LADDER));
+		tabOtherBlocks = new SimpleTab(BHCreative.id("other_blocks"), new ItemInstance(BlockBase.LADDER));
 		event.register(tabOtherBlocks);
 		
 		addItem(tabOtherBlocks, "sapling", 3);
@@ -119,7 +119,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initTools(TabRegistryEvent event) {
-		tabTools = new SimpleTab(Creative.id("tools"), new ItemInstance(ItemBase.ironPickaxe));
+		tabTools = new SimpleTab(BHCreative.id("tools"), new ItemInstance(ItemBase.ironPickaxe));
 		event.register(tabTools);
 		
 		addItem(tabTools, "iron_shovel");
@@ -150,7 +150,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initWeapons(TabRegistryEvent event) {
-		tabWeapons = new SimpleTab(Creative.id("weapons"), new ItemInstance(ItemBase.ironSword));
+		tabWeapons = new SimpleTab(BHCreative.id("weapons"), new ItemInstance(ItemBase.ironSword));
 		event.register(tabWeapons);
 		
 		addItem(tabWeapons, "bow");
@@ -183,7 +183,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initResources(TabRegistryEvent event) {
-		tabResources = new SimpleTab(Creative.id("resources"), new ItemInstance(ItemBase.ironIngot));
+		tabResources = new SimpleTab(BHCreative.id("resources"), new ItemInstance(ItemBase.ironIngot));
 		event.register(tabResources);
 		
 		addItem(tabResources, "coal");
@@ -205,7 +205,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initFood(TabRegistryEvent event) {
-		tabFood = new SimpleTab(Creative.id("food"), new ItemInstance(ItemBase.apple));
+		tabFood = new SimpleTab(BHCreative.id("food"), new ItemInstance(ItemBase.apple));
 		event.register(tabFood);
 		
 		addItem(tabFood, "apple");
@@ -225,7 +225,7 @@ public class VanillaTabListener {
 	}
 	
 	private void initItems(TabRegistryEvent event) {
-		tabItems = new SimpleTab(Creative.id("other_items"), new ItemInstance(ItemBase.slimeball));
+		tabItems = new SimpleTab(BHCreative.id("other_items"), new ItemInstance(ItemBase.slimeball));
 		event.register(tabItems);
 		
 		addItem(tabItems, "painting");

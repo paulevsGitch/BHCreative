@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import paulevs.bhcreative.interfaces.CreativePlayer;
 
-public class Creative {
+public class BHCreative {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final ModID MOD_ID = ModID.of("bhcreative");
 	

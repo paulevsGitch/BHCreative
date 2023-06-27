@@ -13,6 +13,7 @@ public class GrassPlacerItem extends BlockStateItem {
 	
 	public GrassPlacerItem(Identifier identifier, int meta) {
 		super(identifier, BlockBase.TALLGRASS.getDefaultState());
+		setTranslationKey(identifier.toString());
 		this.meta = meta;
 	}
 	

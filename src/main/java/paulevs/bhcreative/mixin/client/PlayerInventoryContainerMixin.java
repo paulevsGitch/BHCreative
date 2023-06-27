@@ -214,7 +214,7 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 				slotY = MathHelper.floor((mouseY - posY - 142) / 18);
 				if (slotX < 9 && slotY == 0) {
 					int x = slotX * 18 + posX + 8;
-					int y = slotY * 18 + posY + 142;
+					int y = posY + 142;
 					creative_renderSlotOverlay(x, y);
 					RenderHelper.disableLighting();
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -254,7 +254,7 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 		}
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		String key = item.getTranslationKey();
-		String translated = creative_translate(key);
+		String translated = TranslationStorage.getInstance().method_995(key);
 		creative_renderString(translated.isEmpty() ? key : translated);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}

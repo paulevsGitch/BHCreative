@@ -1,4 +1,4 @@
-<table style="width:100%">
+<table  align="center">
 	<tbody>
 		<tr>
 			<td width="280px" style="text-align: center;"><img src="https://github.com/paulevsGitch/BHCreative/blob/stapi-2.0/src/main/resources/assets/bhcreative/icon.png"/></td>		
@@ -67,7 +67,7 @@ To add your own creative tab you need to register listener first. All listeners 
 
 ```json
 "entrypoints": {
-	"stationapi:event_bus_client": [
+	"bhcreative:event_bus": [
 		"yourmodid.listeners.CreativeListener"
 	]
 }
@@ -83,7 +83,7 @@ public class CreativeListener {
 	public void onTabInit(TabRegistryEvent event) {
 		tab = new SimpleTab(YOUR_MOD_ID.id("yourTabName"), ItemBase.apple); // Making tab
 		event.register(tab); // Registering tab
-		CreativeListener.tab.addItem(new ItemInstance(ItemBase.apple)); // Adding apple
+		tab.addItem(new ItemInstance(ItemBase.apple)); // Adding apple
 	}
 }
 ```

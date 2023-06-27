@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import paulevs.bhcreative.Creative;
+import paulevs.bhcreative.BHCreative;
 
 @Mixin(WalkingBase.class)
 public class WalkingBaseEntityMixin {
@@ -16,7 +16,7 @@ public class WalkingBaseEntityMixin {
 	
 	@Inject(method = "tickHandSwing()V", at = @At("HEAD"), cancellable = true)
 	protected void tickHandSwing(CallbackInfo info) {
-		if (entity instanceof PlayerBase && Creative.isInCreative((PlayerBase) entity)) {
+		if (entity instanceof PlayerBase && BHCreative.isInCreative((PlayerBase) entity)) {
 			info.cancel();
 		}
 	}

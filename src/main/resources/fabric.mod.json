@@ -21,11 +21,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"stationapi:event_bus_client": [
-			"paulevs.bhcreative.listeners.ClientInitListener",
-			"paulevs.bhcreative.listeners.VanillaTabListener"
+			"paulevs.bhcreative.listeners.ClientInitListener"
 		],
 		"stationapi:event_bus": [
 			"paulevs.bhcreative.listeners.CommonInitListener"
+		],
+		"bhcreative:event_bus": [
+			"paulevs.bhcreative.listeners.VanillaTabListener"
 		]
 	},
 	"mixins": [

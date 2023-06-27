@@ -7,7 +7,7 @@ import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.entity.player.StationFlatteningPlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import paulevs.bhcreative.Creative;
+import paulevs.bhcreative.BHCreative;
 
 @Mixin(value = PlayerInventory.class, priority = 2000)
 public abstract class PlayerInventoryMixin implements StationFlatteningPlayerInventory {
@@ -18,7 +18,7 @@ public abstract class PlayerInventoryMixin implements StationFlatteningPlayerInv
 	
 	@Override
 	public boolean canHarvest(BlockState state) {
-		if (Creative.isInCreative(player)) return false;
+		if (BHCreative.isInCreative(player)) return false;
 		if (state.isToolRequired()) {
 			ItemInstance var2 = this.getInventoryItem(this.selectedHotbarSlot);
 			return var2 != null && var2.isSuitableFor(state);

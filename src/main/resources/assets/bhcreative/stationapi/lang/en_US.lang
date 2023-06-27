@@ -9,4 +9,6 @@ title.selectWorld.survival=Survival
 title.selectWorld.creative=Creative
 title.selectGame.inventory.name=Inventory
 title.selectGame.creative.name=Creative
+item.tall_grass.name=Tall Grass
+item.fern.name=Fern
 key.fly=Fly

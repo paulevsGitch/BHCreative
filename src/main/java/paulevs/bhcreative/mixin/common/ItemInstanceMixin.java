@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import paulevs.bhcreative.Creative;
+import paulevs.bhcreative.BHCreative;
 
 @Mixin(ItemInstance.class)
 public class ItemInstanceMixin {
@@ -18,11 +18,11 @@ public class ItemInstanceMixin {
 	
 	@Inject(method = "useOnTile", at = @At("HEAD"))
 	private void creative_beforeUseOnTile(PlayerBase player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
-		if (Creative.isInCreative(player)) creative_count = count;
+		if (BHCreative.isInCreative(player)) creative_count = count;
 	}
 	
 	@Inject(method = "useOnTile", at = @At("RETURN"))
 	private void creative_afterUseOnTile(PlayerBase player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
-		if (Creative.isInCreative(player)) count = creative_count;
+		if (BHCreative.isInCreative(player)) count = creative_count;
 	}
 }
