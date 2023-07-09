@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "paulevs.bhcreative.mixin.common",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"AbstractBlockStateMixin",
+		"PlayerInventoryMixin",
+		"ItemInstanceMixin",
+		"PlayerBaseMixin",
+		"PlayerAPIMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

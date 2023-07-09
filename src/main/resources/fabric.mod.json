@@ -31,7 +31,8 @@
 		]
 	},
 	"mixins": [
-		"bhcreative.mixins.json"
+		"bhcreative.mixins.common.json",
+		"bhcreative.mixins.client.json"
 	],
 
 	"depends": {

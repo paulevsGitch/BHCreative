@@ -1,0 +1,24 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "paulevs.bhcreative.mixin.client",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"StationFlatteningWorldStorageMixin",
+		"ClientInteractionManagerMixin",
+		"PlayerInventoryContainerMixin",
+		"AbstractClientPlayerMixin",
+		"WalkingBaseEntityMixin",
+		"LivingEntityAccessor",
+		"LevelPropertiesMixin",
+		"LevelMetadataMixin",
+		"GameRendererMixin",
+		"LivingEntityMixin",
+		"CreateLevelMixin",
+		"MinecraftMixin",
+		"WorldListMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

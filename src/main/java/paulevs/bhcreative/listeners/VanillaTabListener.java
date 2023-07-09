@@ -232,6 +232,7 @@ public class VanillaTabListener {
 		addItem(tabItems, "painting");
 		addItem(tabItems, "oak_sign");
 		addItem(tabItems, "oak_door");
+		addItem(tabItems, "oak_trapdoor");
 		addItem(tabItems, "bucket");
 		addItem(tabItems, "water_bucket");
 		addItem(tabItems, "lava_bucket");

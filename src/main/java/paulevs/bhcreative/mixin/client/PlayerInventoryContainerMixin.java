@@ -349,14 +349,14 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 			int posX = (this.width - this.containerWidth) / 2;
 			int posY = (this.height - this.containerHeight) / 2;
 			
-			int tabX = (int) mouseX - posX - 173;
-			int tabY = (int) mouseY - posY - 114;
+			int tabX = mouseX - posX - 173;
+			int tabY = mouseY - posY - 114;
 			if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
 				creative_normalGUI = false;
 				creative_playSound();
 			}
 			
-			tabY = (int) mouseY - posY - 138;
+			tabY = mouseY - posY - 138;
 			if (tabX >= 0 && tabX < 25 && tabY >= 0 && tabY < 24) {
 				creative_normalGUI = true;
 				creative_playSound();
@@ -367,12 +367,14 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 				return;
 			}
 			
-			tabX = ((int) mouseX - posX - 4) / 24;
-			tabY = (int) mouseY - posY + 21;
+			tabX = (mouseX - posX - 4) / 24;
+			tabY = mouseY - posY + 21;
 			if (tabX >= 0 && tabX < 7 && tabY >= 0 && tabY < 24) {
 				creative_tabIndex = tabX;
 				
 				CreativeTab tab = creative_getTab(creative_tabPage, creative_tabIndex);
+				if (tab == null) return;
+				
 				creative_tabKey = tab.getTranslationKey();
 				creative_items = tab.getItems();
 				creative_maxIndex = creative_getMaxIndex();
@@ -384,9 +386,9 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 				return;
 			}
 			
-			int buttonY = (int) mouseY - posY - 4;
+			int buttonY = mouseY - posY - 4;
 			if (buttonY > 0 && buttonY < 8) {
-				int buttonX = (int) mouseX - posX - 150;
+				int buttonX = mouseX - posX - 150;
 				if (creative_tabPage > 0 && buttonX >= 0 && buttonX < 9) {
 					creative_tabIndex = 0;
 					creative_tabPage--;
@@ -406,7 +408,7 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 					return;
 				}
 				
-				buttonX = (int) mouseX - posX - 160;
+				buttonX = mouseX - posX - 160;
 				if ((creative_tabPage < (creative_pagesCount - 1)) && buttonX >= 0 && buttonX < 9) {
 					creative_tabIndex = 0;
 					creative_tabPage++;
@@ -427,8 +429,8 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 				}
 			}
 			
-			int sliderX = (int) mouseX - posX - 154;
-			int sliderY = (int) mouseY - posY - 14 - MathHelper.floor(creative_slider * 109);
+			int sliderX = mouseX - posX - 154;
+			int sliderY = mouseY - posY - 14 - MathHelper.floor(creative_slider * 109);
 			if (sliderX > 0 && sliderX < 14 && sliderY > 0 && sliderY < 15) {
 				creative_mouseDelta = posY + 14 + sliderY;
 				creative_drag = true;
@@ -441,25 +443,24 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
 			if (slotY >= 0 && slotY < 7 && slotX >= 0 && slotX < 8) {
 				int index = slotY * 8 + slotX + creative_rowIndex;
+				ItemInstance cursor = inventory.getCursorItem();
 				if (index < creative_items.size()) {
 					ItemInstance item = creative_items.get(index);
-					boolean isSame = inventory.getCursorItem() != null && inventory.getCursorItem().isDamageAndIDIdentical(item);
-					if (inventory.getCursorItem() == null || isSame) {
-						if (item != null) {
+					boolean isSame = cursor != null && item != null && cursor.isDamageAndIDIdentical(item);
+					if (item != null && (cursor == null || isSame)) {
+						if (button == 0) {
 							if (isSame) {
-								inventory.getCursorItem().count++;
+								if (cursor.count < cursor.getMaxStackSize()) cursor.count++;
 							}
-							else {
-								inventory.setCursorItem(item.copy());
-							}
-							if (button == 2) {
-								inventory.getCursorItem().count = inventory.getCursorItem().getMaxStackSize();
-							}
-							return;
+							else inventory.setCursorItem(item.copy());
 						}
+						if (cursor != null && button == 2) {
+							cursor.count = cursor.getMaxStackSize();
+						}
+						return;
 					}
 				}
-				if (button == 1 && inventory.getCursorItem().count > 1) {
+				if (button == 1 && cursor != null && cursor.count > 1) {
 					inventory.getCursorItem().count--;
 				}
 				else {
@@ -468,7 +469,7 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 				return;
 			}
 			
-			slotY = MathHelper.floor((mouseY - posY - 142) / 18);
+			slotY = (mouseY - posY - 142) / 18;
 			if (slotY == 0 && slotX >= 0 && slotX < 9) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					inventory.main[slotX] = null;
@@ -540,7 +541,9 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 	
 	@Unique
 	private CreativeTab creative_getTab(int page, int index) {
-		return TabRegistry.getTabByIndex(page * 7 + index);
+		index = page * 7 + index;
+		if (index < 0 || index >= TabRegistry.getTabsCount()) return null;
+		return TabRegistry.getTabByIndex(index);
 	}
 	
 	@Unique
