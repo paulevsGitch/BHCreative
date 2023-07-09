@@ -370,11 +370,10 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 			tabX = (mouseX - posX - 4) / 24;
 			tabY = mouseY - posY + 21;
 			if (tabX >= 0 && tabX < 7 && tabY >= 0 && tabY < 24) {
-				creative_tabIndex = tabX;
-				
-				CreativeTab tab = creative_getTab(creative_tabPage, creative_tabIndex);
+				CreativeTab tab = creative_getTab(creative_tabPage, tabX);
 				if (tab == null) return;
 				
+				creative_tabIndex = tabX;
 				creative_tabKey = tab.getTranslationKey();
 				creative_items = tab.getItems();
 				creative_maxIndex = creative_getMaxIndex();
