@@ -19,15 +19,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.BHCreative;
 import paulevs.bhcreative.registry.TabRegistry;
 import paulevs.bhcreative.registry.TabRegistryEvent;
+import paulevs.bhcreative.util.BlockSelectAPI;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
 	@Shadow public AbstractClientPlayer player;
-	
 	@Shadow public HitResult hitResult;
-	
 	@Shadow public Level level;
-	
 	@Shadow private int attackCooldown;
 	
 	@Inject(method = "method_2103", at = @At("HEAD"), cancellable = true)
@@ -35,7 +33,7 @@ public class MinecraftMixin {
 		if (!BHCreative.isInCreative(this.player) || this.hitResult == null) return;
 		
 		BlockState state = level.getBlockState(this.hitResult.x, this.hitResult.y, this.hitResult.z);
-		ItemBase item = state.getBlock().asItem();
+		ItemBase item = BlockSelectAPI.convert(state);
 		
 		if (item == null) return;
 		

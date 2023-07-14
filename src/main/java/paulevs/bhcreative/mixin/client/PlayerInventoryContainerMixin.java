@@ -446,15 +446,18 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 				if (index < creative_items.size()) {
 					ItemInstance item = creative_items.get(index);
 					boolean isSame = cursor != null && item != null && cursor.isDamageAndIDIdentical(item);
-					if (item != null && (cursor == null || isSame)) {
+					if (item != null && button == 2) {
+						cursor = item.copy();
+						cursor.count = cursor.getMaxStackSize();
+						inventory.setCursorItem(cursor);
+						return;
+					}
+					else if (item != null && (cursor == null || isSame)) {
 						if (button == 0) {
 							if (isSame) {
 								if (cursor.count < cursor.getMaxStackSize()) cursor.count++;
 							}
 							else inventory.setCursorItem(item.copy());
-						}
-						if (cursor != null && button == 2) {
-							cursor.count = cursor.getMaxStackSize();
 						}
 						return;
 					}

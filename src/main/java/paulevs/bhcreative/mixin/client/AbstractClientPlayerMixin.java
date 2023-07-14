@@ -32,7 +32,7 @@ public abstract class AbstractClientPlayerMixin extends PlayerBase {
 		}
 	}
 	
-	@Inject(method = "method_136", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "method_136", at = @At("HEAD"))
 	public void creative_onKeyPress(int i, boolean flag, CallbackInfo info) {
 		if (i != minecraft.options.jumpKey.key) return;
 		CreativePlayer player = (CreativePlayer) this;
