@@ -28,6 +28,7 @@
 - Infinity block placing
 - Pick block from the world with middle mouse button
 - API for mods to add custom tabs
+- API for block selection
 
 ## How To Use
 
@@ -112,3 +113,26 @@ Translations are located in:
 src\main\resources\assets\<yourmodid>\stationapi\lang
 ```
  The main lang file is en_US.lang
+
+### Adding selection items
+
+You can use **BlockSelectAPI** to add custom selection items for blocks
+(when player select block from the world with middle mouse button).
+
+You can register Block -> Item converters inside tab listener or in any other place.
+
+Example:
+
+```java
+import net.minecraft.block.BlockBase;
+import net.minecraft.item.ItemBase;
+import paulevs.bhcreative.util.BlockSelectAPI;
+
+public class CreativeListener {
+	@EventListener
+	public void registerItemConverters(TabRegistryEvent event) {
+		// Select apple instead of stone
+		BlockSelectAPI(BlockBase.STONE, (state) -> ItemBase.apple);
+	}
+}
+```
