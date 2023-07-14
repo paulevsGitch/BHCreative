@@ -73,7 +73,12 @@ public abstract class PlayerInventoryContainerMixin extends ContainerBase {
 		creative_pagesCount = (int) Math.ceil(TabRegistry.getTabsCount() / 7.0F);
 	}
 	
-	@Inject(method = "renderContainerBackground(F)V", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glDisable(I)V", shift = Shift.AFTER))
+	@Inject(method = "renderContainerBackground(F)V", at = @At(
+		value = "INVOKE",
+		target = "Lorg/lwjgl/opengl/GL11;glDisable(I)V",
+		remap = false,
+		shift = Shift.AFTER
+	))
 	private void creative_renderBackgroundEnd(float f, CallbackInfo info) {
 		if (!(creative_isInCreative() && creative_normalGUI)) {
 			return;

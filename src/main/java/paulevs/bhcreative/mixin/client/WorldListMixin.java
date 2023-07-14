@@ -17,6 +17,7 @@ import paulevs.bhcreative.interfaces.CreativeLevel;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.menu.SelectWorld$WorldList")
 public abstract class WorldListMixin {
+	@SuppressWarnings("target") // Parent class
 	@Shadow @Final SelectWorld field_2444;
 	
 	@Inject(method = "renderEntry", at = @At(
