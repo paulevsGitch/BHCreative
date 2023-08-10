@@ -100,7 +100,7 @@ public class VanillaTabListener {
 		addItem(tabOtherBlocks, "cactus");
 		addItem(tabOtherBlocks, "cobweb");
 		addItem(tabOtherBlocks, "torch");
-		addItem(tabOtherBlocks, "redstone_torch");
+		addItem(tabOtherBlocks, "redstone_torch_lit");
 		addItem(tabOtherBlocks, "lever");
 		addItem(tabOtherBlocks, "ladder");
 		addItem(tabOtherBlocks, "rail");
@@ -116,7 +116,13 @@ public class VanillaTabListener {
 		addItem(tabOtherBlocks, "oak_pressure_plate");
 		addItem(tabOtherBlocks, "stone_pressure_plate");
 		addItem(tabOtherBlocks, "stone_button");
-		
+		addItem(tabOtherBlocks, "painting");
+		addItem(tabOtherBlocks, "oak_sign");
+		addItem(tabOtherBlocks, "oak_door");
+		addItem(tabOtherBlocks, "oak_trapdoor");
+		addItem(tabOtherBlocks, "iron_door");
+		addItem(tabOtherBlocks, "red_bed");
+		addItem(tabOtherBlocks, "repeater");
 	}
 	
 	private void initTools(TabRegistryEvent event) {
@@ -223,35 +229,28 @@ public class VanillaTabListener {
 		addItem(tabFood, "cooked_cod");
 		addItem(tabFood, "sugar");
 		addItem(tabFood, "cookie");
+		addItem(tabFood, "milk_bucket");
+		addItem(tabFood, "cake");
 	}
 	
 	private void initItems(TabRegistryEvent event) {
 		tabItems = new SimpleTab(BHCreative.id("other_items"), new ItemInstance(ItemBase.slimeball));
 		event.register(tabItems);
 		
-		addItem(tabItems, "painting");
-		addItem(tabItems, "oak_sign");
-		addItem(tabItems, "oak_door");
-		addItem(tabItems, "oak_trapdoor");
 		addItem(tabItems, "bucket");
 		addItem(tabItems, "water_bucket");
 		addItem(tabItems, "lava_bucket");
 		addItem(tabItems, "minecart");
+		addItem(tabItems, "chest_minecart");
+		addItem(tabItems, "furnace_minecart");
 		addItem(tabItems, "saddle");
-		addItem(tabItems, "iron_door");
 		addItem(tabItems, "snowball");
 		addItem(tabItems, "oak_boat");
 		addItem(tabItems, "leather");
-		addItem(tabItems, "milk_bucket");
 		addItem(tabItems, "sugar_cane");
 		addItem(tabItems, "book");
-		addItem(tabItems, "chest_minecart");
-		addItem(tabItems, "furnace_minecart");
 		addItem(tabItems, "compass");
 		addItem(tabItems, "dye", 16);
-		addItem(tabItems, "cake");
-		addItem(tabItems, "red_bed");
-		addItem(tabItems, "repeater");
 		addItem(tabItems, "map");
 		addItem(tabItems, "music_disc_13");
 		addItem(tabItems, "music_disc_cat");
