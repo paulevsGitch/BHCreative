@@ -3,7 +3,6 @@ package paulevs.bhcreative.mixin.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.AbstractClientPlayer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -17,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.BHCreative;
+import paulevs.bhcreative.api.BlockSelectAPI;
 import paulevs.bhcreative.registry.TabRegistry;
 import paulevs.bhcreative.registry.TabRegistryEvent;
-import paulevs.bhcreative.util.BlockSelectAPI;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
@@ -33,12 +32,12 @@ public class MinecraftMixin {
 		if (!BHCreative.isInCreative(this.player) || this.hitResult == null) return;
 		
 		BlockState state = level.getBlockState(this.hitResult.x, this.hitResult.y, this.hitResult.z);
-		ItemBase item = BlockSelectAPI.convert(state);
+		int meta = level.getTileMeta(this.hitResult.x, this.hitResult.y, this.hitResult.z);
+		ItemInstance stack = BlockSelectAPI.convert(state, meta);
 		
-		if (item == null) return;
+		if (stack == null) return;
 		
 		PlayerInventory inventory = this.player.inventory;
-		int meta = level.getTileMeta(this.hitResult.x, this.hitResult.y, this.hitResult.z);
 		
 		info.cancel();
 		
@@ -53,14 +52,14 @@ public class MinecraftMixin {
 					selectEmpty = false;
 				}
 			}
-			else if (itemInv.itemId == item.id && itemInv.getDamage() == meta) {
+			else if (itemInv.itemId == stack.itemId && itemInv.getDamage() == stack.getDamage()) {
 				inventory.selectedHotbarSlot = slot;
 				return;
 			}
 		}
 		
 		inventory.selectedHotbarSlot = selectedSlot;
-		inventory.setInventoryItem(selectedSlot, new ItemInstance(item, 1, meta));
+		inventory.setInventoryItem(selectedSlot, stack);
 	}
 	
 	@Inject(method = "method_2107", at = @At("RETURN"))
