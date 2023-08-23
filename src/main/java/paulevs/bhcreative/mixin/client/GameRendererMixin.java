@@ -1,8 +1,8 @@
 package paulevs.bhcreative.mixin.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.sortme.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

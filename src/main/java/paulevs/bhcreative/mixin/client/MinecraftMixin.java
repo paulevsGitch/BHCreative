@@ -3,7 +3,7 @@ package paulevs.bhcreative.mixin.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.AbstractClientPlayer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitType;
@@ -32,8 +32,8 @@ public class MinecraftMixin {
 		if (!BHCreative.isInCreative(this.player) || this.hitResult == null) return;
 		
 		BlockState state = level.getBlockState(this.hitResult.x, this.hitResult.y, this.hitResult.z);
-		int meta = level.getTileMeta(this.hitResult.x, this.hitResult.y, this.hitResult.z);
-		ItemInstance stack = BlockSelectAPI.convert(state, meta);
+		int meta = level.getBlockMeta(this.hitResult.x, this.hitResult.y, this.hitResult.z);
+		ItemStack stack = BlockSelectAPI.convert(state, meta);
 		
 		if (stack == null) return;
 		
@@ -45,7 +45,7 @@ public class MinecraftMixin {
 		boolean selectEmpty = true;
 		
 		for (byte slot = 0; slot < 9; slot++) {
-			ItemInstance itemInv = inventory.getInventoryItem(slot);
+			ItemStack itemInv = inventory.getItem(slot);
 			if (itemInv == null) {
 				if (selectEmpty) {
 					selectedSlot = slot;
@@ -59,13 +59,13 @@ public class MinecraftMixin {
 		}
 		
 		inventory.selectedHotbarSlot = selectedSlot;
-		inventory.setInventoryItem(selectedSlot, stack);
+		inventory.setItem(selectedSlot, stack);
 	}
 	
-	@Inject(method = "method_2107", at = @At("RETURN"))
+	@Inject(method = "processAttack", at = @At("RETURN"))
 	private void creative_blockBreakDelay(int i, CallbackInfo info) {
 		if (i != 0 || !BHCreative.isInCreative(this.player)) return;
-		if (this.hitResult == null || this.hitResult.type != HitType.field_789) return;
+		if (this.hitResult == null || this.hitResult.type != HitType.BLOCK) return;
 		this.attackCooldown = 100;
 	}
 	

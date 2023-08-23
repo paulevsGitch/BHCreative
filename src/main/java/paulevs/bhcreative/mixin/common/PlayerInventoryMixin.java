@@ -2,7 +2,7 @@ package paulevs.bhcreative.mixin.common;
 
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.entity.player.StationFlatteningPlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,13 +14,13 @@ public abstract class PlayerInventoryMixin implements StationFlatteningPlayerInv
 	@Shadow public PlayerBase player;
 	
 	@Shadow public int selectedHotbarSlot;
-	@Shadow public abstract ItemInstance getInventoryItem(int i);
+	@Shadow public abstract ItemStack getItem(int i);
 	
 	@Override
 	public boolean canHarvest(BlockState state) {
 		if (BHCreative.isInCreative(player)) return false;
 		if (state.isToolRequired()) {
-			ItemInstance var2 = this.getInventoryItem(this.selectedHotbarSlot);
+			ItemStack var2 = this.getItem(this.selectedHotbarSlot);
 			return var2 != null && var2.isSuitableFor(state);
 		}
 		else return true;

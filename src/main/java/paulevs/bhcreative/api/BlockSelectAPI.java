@@ -1,8 +1,8 @@
 package paulevs.bhcreative.api;
 
-import net.minecraft.block.BlockBase;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.block.BaseBlock;
+import net.minecraft.item.BaseItem;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.block.BlockState;
 import paulevs.bhcreative.listeners.CommonInitListener;
 
@@ -12,62 +12,62 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class BlockSelectAPI {
-	private static final Map<BlockBase, BiFunction<BlockState, Integer, ItemInstance>> CONVERTERS = new HashMap<>();
-	private static final BiFunction<BlockState, Integer, ItemInstance> DEFAULT = (state, meta) -> new ItemInstance(state.getBlock().asItem());
+	private static final Map<BaseBlock, BiFunction<BlockState, Integer, ItemStack>> CONVERTERS = new HashMap<>();
+	private static final BiFunction<BlockState, Integer, ItemStack> DEFAULT = (state, meta) -> new ItemStack(state.getBlock().asItem());
 	
-	public static void registerConverter(BlockBase block, BiFunction<BlockState, Integer, ItemInstance> stateToItem) {
+	public static void registerConverter(BaseBlock block, BiFunction<BlockState, Integer, ItemStack> stateToItem) {
 		CONVERTERS.put(block, stateToItem);
 	}
 	
-	public static void registerConverter(BlockBase block, Function<BlockState, ItemInstance> stateToItem) {
+	public static void registerConverter(BaseBlock block, Function<BlockState, ItemStack> stateToItem) {
 		CONVERTERS.put(block, (state, meta) -> stateToItem.apply(state));
 	}
 	
-	public static void registerConverter(BlockBase block, ItemBase convertTo) {
-		registerConverter(block, state -> new ItemInstance(convertTo));
+	public static void registerConverter(BaseBlock block, BaseItem convertTo) {
+		registerConverter(block, state -> new ItemStack(convertTo));
 	}
 	
-	public static void registerConverter(BlockBase block, BlockBase convertTo) {
-		registerConverter(block, state ->new ItemInstance(convertTo));
+	public static void registerConverter(BaseBlock block, BaseBlock convertTo) {
+		registerConverter(block, state ->new ItemStack(convertTo));
 	}
 	
-	public static ItemInstance convert(BlockState state, int meta) {
-		BiFunction<BlockState, Integer, ItemInstance> converter = CONVERTERS.getOrDefault(state.getBlock(), DEFAULT);
+	public static ItemStack convert(BlockState state, int meta) {
+		BiFunction<BlockState, Integer, ItemStack> converter = CONVERTERS.getOrDefault(state.getBlock(), DEFAULT);
 		return converter.apply(state, meta);
 	}
 	
 	static {
-		registerConverter(BlockBase.SUGAR_CANES, ItemBase.sugarCanes);
-		registerConverter(BlockBase.WOOD_DOOR, ItemBase.woodDoor);
-		registerConverter(BlockBase.IRON_DOOR, ItemBase.ironDoor);
-		registerConverter(BlockBase.REDSTONE_TORCH, BlockBase.REDSTONE_TORCH_LIT);
-		registerConverter(BlockBase.REDSTONE_ORE_LIT, BlockBase.REDSTONE_ORE);
-		registerConverter(BlockBase.FURNACE_LIT, BlockBase.FURNACE);
-		registerConverter(BlockBase.STANDING_SIGN, ItemBase.sign);
-		registerConverter(BlockBase.WALL_SIGN, ItemBase.sign);
-		registerConverter(BlockBase.DOUBLE_STONE_SLAB, (state, meta) -> {
-			ItemBase item = BlockBase.STONE_SLAB.asItem();
-			return new ItemInstance(item, 1, meta & 3);
+		registerConverter(BaseBlock.SUGAR_CANES, BaseItem.sugarCanes);
+		registerConverter(BaseBlock.WOOD_DOOR, BaseItem.woodDoor);
+		registerConverter(BaseBlock.IRON_DOOR, BaseItem.ironDoor);
+		registerConverter(BaseBlock.REDSTONE_TORCH, BaseBlock.REDSTONE_TORCH_LIT);
+		registerConverter(BaseBlock.REDSTONE_ORE_LIT, BaseBlock.REDSTONE_ORE);
+		registerConverter(BaseBlock.FURNACE_LIT, BaseBlock.FURNACE);
+		registerConverter(BaseBlock.STANDING_SIGN, BaseItem.sign);
+		registerConverter(BaseBlock.WALL_SIGN, BaseItem.sign);
+		registerConverter(BaseBlock.DOUBLE_STONE_SLAB, (state, meta) -> {
+			BaseItem item = BaseBlock.STONE_SLAB.asItem();
+			return new ItemStack(item, 1, meta & 3);
 		});
-		registerConverter(BlockBase.LEAVES, (state, meta) -> {
-			ItemBase item = BlockBase.LEAVES.asItem();
-			return new ItemInstance(item, 1, meta & 3);
+		registerConverter(BaseBlock.LEAVES, (state, meta) -> {
+			BaseItem item = BaseBlock.LEAVES.asItem();
+			return new ItemStack(item, 1, meta & 3);
 		});
-		registerConverter(BlockBase.LOG, (state, meta) -> {
-			ItemBase item = BlockBase.LOG.asItem();
-			return new ItemInstance(item, 1, meta & 3);
+		registerConverter(BaseBlock.LOG, (state, meta) -> {
+			BaseItem item = BaseBlock.LOG.asItem();
+			return new ItemStack(item, 1, meta & 3);
 		});
-		registerConverter(BlockBase.SAPLING, (state, meta) -> {
-			ItemBase item = BlockBase.SAPLING.asItem();
-			return new ItemInstance(item, 1, meta & 3);
+		registerConverter(BaseBlock.SAPLING, (state, meta) -> {
+			BaseItem item = BaseBlock.SAPLING.asItem();
+			return new ItemStack(item, 1, meta & 3);
 		});
-		registerConverter(BlockBase.TALLGRASS, (state, meta) -> {
-			ItemBase item = CommonInitListener.tallGrass;
+		registerConverter(BaseBlock.TALLGRASS, (state, meta) -> {
+			BaseItem item = CommonInitListener.tallGrass;
 			switch (meta & 3) {
-				case 0 -> item = BlockBase.DEADBUSH.asItem();
+				case 0 -> item = BaseBlock.DEADBUSH.asItem();
 				case 2 -> item = CommonInitListener.fern;
 			}
-			return new ItemInstance(item);
+			return new ItemStack(item);
 		});
 	}
 }

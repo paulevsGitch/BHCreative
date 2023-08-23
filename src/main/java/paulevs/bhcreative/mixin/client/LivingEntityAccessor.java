@@ -1,14 +1,14 @@
 package paulevs.bhcreative.mixin.client;
 
-import net.minecraft.entity.Living;
+import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(Living.class)
+@Mixin(LivingEntity.class)
 public interface LivingEntityAccessor {
-	@Accessor("field_1060")
+	@Accessor("perpendicularMovement")
 	float creative_getFrontMovement();
 	
-	@Accessor("field_1029")
+	@Accessor("parallelMovement")
 	float creative_getRightMovement();
 }

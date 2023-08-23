@@ -2,7 +2,7 @@ package paulevs.bhcreative.mixin.client;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.menu.SelectWorld;
+import net.minecraft.client.gui.screen.menu.SelectLevelScreen;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.level.storage.LevelMetadata;
 import org.spongepowered.asm.mixin.Final;
@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import paulevs.bhcreative.interfaces.CreativeLevel;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.menu.SelectWorld$WorldList")
+@Mixin(targets = "net.minecraft.client.gui.screen.menu.SelectLevelScreen$LevelList")
 public abstract class WorldListMixin {
 	@SuppressWarnings("target") // Parent class
-	@Shadow @Final SelectWorld field_2444;
+	@Shadow @Final SelectLevelScreen field_2444;
 	
 	@Inject(method = "renderEntry", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/client/gui/screen/menu/SelectWorld;drawTextWithShadow(Lnet/minecraft/client/render/TextRenderer;Ljava/lang/String;III)V",
+		target = "Lnet/minecraft/client/gui/screen/menu/SelectLevelScreen;drawTextWithShadow(Lnet/minecraft/client/render/TextRenderer;Ljava/lang/String;III)V",
 		ordinal = 2,
 		shift = Shift.AFTER
 	), locals = LocalCapture.CAPTURE_FAILSOFT)
