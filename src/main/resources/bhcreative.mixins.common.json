@@ -6,11 +6,11 @@
 	"mixins": [
 		"AbstractBlockStateMixin",
 		"PlayerInventoryMixin",
-		"BaseEntityMixin",
+		"PlayerEntityMixin",
 		"BucketItemMixin",
-		"PlayerBaseMixin",
 		"PlayerAPIMixin",
-		"ItemStackMixin"
+		"ItemStackMixin",
+		"EntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

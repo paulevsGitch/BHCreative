@@ -1,6 +1,6 @@
 package paulevs.bhcreative.mixin.common;
 
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,12 +17,12 @@ public class ItemStackMixin {
 	@Shadow public int count;
 	
 	@Inject(method = "useOnBlock", at = @At("HEAD"))
-	private void creative_beforeUseOnTile(PlayerBase player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
+	private void creative_beforeUseOnTile(PlayerEntity player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
 		if (BHCreative.isInCreative(player)) creative_count = count;
 	}
 	
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	private void creative_afterUseOnTile(PlayerBase player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
+	private void creative_afterUseOnTile(PlayerEntity player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
 		if (BHCreative.isInCreative(player)) count = creative_count;
 	}
 }

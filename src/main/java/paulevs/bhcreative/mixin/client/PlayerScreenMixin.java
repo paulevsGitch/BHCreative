@@ -1,13 +1,15 @@
 package paulevs.bhcreative.mixin.client;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.container.ContainerScreen;
 import net.minecraft.client.gui.screen.container.PlayerScreen;
 import net.minecraft.client.render.RenderHelper;
 import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.BaseItem;
+import net.minecraft.container.Container;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.inventory.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.input.Keyboard;
@@ -54,14 +56,14 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	@Shadow private float mouseX;
 	@Shadow private float mouseY;
 	
-	public PlayerScreenMixin(net.minecraft.container.BaseContainer container) {
+	public PlayerScreenMixin(Container container) {
 		super(container);
 	}
 	
-	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerBase;)V", at = @At("TAIL"))
-	private void creative_initPlayerInventory(PlayerBase player, CallbackInfo info) {
-		creative_creativeIcon = new ItemStack(BaseItem.diamond);
-		creative_survivalIcon = new ItemStack(BaseBlock.WORKBENCH);
+	@Inject(method = "<init>(Lnet/minecraft/entity/living/player/PlayerEntity;)V", at = @At("TAIL"))
+	private void creative_initPlayerInventory(PlayerEntity player, CallbackInfo info) {
+		creative_creativeIcon = new ItemStack(Item.diamond);
+		creative_survivalIcon = new ItemStack(Block.WORKBENCH);
 		CreativeTab tab = TabRegistry.getTabByIndex(0);
 		creative_tabKey = tab.getTranslationKey();
 		creative_items = tab.getItems();
@@ -134,7 +136,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			this.blit(posX + 173, posY + 114, 176, 32, 25, 24); // Survival
 		}
 		else {
-			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
+			PlayerInventory inventory = this.minecraft.player.inventory;
 			
 			for (int i = 0; i < creative_maxTabIndex; i++) {
 				if (i != creative_tabIndex) {
@@ -325,7 +327,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glEnable(32826);
 	
-			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
+			PlayerInventory inventory = this.minecraft.player.inventory;
 			if (inventory.getCursorItem() != null) {
 				GL11.glTranslatef(0.0F, 0.0F, 32.0F);
 				CREATIVE_ITEM_RENDERER.renderStackInGUI(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
@@ -444,7 +446,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			int slotX = MathHelper.floor((mouseX - posX - 8) / 18F);
 			int slotY = MathHelper.floor((mouseY - posY - 14) / 18F);
 			
-			net.minecraft.entity.player.PlayerInventory inventory = this.minecraft.player.inventory;
+			PlayerInventory inventory = this.minecraft.player.inventory;
 			if (slotY >= 0 && slotY < 7 && slotX >= 0 && slotX < 8) {
 				int index = slotY * 8 + slotX + creative_rowIndex;
 				ItemStack cursor = inventory.getCursorItem();

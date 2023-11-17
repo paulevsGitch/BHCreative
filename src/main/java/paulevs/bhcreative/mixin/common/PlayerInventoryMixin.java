@@ -1,7 +1,7 @@
 package paulevs.bhcreative.mixin.common;
 
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.inventory.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.entity.player.StationFlatteningPlayerInventory;
@@ -11,7 +11,7 @@ import paulevs.bhcreative.BHCreative;
 
 @Mixin(value = PlayerInventory.class, priority = 2000)
 public abstract class PlayerInventoryMixin implements StationFlatteningPlayerInventory {
-	@Shadow public PlayerBase player;
+	@Shadow public PlayerEntity player;
 	
 	@Shadow public int selectedHotbarSlot;
 	@Shadow public abstract ItemStack getItem(int i);

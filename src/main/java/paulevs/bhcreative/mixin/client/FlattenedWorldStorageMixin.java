@@ -3,7 +3,7 @@ package paulevs.bhcreative.mixin.client;
 import net.minecraft.level.LevelProperties;
 import net.minecraft.level.storage.LevelMetadata;
 import net.minecraft.util.io.CompoundTag;
-import net.modificationstation.stationapi.impl.level.storage.FlattenedWorldStorage;
+import net.modificationstation.stationapi.impl.world.storage.FlattenedWorldStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;

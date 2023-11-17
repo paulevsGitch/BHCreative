@@ -2,7 +2,7 @@ package paulevs.bhcreative.mixin.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +16,7 @@ public class GameRendererMixin {
 	
 	@Inject(method = "method_1850(F)V", at = @At("HEAD"), cancellable = true)
 	private void creative_cancelBobbing(float f, CallbackInfo info) {
-		if (minecraft.viewEntity instanceof PlayerBase player) {
+		if (minecraft.viewEntity instanceof PlayerEntity player) {
 			if (BHCreative.isInCreative(player) && BHCreative.isFlying(player)) {
 				info.cancel();
 			}

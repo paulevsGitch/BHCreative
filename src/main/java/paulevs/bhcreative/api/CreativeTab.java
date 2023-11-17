@@ -1,7 +1,7 @@
 package paulevs.bhcreative.api;
 
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,6 @@ public abstract class CreativeTab implements Comparable<CreativeTab> {
 	
 	@Override
 	public String toString() {
-		return String.format(Locale.ROOT, "[tab, %s, %s]", id.modID, id.id);
+		return String.format(Locale.ROOT, "[tab, %s, %s]", id.namespace, id.path);
 	}
 }

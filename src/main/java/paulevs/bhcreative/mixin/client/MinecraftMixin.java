@@ -1,8 +1,8 @@
 package paulevs.bhcreative.mixin.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.AbstractClientPlayer;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.living.player.AbstractClientPlayer;
+import net.minecraft.inventory.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -27,7 +27,7 @@ public class MinecraftMixin {
 	@Shadow public Level level;
 	@Shadow private int attackCooldown;
 	
-	@Inject(method = "method_2103", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "pickupHitBlock", at = @At("HEAD"), cancellable = true)
 	private void creative_setMouseButtonItem(CallbackInfo info) {
 		if (!BHCreative.isInCreative(this.player) || this.hitResult == null) return;
 		

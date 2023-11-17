@@ -1,6 +1,6 @@
 package paulevs.bhcreative.mixin.client;
 
-import net.minecraft.client.gui.screen.BaseScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.menu.CreateLevelScreen;
 import net.minecraft.client.gui.widgets.Button;
 import net.minecraft.client.resource.language.TranslationStorage;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.interfaces.CreativePlayer;
 
 @Mixin(CreateLevelScreen.class)
-public abstract class CreateLevelScreenMixin extends BaseScreen {
+public abstract class CreateLevelScreenMixin extends Screen {
 	@Unique private static final String CREATIVE_KEY_SURVIVAL = "title.bhcreative:selectWorld.survival";
 	@Unique private static final String CREATIVE_KEY_CREATIVE = "title.bhcreative:selectWorld.creative";
 	@Unique private boolean creative = false;

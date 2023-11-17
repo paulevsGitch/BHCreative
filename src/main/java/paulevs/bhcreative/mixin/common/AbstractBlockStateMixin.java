@@ -1,6 +1,6 @@
 package paulevs.bhcreative.mixin.common;
 
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.BlockView;
 import net.minecraft.util.maths.BlockPos;
 import net.modificationstation.stationapi.api.block.AbstractBlockState;
@@ -13,7 +13,7 @@ import paulevs.bhcreative.BHCreative;
 @Mixin(value = AbstractBlockState.class, remap = false)
 public class AbstractBlockStateMixin {
 	@Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
-	private void creative_calcBlockBreakingDelta(PlayerBase player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> info) {
+	private void creative_calcBlockBreakingDelta(PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> info) {
 		if (BHCreative.isInCreative(player)) {
 			info.setReturnValue(1.0F);
 		}

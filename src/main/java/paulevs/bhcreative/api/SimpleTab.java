@@ -1,8 +1,8 @@
 package paulevs.bhcreative.api;
 
-import net.minecraft.item.BaseItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 public class SimpleTab extends CreativeTab {
 	private final ItemStack icon;
@@ -12,7 +12,7 @@ public class SimpleTab extends CreativeTab {
 		this.icon = icon;
 	}
 	
-	public SimpleTab(Identifier id, BaseItem icon) {
+	public SimpleTab(Identifier id, Item icon) {
 		this(id, new ItemStack(icon));
 	}
 

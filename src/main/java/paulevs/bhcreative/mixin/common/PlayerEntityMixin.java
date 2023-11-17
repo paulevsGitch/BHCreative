@@ -1,11 +1,11 @@
 package paulevs.bhcreative.mixin.common;
 
-import net.minecraft.entity.BaseEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.living.LivingEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Vec3f;
+import net.minecraft.util.maths.Vec3D;
 import net.modificationstation.stationapi.api.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,15 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.bhcreative.interfaces.CreativePlayer;
 import paulevs.bhcreative.mixin.client.LivingEntityAccessor;
 
-@Mixin(PlayerBase.class)
-public abstract class PlayerBaseMixin extends LivingEntity implements CreativePlayer {
+@Mixin(PlayerEntity.class)
+public abstract class PlayerEntityMixin extends LivingEntity implements CreativePlayer {
 	@Shadow public abstract void tickRiding();
 	
-	@Unique private final Vec3f creative_flightSpeed = Vec3f.make(0, 0, 0);
+	@Unique private final Vec3D creative_flightSpeed = Vec3D.make(0, 0, 0);
 	@Unique private boolean creative_isCreative;
 	@Unique private boolean creative_isFlying;
 	
-	public PlayerBaseMixin(Level arg) {
+	public PlayerEntityMixin(Level arg) {
 		super(arg);
 	}
 	
@@ -60,7 +60,7 @@ public abstract class PlayerBaseMixin extends LivingEntity implements CreativePl
 	}
 	
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-	private void creative_damage(BaseEntity target, int amount, CallbackInfoReturnable<Boolean> info) {
+	private void creative_damage(Entity target, int amount, CallbackInfoReturnable<Boolean> info) {
 		if (this.creative_isCreative()) {
 			info.setReturnValue(false);
 			info.cancel();

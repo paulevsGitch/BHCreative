@@ -33,13 +33,13 @@ public abstract class WorldListMixin {
 		@SuppressWarnings("deprecation")
 		Minecraft minecraft = (Minecraft) FabricLoader.getInstance().getGameInstance();
 		int offset = minecraft.textRenderer.getTextWidth(levelName) + 6;
-		field_2444.drawTextWithShadow(minecraft.textRenderer, "(", x + offset, y + 1, 0xFFFFFF);
-		offset += minecraft.textRenderer.getTextWidth("(");
+		field_2444.drawTextWithShadow(minecraft.textRenderer, "[", x + offset, y + 1, 0xFFFFFF);
+		offset += minecraft.textRenderer.getTextWidth("[");
 		boolean isCreative = CreativeLevel.cast(meta).creative_isCreative();
 		String gameMode = isCreative ? "Creative" : "Survival";
 		int color = isCreative ? 0x00FFFF : 0x00FF00;
 		field_2444.drawTextWithShadow(minecraft.textRenderer, gameMode, x + offset, y + 1, color);
 		offset += minecraft.textRenderer.getTextWidth(gameMode);
-		field_2444.drawTextWithShadow(minecraft.textRenderer, ")", x + offset, y + 1, 0xFFFFFF);
+		field_2444.drawTextWithShadow(minecraft.textRenderer, "]", x + offset, y + 1, 0xFFFFFF);
 	}
 }
