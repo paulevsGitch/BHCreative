@@ -83,8 +83,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 
 	@Inject(method = "readCustomDataFromTag", at = @At("HEAD"))
 	private void creative_readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
-		System.out.println("C " + tag.getBoolean("Creative"));
-		System.out.println("C " + tag.getBoolean("Flying"));
 		creative_setCreative(tag.getBoolean("Creative"));
 		creative_setFlying(tag.getBoolean("Flying"));
 	}

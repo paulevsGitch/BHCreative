@@ -44,8 +44,8 @@ public abstract class AbstractClientPlayerMixin extends PlayerEntity {
 			creative_timeout = time - creative_timeout;
 			if (creative_count > 0 && creative_timeout < 500) {
 				boolean flying = !player.creative_isFlying();
+				player.creative_setFlying(flying);
 				if (level.isRemote) PacketHelper.send(new IsFlyingPacket(flying));
-				else player.creative_setFlying(flying);
 				creative_count = 0;
 			}
 			creative_timeout = System.currentTimeMillis();
