@@ -13,10 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class WalkingEntityMixin {
 	@Shadow protected Entity entity;
 	
-	@Inject(method = "tickHandSwing()V", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "tickHandSwing()V", at = @At("RETURN"))
 	protected void tickHandSwing(CallbackInfo info) {
 		if (entity instanceof PlayerEntity player && player.creative_isCreative()) {
-			info.cancel();
+			entity = null;
 		}
 	}
 }
