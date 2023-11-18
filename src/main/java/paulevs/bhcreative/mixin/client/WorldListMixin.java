@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import paulevs.bhcreative.interfaces.CreativeLevel;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.menu.SelectLevelScreen$LevelList")
 public abstract class WorldListMixin {
@@ -35,7 +34,7 @@ public abstract class WorldListMixin {
 		int offset = minecraft.textRenderer.getTextWidth(levelName) + 6;
 		field_2444.drawTextWithShadow(minecraft.textRenderer, "[", x + offset, y + 1, 0xFFFFFF);
 		offset += minecraft.textRenderer.getTextWidth("[");
-		boolean isCreative = CreativeLevel.cast(meta).creative_isCreative();
+		boolean isCreative = meta.creative_isCreative();
 		String gameMode = isCreative ? "Creative" : "Survival";
 		int color = isCreative ? 0x00FFFF : 0x00FF00;
 		field_2444.drawTextWithShadow(minecraft.textRenderer, gameMode, x + offset, y + 1, color);

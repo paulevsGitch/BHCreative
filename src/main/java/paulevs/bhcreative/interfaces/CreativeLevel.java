@@ -1,10 +1,13 @@
 package paulevs.bhcreative.interfaces;
 
+import net.modificationstation.stationapi.api.util.Util;
+
 public interface CreativeLevel {
-	boolean creative_isCreative();
-	void creative_setCreative(boolean creative);
+	default boolean creative_isCreative() {
+		return Util.assertImpl();
+	}
 	
-	static CreativeLevel cast(Object obj) {
-		return (CreativeLevel) obj;
+	default void creative_setCreative(boolean creative) {
+		Util.assertImpl();
 	}
 }

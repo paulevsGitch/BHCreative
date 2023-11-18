@@ -1,14 +1,21 @@
 package paulevs.bhcreative.interfaces;
 
-import net.minecraft.entity.living.player.PlayerEntity;
+import net.modificationstation.stationapi.api.util.Util;
 
 public interface CreativePlayer {
-	boolean creative_isCreative();
-	void creative_setCreative(boolean creative);
-	boolean creative_isFlying();
-	void creative_setFlying(boolean flying);
+	default boolean creative_isCreative() {
+		return Util.assertImpl();
+	}
 	
-	public static CreativePlayer cast(PlayerEntity player) {
-		return (CreativePlayer) player;
+	default void creative_setCreative(boolean creative) {
+		Util.assertImpl();
+	}
+	
+	default boolean creative_isFlying() {
+		return Util.assertImpl();
+	}
+	
+	default void creative_setFlying(boolean flying) {
+		Util.assertImpl();
 	}
 }

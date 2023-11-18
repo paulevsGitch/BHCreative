@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import paulevs.bhcreative.interfaces.CreativeLevel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class FlattenedWorldStorageMixin {
 	), locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void creative_setMetadata(CallbackInfoReturnable<List> info, ArrayList worlds, File[] var2, int var3, int var4, File worldPath, String worldFolder, LevelProperties data, CompoundTag worldTag, boolean requiresUpdating, String worldName) {
 		LevelMetadata meta = (LevelMetadata) worlds.get(worlds.size() - 1);
-		boolean isCreative = CreativeLevel.cast(data).creative_isCreative();
-		CreativeLevel.cast(meta).creative_setCreative(isCreative);
+		boolean isCreative = data.creative_isCreative();
+		meta.creative_setCreative(isCreative);
 	}
 }

@@ -29,7 +29,7 @@ public class MinecraftMixin {
 	
 	@Inject(method = "pickupHitBlock", at = @At("HEAD"), cancellable = true)
 	private void creative_setMouseButtonItem(CallbackInfo info) {
-		if (!BHCreative.isInCreative(this.player) || this.hitResult == null) return;
+		if (!this.player.creative_isCreative() || this.hitResult == null) return;
 		
 		BlockState state = level.getBlockState(this.hitResult.x, this.hitResult.y, this.hitResult.z);
 		int meta = level.getBlockMeta(this.hitResult.x, this.hitResult.y, this.hitResult.z);
@@ -64,7 +64,7 @@ public class MinecraftMixin {
 	
 	@Inject(method = "processAttack", at = @At("RETURN"))
 	private void creative_blockBreakDelay(int i, CallbackInfo info) {
-		if (i != 0 || !BHCreative.isInCreative(this.player)) return;
+		if (i != 0 || !this.player.creative_isCreative()) return;
 		if (this.hitResult == null || this.hitResult.type != HitType.BLOCK) return;
 		this.attackCooldown = 100;
 	}

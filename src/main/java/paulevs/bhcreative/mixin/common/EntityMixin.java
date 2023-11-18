@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import paulevs.bhcreative.BHCreative;
 
 @Mixin(Entity.class)
 public class EntityMixin {
@@ -21,11 +20,11 @@ public class EntityMixin {
 		shift = Shift.AFTER,
 		ordinal = 1
 	))
-	private void on_assign(double e, double f, double par3, CallbackInfo info) {
+	private void creative_fixFallSound(double e, double f, double par3, CallbackInfo info) {
 		Entity entity = Entity.class.cast(this);
 		if (!(entity instanceof PlayerEntity player)) return;
-		if (!BHCreative.isInCreative(player)) return;
-		if (!BHCreative.isFlying(player)) return;
+		if (!player.creative_isCreative()) return;
+		if (!player.creative_isFlying()) return;
 		this.stepsCount = (int) (this.walkedDistance + 2);
 	}
 }

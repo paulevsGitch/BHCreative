@@ -32,10 +32,25 @@
 	},
 	"mixins": [
 		"bhcreative.mixins.common.json",
-		"bhcreative.mixins.client.json"
+		"bhcreative.mixins.client.json",
+		"bhcreative.mixins.server.json"
 	],
 
 	"depends": {
 		"minecraft": "1.0.0-beta.7.3"
+	},
+	
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_54": [
+				"paulevs/bhcreative/interfaces/CreativePlayer"
+			],
+			"net/minecraft/class_591": [
+				"paulevs/bhcreative/interfaces/CreativeLevel"
+			],
+			"net/minecraft/class_7": [
+				"paulevs/bhcreative/interfaces/CreativeLevel"
+			]
+		}
 	}
 }

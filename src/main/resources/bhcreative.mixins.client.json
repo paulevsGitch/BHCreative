@@ -10,10 +10,8 @@
 		"CreateLevelScreenMixin",
 		"LivingEntityAccessor",
 		"LevelPropertiesMixin",
-		"WalkingEntityMixin",
 		"LevelMetadataMixin",
 		"GameRendererMixin",
-		"LivingEntityMixin",
 		"PlayerScreenMixin",
 		"MinecraftMixin",
 		"WorldListMixin"

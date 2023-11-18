@@ -11,19 +11,19 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import paulevs.bhcreative.BHCreative;
 import paulevs.bhcreative.interfaces.CreativePlayer;
 import paulevs.bhcreative.mixin.client.LivingEntityAccessor;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements CreativePlayer {
-	@Shadow public abstract void tickRiding();
-	
 	@Unique private final Vec3D creative_flightSpeed = Vec3D.make(0, 0, 0);
-	@Unique private boolean creative_isCreative;
-	@Unique private boolean creative_isFlying;
+	
+	@Shadow public abstract void tickRiding();
 	
 	public PlayerEntityMixin(Level arg) {
 		super(arg);
@@ -31,32 +31,34 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 	
 	@Override
 	public boolean creative_isCreative() {
-		return creative_isCreative;
+		return BHCreative.toBool(dataTracker.getByte(BHCreative.IS_CREATIVE_ID));
 	}
 	
 	@Override
 	public void creative_setCreative(boolean creative) {
-		this.creative_isCreative = creative;
+		this.dataTracker.setData(BHCreative.IS_CREATIVE_ID, BHCreative.toByte(creative));
 	}
 	
 	@Override
 	public boolean creative_isFlying() {
-		return creative_isFlying;
+		return BHCreative.toBool(dataTracker.getByte(BHCreative.IS_FLYING_ID));
 	}
 	
 	@Override
 	public void creative_setFlying(boolean flying) {
-		if (flying && !this.creative_isFlying) {
+		boolean selfFly = this.creative_isFlying();
+		if (flying && !selfFly) {
 			creative_flightSpeed.x = velocityX;
 			creative_flightSpeed.y = velocityY;
 			creative_flightSpeed.z = velocityZ;
 		}
-		else if (!flying && this.creative_isFlying) {
+		else if (!flying && selfFly) {
 			creative_flightSpeed.x = 0;
 			creative_flightSpeed.y = 0;
 			creative_flightSpeed.z = 0;
 		}
-		this.creative_isFlying = flying;
+		//this.creative_isFlying = flying;
+		this.dataTracker.setData(BHCreative.IS_FLYING_ID, BHCreative.toByte(flying));
 	}
 	
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
@@ -125,5 +127,15 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 		this.velocityX = creative_flightSpeed.x;
 		this.velocityY = creative_flightSpeed.y;
 		this.velocityZ = creative_flightSpeed.z;
+	}
+	
+	@Inject(method = "initDataTracker", at = @At(
+		value = "INVOKE",
+		target = "Lnet/minecraft/entity/living/LivingEntity;initDataTracker()V",
+		shift = Shift.AFTER
+	))
+	private void creative_trackData(CallbackInfo info) {
+		this.dataTracker.startTracking(BHCreative.IS_CREATIVE_ID, (byte) 0);
+		this.dataTracker.startTracking(BHCreative.IS_FLYING_ID, (byte) 0);
 	}
 }
