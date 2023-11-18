@@ -1,4 +1,4 @@
-package paulevs.bhcreative.mixin.client;
+package paulevs.bhcreative.mixin.common;
 
 import net.minecraft.entity.living.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

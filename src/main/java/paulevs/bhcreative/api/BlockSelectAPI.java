@@ -69,5 +69,9 @@ public class BlockSelectAPI {
 			}
 			return new ItemStack(item);
 		});
+		registerConverter(Block.WOOL, (state, meta) -> {
+			Item item = Block.WOOL.asItem();
+			return new ItemStack(item, 1, meta);
+		});
 	}
 }

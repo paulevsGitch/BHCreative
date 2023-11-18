@@ -7,12 +7,12 @@ import net.minecraft.client.render.RenderHelper;
 import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.container.Container;
-import net.minecraft.entity.living.player.ClientPlayer;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.inventory.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.maths.MathHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -512,14 +512,10 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	@Unique
 	private void creative_updateInventory(PlayerInventory inventory) {
 		inventory.markDirty();
-		if (inventory.player instanceof ClientPlayer player && player.level.isRemote) {
-			//SlotUpdatePacket packet = new SlotUpdatePacket();
-			//packet.containerId = -1;
-			//packet.slotIndex = -1;
-			//packet.stack = inventory.getCursorItem();
-			//player.networkHandler.sendPacket(packet);
-			player.networkHandler.sendPacket(new CursorSlotUpdatePacket(inventory.getCursorItem()));
-		}
+		PacketHelper.send(new CursorSlotUpdatePacket(inventory.getCursorItem()));
+		/*CursorSlotUpdatePacket packet = (CursorSlotUpdatePacket) IdentifiablePacket.create(BHCreative.id("update_slot"));
+		packet.stack = inventory.getCursorItem();
+		PacketHelper.send(packet);*/
 	}
 	
 	@Unique

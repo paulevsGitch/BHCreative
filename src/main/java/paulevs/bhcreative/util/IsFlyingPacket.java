@@ -1,7 +1,6 @@
 package paulevs.bhcreative.util;
 
 import net.minecraft.entity.living.player.ServerPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketHandler;
 import net.minecraft.packet.AbstractPacket;
 import net.minecraft.server.network.ServerPlayerPacketHandler;
@@ -14,26 +13,20 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class CursorSlotUpdatePacket extends AbstractPacket implements IdentifiablePacket {
-	private static final Identifier ID = BHCreative.id("update_slot");
-	private ItemStack stack;
+public class IsFlyingPacket extends AbstractPacket implements IdentifiablePacket {
+	private static final Identifier ID = BHCreative.id("is_flying");
+	private boolean flight;
 	
-	public CursorSlotUpdatePacket() {}
+	public IsFlyingPacket() {}
 	
-	public CursorSlotUpdatePacket(ItemStack stack) {
-		this.stack = stack;
+	public IsFlyingPacket(boolean flight) {
+		this.flight = flight;
 	}
 	
 	@Override
 	public void read(DataInputStream stream) {
-		stack = null;
 		try {
-			int count = Byte.toUnsignedInt(stream.readByte());
-			if (count > 0) {
-				int id = stream.readInt();
-				int damage = stream.readInt();
-				stack = new ItemStack(id, count, damage);
-			}
+			flight = stream.readBoolean();
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
@@ -43,15 +36,7 @@ public class CursorSlotUpdatePacket extends AbstractPacket implements Identifiab
 	@Override
 	public void write(DataOutputStream stream) {
 		try {
-			if (stack == null) {
-				stream.writeByte(0);
-				return;
-			}
-			stream.writeByte((byte) stack.count);
-			if (stack.count > 0) {
-				stream.writeInt(stack.itemId);
-				stream.writeInt(stack.getDamage());
-			}
+			stream.writeBoolean(flight);
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
@@ -63,13 +48,13 @@ public class CursorSlotUpdatePacket extends AbstractPacket implements Identifiab
 		if (handler instanceof ServerPlayerPacketHandler serverHandler) {
 			ServerPlayerPacketHandlerAccessor accessor = (ServerPlayerPacketHandlerAccessor) serverHandler;
 			ServerPlayer player = accessor.creative_getServerPlayer();
-			player.inventory.setCursorItem(stack);
+			player.creative_setFlying(flight);
 		}
 	}
 	
 	@Override
 	public int length() {
-		return 9;
+		return 1;
 	}
 	
 	@Override
@@ -78,6 +63,6 @@ public class CursorSlotUpdatePacket extends AbstractPacket implements Identifiab
 	}
 	
 	public static void register() {
-		IdentifiablePacket.register(ID, true, true, CursorSlotUpdatePacket::new);
+		IdentifiablePacket.register(ID, true, true, IsFlyingPacket::new);
 	}
 }

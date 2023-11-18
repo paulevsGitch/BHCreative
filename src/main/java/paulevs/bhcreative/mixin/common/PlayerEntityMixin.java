@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.bhcreative.BHCreative;
 import paulevs.bhcreative.interfaces.CreativePlayer;
-import paulevs.bhcreative.mixin.client.LivingEntityAccessor;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements CreativePlayer {
@@ -57,8 +56,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 			creative_flightSpeed.y = 0;
 			creative_flightSpeed.z = 0;
 		}
-		//this.creative_isFlying = flying;
 		this.dataTracker.setData(BHCreative.IS_FLYING_ID, BHCreative.toByte(flying));
+		markToUpdateVelocity();
 	}
 	
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
@@ -76,14 +75,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 		}
 	}
 	
-	@Inject(method = "writeCustomDataToTag", at = @At("TAIL"))
+	@Inject(method = "writeCustomDataToTag", at = @At("HEAD"))
 	private void creative_writeCustomDataToTag(CompoundTag tag, CallbackInfo info) {
 		tag.put("Creative", creative_isCreative());
 		tag.put("Flying", creative_isFlying());
 	}
 
-	@Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
+	@Inject(method = "readCustomDataFromTag", at = @At("HEAD"))
 	private void creative_readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
+		System.out.println("C " + tag.getBoolean("Creative"));
+		System.out.println("C " + tag.getBoolean("Flying"));
 		creative_setCreative(tag.getBoolean("Creative"));
 		creative_setFlying(tag.getBoolean("Flying"));
 	}

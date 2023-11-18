@@ -8,7 +8,6 @@
 		"FlattenedWorldStorageMixin",
 		"AbstractClientPlayerMixin",
 		"CreateLevelScreenMixin",
-		"LivingEntityAccessor",
 		"LevelPropertiesMixin",
 		"LevelMetadataMixin",
 		"GameRendererMixin",

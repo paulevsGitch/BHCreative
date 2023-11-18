@@ -2,6 +2,7 @@ package paulevs.bhcreative.mixin.server;
 
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerPlayerConnectionManager;
 import net.minecraft.server.command.Command;
 import net.minecraft.server.command.CommandManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,8 +28,16 @@ public class CommandManagerMixin {
 				return;
 			}
 			
-			int mode = 0;
+			int mode;
 			String[] args = command.commandString.split(" ");
+			
+			ServerPlayerConnectionManager manager = this.server.serverPlayerConnectionManager;
+			
+			if (args.length != 2) {
+				manager.sendMessage(name, "Usage: /gm <0|1>: Set your gamemode to survival|creative");
+				return;
+			}
+			
 			try {
 				mode = Integer.parseInt(args[1]);
 			}

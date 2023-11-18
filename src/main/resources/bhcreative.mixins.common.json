@@ -5,8 +5,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"AbstractBlockStateMixin",
+		"LivingEntityAccessor",
 		"PlayerInventoryMixin",
-		"AbstractPacketMixin",
 		"WalkingEntityMixin",
 		"LivingEntityMixin",
 		"PlayerEntityMixin",
