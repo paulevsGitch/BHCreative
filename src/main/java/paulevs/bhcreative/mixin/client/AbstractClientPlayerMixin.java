@@ -26,7 +26,7 @@ public abstract class AbstractClientPlayerMixin extends PlayerEntity {
 	
 	@Inject(method = "getCanSuffocate", at = @At("HEAD"), cancellable = true)
 	private void creative_getCanSuffocate(int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
-		if (((CreativePlayer) this).creative_isCreative()) {
+		if (this.creative_isCreative()) {
 			info.setReturnValue(false);
 			info.cancel();
 		}
@@ -35,7 +35,7 @@ public abstract class AbstractClientPlayerMixin extends PlayerEntity {
 	@Inject(method = "method_136", at = @At("HEAD"))
 	public void creative_onKeyPress(int i, boolean flag, CallbackInfo info) {
 		if (i != minecraft.options.jumpKey.key) return;
-		CreativePlayer player = (CreativePlayer) this;
+		CreativePlayer player = this;
 		
 		if (flag) {
 			long time = System.currentTimeMillis();

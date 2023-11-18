@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import paulevs.bhcreative.interfaces.CreativePlayer;
 
 @Mixin(CreateLevelScreen.class)
 public abstract class CreateLevelScreenMixin extends Screen {
@@ -33,7 +32,7 @@ public abstract class CreateLevelScreenMixin extends Screen {
 		}
 		else if (button.id == 0) {
 			if (minecraft.player != null) {
-				((CreativePlayer) minecraft.player).creative_setCreative(creative);
+				minecraft.player.creative_setCreative(creative);
 			}
 		}
 	}

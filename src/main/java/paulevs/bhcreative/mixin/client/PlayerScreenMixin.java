@@ -7,6 +7,7 @@ import net.minecraft.client.render.RenderHelper;
 import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.container.Container;
+import net.minecraft.entity.living.player.ClientPlayer;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.inventory.PlayerInventory;
 import net.minecraft.item.Item;
@@ -23,8 +24,8 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.api.CreativeTab;
-import paulevs.bhcreative.interfaces.CreativePlayer;
 import paulevs.bhcreative.registry.TabRegistry;
+import paulevs.bhcreative.util.CursorSlotUpdatePacket;
 import paulevs.bhcreative.util.MHelper;
 
 import java.util.List;
@@ -177,7 +178,10 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			
 			for (int i = 0; i < creative_maxTabIndex; i++) {
 				CreativeTab tab = creative_getTab(creative_tabPage, i);
-				creative_renderItem(tab.getIcon(), posX + 8 + i * 24, posY - 17);
+				if (tab == null) continue;
+				ItemStack icon = tab.getIcon();
+				if (icon == null) continue;
+				creative_renderItem(icon, posX + 8 + i * 24, posY - 17);
 			}
 			
 			for (int i = 0; i < 56; i++) {
@@ -231,8 +235,10 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			int tabY = (int) mouseY - posY + 21;
 			if (tabX >= 0 && tabX < creative_maxTabIndex && tabY >= 0 && tabY < 24) {
 				CreativeTab tab = creative_getTab(creative_tabPage, tabX);
-				translated = creative_translate(tab.getTranslationKey());
-				creative_renderString(translated);
+				if (tab != null) {
+					translated = creative_translate(tab.getTranslationKey());
+					creative_renderString(translated);
+				}
 			}
 			
 			tabX = (int) mouseX - posX - 173;
@@ -263,17 +269,16 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private void creative_renderString(String string) {
-		if (string == null) {
-			return;
-		}
+		if (string == null || string.isEmpty()) return;
+		
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		if (string.length() > 0) {
-			int var9 = (int) mouseX + 12;
-			int var10 = (int) mouseY - 12;
-			int var11 = this.textManager.getTextWidth(string);
-			this.fillGradient(var9 - 3, var10 - 3, var9 + var11 + 3, var10 + 8 + 3, -1073741824, -1073741824);
-			this.textManager.drawTextWithShadow(string, var9, var10, -1);
-		}
+		
+		int var9 = (int) mouseX + 12;
+		int var10 = (int) mouseY - 12;
+		int var11 = this.textManager.getTextWidth(string);
+		this.fillGradient(var9 - 3, var10 - 3, var9 + var11 + 3, var10 + 8 + 3, -1073741824, -1073741824);
+		this.textManager.drawTextWithShadow(string, var9, var10, -1);
+		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 	
@@ -286,7 +291,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private boolean creative_isInCreative() {
-		return ((CreativePlayer) minecraft.player).creative_isCreative();
+		return minecraft.player.creative_isCreative();
 	}
 	
 	@Unique
@@ -457,6 +462,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 						cursor = item.copy();
 						cursor.count = cursor.getMaxStackSize();
 						inventory.setCursorItem(cursor);
+						creative_updateInventory(inventory);
 						return;
 					}
 					else if (item != null && (cursor == null || isSame)) {
@@ -464,7 +470,10 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 							if (isSame) {
 								if (cursor.count < cursor.getMaxStackSize()) cursor.count++;
 							}
-							else inventory.setCursorItem(item.copy());
+							else {
+								inventory.setCursorItem(item.copy());
+								creative_updateInventory(inventory);
+							}
 						}
 						return;
 					}
@@ -474,6 +483,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 				}
 				else {
 					inventory.setCursorItem(null);
+					creative_updateInventory(inventory);
 				}
 				return;
 			}
@@ -496,6 +506,19 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		super.mouseReleased(mouseX, mouseY, button);
 		if (button > -1) {
 			creative_drag = false;
+		}
+	}
+	
+	@Unique
+	private void creative_updateInventory(PlayerInventory inventory) {
+		inventory.markDirty();
+		if (inventory.player instanceof ClientPlayer player && player.level.isRemote) {
+			//SlotUpdatePacket packet = new SlotUpdatePacket();
+			//packet.containerId = -1;
+			//packet.slotIndex = -1;
+			//packet.stack = inventory.getCursorItem();
+			//player.networkHandler.sendPacket(packet);
+			player.networkHandler.sendPacket(new CursorSlotUpdatePacket(inventory.getCursorItem()));
 		}
 	}
 	

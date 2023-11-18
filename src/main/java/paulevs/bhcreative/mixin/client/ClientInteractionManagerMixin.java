@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import paulevs.bhcreative.interfaces.CreativePlayer;
 
 @Mixin(ClientInteractionManager.class)
 public class ClientInteractionManagerMixin {
@@ -16,6 +15,6 @@ public class ClientInteractionManagerMixin {
 	
 	@Inject(method = "renderSurvivalHUD", at = @At("HEAD"), cancellable = true)
 	private void creative_renderHud(CallbackInfoReturnable<Boolean> info) {
-		info.setReturnValue(!((CreativePlayer) minecraft.player).creative_isCreative());
+		info.setReturnValue(!minecraft.player.creative_isCreative());
 	}
 }

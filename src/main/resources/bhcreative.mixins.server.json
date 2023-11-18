@@ -4,6 +4,7 @@
 	"package": "paulevs.bhcreative.mixin.server",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"ServerPlayerPacketHandlerAccessor",
 		"CommandManagerMixin"
 	],
 	"injectors": {
