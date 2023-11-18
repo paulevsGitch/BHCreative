@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.bhcreative.api.CreativeTab;
 import paulevs.bhcreative.registry.TabRegistry;
-import paulevs.bhcreative.util.CursorSlotUpdatePacket;
 import paulevs.bhcreative.util.MHelper;
+import paulevs.bhcreative.util.SlotUpdatePacket;
 
 import java.util.List;
 
@@ -511,11 +511,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private void creative_updateInventory(PlayerInventory inventory) {
-		inventory.markDirty();
-		PacketHelper.send(new CursorSlotUpdatePacket(inventory.getCursorItem()));
-		/*CursorSlotUpdatePacket packet = (CursorSlotUpdatePacket) IdentifiablePacket.create(BHCreative.id("update_slot"));
-		packet.stack = inventory.getCursorItem();
-		PacketHelper.send(packet);*/
+		PacketHelper.send(new SlotUpdatePacket(-1, inventory.getCursorItem()));
 	}
 	
 	@Unique

@@ -14,20 +14,23 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class CursorSlotUpdatePacket extends AbstractPacket implements IdentifiablePacket {
+public class SlotUpdatePacket extends AbstractPacket implements IdentifiablePacket {
 	private static final Identifier ID = BHCreative.id("update_slot");
+	private int slot;
 	private ItemStack stack;
 	
-	public CursorSlotUpdatePacket() {}
+	public SlotUpdatePacket() {}
 	
-	public CursorSlotUpdatePacket(ItemStack stack) {
+	public SlotUpdatePacket(int slot, ItemStack stack) {
 		this.stack = stack;
+		this.slot = slot;
 	}
 	
 	@Override
 	public void read(DataInputStream stream) {
 		stack = null;
 		try {
+			slot = stream.readShort();
 			int count = Byte.toUnsignedInt(stream.readByte());
 			if (count > 0) {
 				int id = stream.readInt();
@@ -43,6 +46,7 @@ public class CursorSlotUpdatePacket extends AbstractPacket implements Identifiab
 	@Override
 	public void write(DataOutputStream stream) {
 		try {
+			stream.writeShort((short) slot);
 			if (stack == null) {
 				stream.writeByte(0);
 				return;
@@ -63,13 +67,14 @@ public class CursorSlotUpdatePacket extends AbstractPacket implements Identifiab
 		if (handler instanceof ServerPlayerPacketHandler serverHandler) {
 			ServerPlayerPacketHandlerAccessor accessor = (ServerPlayerPacketHandlerAccessor) serverHandler;
 			ServerPlayer player = accessor.creative_getServerPlayer();
-			player.inventory.setCursorItem(stack);
+			if (slot == -1) player.inventory.setCursorItem(stack);
+			else player.inventory.setItem(slot, stack);
 		}
 	}
 	
 	@Override
 	public int length() {
-		return 9;
+		return 11;
 	}
 	
 	@Override
@@ -78,6 +83,6 @@ public class CursorSlotUpdatePacket extends AbstractPacket implements Identifiab
 	}
 	
 	public static void register() {
-		IdentifiablePacket.register(ID, true, true, CursorSlotUpdatePacket::new);
+		IdentifiablePacket.register(ID, true, true, SlotUpdatePacket::new);
 	}
 }

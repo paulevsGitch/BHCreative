@@ -9,6 +9,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitType;
 import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +20,7 @@ import paulevs.bhcreative.BHCreative;
 import paulevs.bhcreative.api.BlockSelectAPI;
 import paulevs.bhcreative.registry.TabRegistry;
 import paulevs.bhcreative.registry.TabRegistryEvent;
+import paulevs.bhcreative.util.SlotUpdatePacket;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
@@ -60,6 +62,7 @@ public class MinecraftMixin {
 		
 		inventory.selectedHotbarSlot = selectedSlot;
 		inventory.setItem(selectedSlot, stack);
+		PacketHelper.send(new SlotUpdatePacket(selectedSlot, stack));
 	}
 	
 	@Inject(method = "processAttack", at = @At("RETURN"))
