@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 public class BHCreative {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final Namespace NAMESPACE = Namespace.of("bhcreative");
+	public static boolean serverIsCreative;
 	
 	public static final int IS_CREATIVE_ID = 17;
 	public static final int IS_FLYING_ID = 18;
