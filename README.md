@@ -49,7 +49,9 @@ maven {
 - Add this line to your dependencies section:
 
 ```
-modImplementation "com.github.paulevsGitch:BHCreative:${project.bhcreative_version}"
+modImplementation ("com.github.paulevsGitch:BHCreative:${project.bhcreative_version}") {
+	transitive false
+}
 ```
 
 - Add version variable to your gradle.properties:
