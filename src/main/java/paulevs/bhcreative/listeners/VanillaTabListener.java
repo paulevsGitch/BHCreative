@@ -79,6 +79,7 @@ public class VanillaTabListener {
 		addItem(tabFullBlocks, "netherrack");
 		addItem(tabFullBlocks, "soul_sand");
 		addItem(tabFullBlocks, "glowstone");
+		addItem(tabFullBlocks, "carved_pumpkin");
 		addItem(tabFullBlocks, "jack_o_lantern");
 		addItem(tabFullBlocks, "locked_chest");
 	}

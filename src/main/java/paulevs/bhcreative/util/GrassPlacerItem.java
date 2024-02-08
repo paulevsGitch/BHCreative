@@ -19,9 +19,10 @@ public class GrassPlacerItem extends BlockStateItem {
 	
 	@Override
 	public boolean useOnBlock(ItemStack item, PlayerEntity player, Level level, int x, int y, int z, int side) {
+		boolean isSnow = level.getBlockState(x, y, z).isOf(Block.SNOW);
 		boolean result = super.useOnBlock(item, player, level, x, y, z, side);
 		if (result) {
-			if (!level.getBlockState(x, y, z).isOf(Block.SNOW)) {
+			if (!isSnow) {
 				Direction direction = Direction.byId(side);
 				x += direction.getOffsetX();
 				y += direction.getOffsetY();
