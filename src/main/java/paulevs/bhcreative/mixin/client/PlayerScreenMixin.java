@@ -549,7 +549,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private int creative_getMaxIndex() {
-		return Math.max(creative_items.size() - 56, 0) & (~7);
+		return Math.max(creative_items.size() - 56, 0) / 7;
 	}
 	
 	@Unique
