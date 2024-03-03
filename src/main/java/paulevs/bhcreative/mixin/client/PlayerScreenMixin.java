@@ -68,7 +68,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		CreativeTab tab = TabRegistry.getTabByIndex(0);
 		creative_tabKey = tab.getTranslationKey();
 		creative_items = tab.getItems();
-		creative_maxIndex = creative_getMaxIndex();
+		creative_maxIndex = creative_getMaxItemIndex();
 		creative_rowIndex = 0;
 		creative_tabIndex = 0;
 		creative_tabPage = 0;
@@ -388,7 +388,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 				creative_tabIndex = tabX;
 				creative_tabKey = tab.getTranslationKey();
 				creative_items = tab.getItems();
-				creative_maxIndex = creative_getMaxIndex();
+				creative_maxIndex = creative_getMaxItemIndex();
 				creative_rowIndex = 0;
 				creative_slider = 0F;
 				
@@ -414,7 +414,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 					}
 					creative_tabKey = tab.getTranslationKey();
 					creative_items = tab.getItems();
-					creative_maxIndex = creative_getMaxIndex();
+					creative_maxIndex = creative_getMaxItemIndex();
 					
 					return;
 				}
@@ -434,7 +434,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 					}
 					creative_tabKey = tab.getTranslationKey();
 					creative_items = tab.getItems();
-					creative_maxIndex = creative_getMaxIndex();
+					creative_maxIndex = creative_getMaxItemIndex();
 					
 					return;
 				}
@@ -549,7 +549,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	}
 	
 	@Unique
-	private int creative_getMaxIndex() {
+	private int creative_getMaxItemIndex() {
 		return (int) Math.ceil(Math.max(creative_items.size() - 56, 0) / 8.0F) << 3;
 	}
 	
