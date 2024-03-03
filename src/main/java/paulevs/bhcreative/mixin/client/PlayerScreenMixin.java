@@ -521,9 +521,10 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		}
 		if (creative_drag) {
 			int mousePos = (int) mouseY - creative_mouseDelta;
-			creative_slider = (float) mousePos / 109;
-			creative_slider = creative_slider < 0 ? 0 : creative_slider > 1 ? 1 : creative_slider;
-			creative_rowIndex = ((int) (creative_slider * creative_maxIndex) >> 3) << 3;
+			creative_slider = net.modificationstation.stationapi.api.util.math.MathHelper.clamp(
+				(float) mousePos / 109F, 0.0F, 1.0F
+			);
+			creative_rowIndex = (int) ((creative_slider * creative_maxIndex) / 8.0F) << 3;
 			if (creative_rowIndex > creative_maxIndex) {
 				creative_rowIndex = creative_maxIndex;
 			}
@@ -549,7 +550,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private int creative_getMaxIndex() {
-		return Math.max(creative_items.size() - 56, 0) / 7;
+		return Math.max(creative_items.size() - 56, 0);
 	}
 	
 	@Unique
