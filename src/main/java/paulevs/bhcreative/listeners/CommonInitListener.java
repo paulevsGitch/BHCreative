@@ -2,6 +2,7 @@ package paulevs.bhcreative.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
+import net.modificationstation.stationapi.api.event.entity.player.IsPlayerUsingEffectiveToolEvent;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
@@ -26,5 +27,14 @@ public class CommonInitListener {
 	public static void registerPackets(PacketRegisterEvent event){
 		Registry.register(PacketTypeRegistry.INSTANCE, BHCreative.NAMESPACE.id("is_flying"), IsFlyingPacket.TYPE);
 		Registry.register(PacketTypeRegistry.INSTANCE, BHCreative.NAMESPACE.id("update_slot"), SlotUpdatePacket.TYPE);
+	}
+
+	@EventListener
+	public void isUsingEffectiveTool(IsPlayerUsingEffectiveToolEvent event) {
+		if (null != event.player) {
+			if (event.player.creative_isCreative()) {
+				event.resultProvider = () -> false;
+			}
+		}
 	}
 }

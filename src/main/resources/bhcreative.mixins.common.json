@@ -6,7 +6,6 @@
 	"mixins": [
 		"AbstractBlockStateMixin",
 		"LivingEntityAccessor",
-		"PlayerInventoryMixin",
 		"WalkingEntityMixin",
 		"LivingEntityMixin",
 		"PlayerEntityMixin",
