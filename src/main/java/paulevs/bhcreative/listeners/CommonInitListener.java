@@ -12,7 +12,10 @@ import paulevs.bhcreative.util.GrassPlacerItem;
 import paulevs.bhcreative.util.IsFlyingPacket;
 import paulevs.bhcreative.util.SlotUpdatePacket;
 
+import java.util.function.BooleanSupplier;
+
 public class CommonInitListener {
+	private static final BooleanSupplier FALSE = () -> false;
 	public static GrassPlacerItem tallGrass;
 	public static GrassPlacerItem fern;
 	
@@ -31,10 +34,7 @@ public class CommonInitListener {
 
 	@EventListener
 	public void isUsingEffectiveTool(IsPlayerUsingEffectiveToolEvent event) {
-		if (null != event.player) {
-			if (event.player.creative_isCreative()) {
-				event.resultProvider = () -> false;
-			}
-		}
+		if (event.player == null || !event.player.creative_isCreative()) return;
+		event.resultProvider = FALSE;
 	}
 }
