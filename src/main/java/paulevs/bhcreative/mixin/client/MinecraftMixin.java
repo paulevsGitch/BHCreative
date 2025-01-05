@@ -65,11 +65,14 @@ public class MinecraftMixin {
 		PacketHelper.send(new SlotUpdatePacket(selectedSlot, stack));
 	}
 	
-	@Inject(method = "processAttack", at = @At("RETURN"))
-	private void creative_blockBreakDelay(int i, CallbackInfo info) {
-		if (i != 0 || !this.player.creative_isCreative()) return;
-		if (this.hitResult == null || this.hitResult.type != HitType.BLOCK) return;
-		this.attackCooldown = 100;
+	@Inject(method = "processAttack", at = @At(
+		value = "INVOKE",
+		target = "Lnet/minecraft/client/ClientInteractionManager;playerDigBlock(IIII)V",
+		shift = Shift.AFTER
+	))
+	private void creative_blockBreakDelay(int type, CallbackInfo info) {
+		if (!this.player.creative_isCreative()) return;
+		this.attackCooldown = 5;
 	}
 	
 	@Inject(method = "run", at = @At(
