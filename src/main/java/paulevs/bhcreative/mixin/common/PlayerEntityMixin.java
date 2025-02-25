@@ -36,6 +36,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 	@Override
 	public void creative_setCreative(boolean creative) {
 		this.dataTracker.setData(BHCreative.IS_CREATIVE_ID, BHCreative.toByte(creative));
+
+		if (creative) {
+			this.immuneToFire = true;
+		} else {
+			this.immuneToFire = false;
+		}
 	}
 	
 	@Override
