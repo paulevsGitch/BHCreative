@@ -23,7 +23,7 @@ public class CommonInitListener {
 	public void registerItems(ItemRegistryEvent event) {
 		tallGrass = new GrassPlacerItem(BHCreative.id("tall_grass"), 1);
 		fern = new GrassPlacerItem(BHCreative.id("fern"), 2);
-		Block.DEAD_BUSH.setTranslationKey(BHCreative.id("dead_bush").toString());
+		Block.DEAD_BUSH.setTranslationKey(BHCreative.id("dead_bush"));
 	}
 
 	@EventListener
