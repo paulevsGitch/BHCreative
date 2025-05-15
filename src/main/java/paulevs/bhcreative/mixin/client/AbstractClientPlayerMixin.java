@@ -16,13 +16,10 @@ import paulevs.bhcreative.util.IsFlyingPacket;
 
 @Mixin(AbstractClientPlayer.class)
 public abstract class AbstractClientPlayerMixin extends PlayerEntity {
-	@Unique
-	private long creative_timeout;
-	@Unique
-	private boolean creative_debounce;
+	@Unique private long creative_timeout;
+	@Unique private boolean creative_debounce;
 
-	@Shadow
-	protected Minecraft minecraft;
+	@Shadow protected Minecraft minecraft;
 
 	public AbstractClientPlayerMixin(Level arg) {
 		super(arg);
