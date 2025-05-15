@@ -5,7 +5,6 @@ import net.minecraft.entity.living.player.AbstractClientPlayer;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
-import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
