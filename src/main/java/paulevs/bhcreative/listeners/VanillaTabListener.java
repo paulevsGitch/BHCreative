@@ -193,8 +193,8 @@ public class VanillaTabListener {
 	private void initResources(TabRegistryEvent event) {
 		tabResources = new SimpleTab(BHCreative.id("resources"), new ItemStack(Item.ironIngot));
 		event.register(tabResources);
-		
-		addItem(tabResources, "coal");
+
+		addItem(tabResources, "coal", 2);
 		addItem(tabResources, "diamond");
 		addItem(tabResources, "iron_ingot");
 		addItem(tabResources, "gold_ingot");
