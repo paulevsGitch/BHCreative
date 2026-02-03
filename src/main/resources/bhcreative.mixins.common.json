@@ -11,7 +11,8 @@
 		"PlayerEntityMixin",
 		"BucketItemMixin",
 		"ItemStackMixin",
-		"EntityMixin"
+		"EntityMixin",
+		"SpiderEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
