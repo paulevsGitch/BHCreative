@@ -98,6 +98,7 @@ public class VanillaTabListener {
 		addItem(tabOtherBlocks, "rose");
 		addItem(tabOtherBlocks, "brown_mushroom");
 		addItem(tabOtherBlocks, "red_mushroom");
+		addItem(tabOtherBlocks, "sugar_cane");
 		addItem(tabOtherBlocks, "cactus");
 		addItem(tabOtherBlocks, "cobweb");
 		addItem(tabOtherBlocks, "torch");
@@ -151,9 +152,10 @@ public class VanillaTabListener {
 		addItem(tabTools, "iron_hoe");
 		addItem(tabTools, "diamond_hoe");
 		addItem(tabTools, "golden_hoe");
+		addItem(tabTools, "bucket");
+		addItem(tabTools, "water_bucket");
+		addItem(tabTools, "lava_bucket");
 		addItem(tabTools, "fishing_rod");
-		addItem(tabTools, "clock");
-		addItem(tabTools, "compass");
 		addItem(tabTools, "shears");
 	}
 	
@@ -204,6 +206,7 @@ public class VanillaTabListener {
 		addItem(tabResources, "gunpowder");
 		addItem(tabResources, "flint");
 		addItem(tabResources, "redstone");
+		addItem(tabResources, "leather");
 		addItem(tabResources, "brick");
 		addItem(tabResources, "clay_ball");
 		addItem(tabResources, "paper");
@@ -235,22 +238,18 @@ public class VanillaTabListener {
 	}
 	
 	private void initItems(TabRegistryEvent event) {
-		tabItems = new SimpleTab(BHCreative.id("other_items"), new ItemStack(Item.slimeball));
+		tabItems = new SimpleTab(BHCreative.id("other_items"), new ItemStack(Item.clock));
 		event.register(tabItems);
-		
-		addItem(tabItems, "bucket");
-		addItem(tabItems, "water_bucket");
-		addItem(tabItems, "lava_bucket");
+
+		addItem(tabItems, "compass");
+		addItem(tabItems, "clock");
+		addItem(tabItems, "oak_boat");
 		addItem(tabItems, "minecart");
 		addItem(tabItems, "chest_minecart");
 		addItem(tabItems, "furnace_minecart");
 		addItem(tabItems, "saddle");
 		addItem(tabItems, "snowball");
-		addItem(tabItems, "oak_boat");
-		addItem(tabItems, "leather");
-		addItem(tabItems, "sugar_cane");
 		addItem(tabItems, "book");
-		addItem(tabItems, "compass");
 		addItem(tabItems, "dye", 16);
 		addItem(tabItems, "map");
 		addItem(tabItems, "music_disc_13");

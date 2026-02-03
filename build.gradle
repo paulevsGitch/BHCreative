@@ -64,6 +64,9 @@ dependencies {
 	implementation "blue.endless:jankson:1.2.1"
 
 	modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+	modImplementation("maven.modrinth:retrocommands:${project.retrocommands_version}") {
+		transitive false
+	}
 }
 
 processResources {
