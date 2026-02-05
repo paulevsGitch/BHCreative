@@ -1,18 +1,9 @@
 pluginManagement {
     repositories {
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'Babric'
-            url = 'https://maven.glass-launcher.net/babric'
-        }
-		maven {
-            name = "Jitpack"
-            url "https://jitpack.io/"
-        }
-        mavenCentral()
+        maven{ url = "https://maven.fabricmc.net/"}
+        maven{ url = "https://maven.ornithemc.net/releases"}
+        maven{ url = "https://maven.ornithemc.net/snapshots"}
+        mavenLocal()
         gradlePluginPortal()
     }
 }

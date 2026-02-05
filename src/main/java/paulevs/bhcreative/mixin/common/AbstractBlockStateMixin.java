@@ -1,8 +1,8 @@
 package paulevs.bhcreative.mixin.common;
 
-import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.level.BlockView;
-import net.minecraft.util.maths.BlockPos;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.modificationstation.stationapi.api.block.AbstractBlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

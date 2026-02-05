@@ -1,13 +1,14 @@
 plugins {
-	id 'fabric-loom' version '1.8.12'
-	id 'babric-loom-extension' version '1.8.9'
+	id 'net.fabricmc.fabric-loom-remap' version '1.15.+'
+	id 'ploceus' version '1.15-SNAPSHOT'
 	id "maven-publish"
 }
+ploceus {
+	setIntermediaryGeneration(2)
+}
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
 
-archivesBaseName = project.archives_base_name
+
 version = project.mod_version
 group = project.maven_group
 
@@ -15,56 +16,53 @@ loom {
 	mixin {
 		useLegacyMixinAp = true
 	}
-	customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
-	intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
 }
-
 repositories {
-	maven {
-		name = "Babric"
-		url = "https://maven.glass-launcher.net/babric"
-	}
-	maven {
-		name = "Glass Releases"
-		url = "https://maven.glass-launcher.net/releases"
-	}
-	maven {
-		name = "Glass Snapshots"
-		url = "https://maven.glass-launcher.net/snapshots"
-	}
-	maven {
-		name = "Froge"
-		url "https://maven.minecraftforge.net/"
-	}
-	maven {
-		name = "Jitpack"
-		url = "https://jitpack.io"
-	}
+	mavenLocal()
+	maven { url = 'https://mvn.devos.one/releases' }
+	maven { url = "https://maven.glass-launcher.net/releases" }
+	maven { url = "https://maven.glass-launcher.net/babric" }
+	maven { url = "https://maven.glass-launcher.net/snapshots" }
+	maven { url = "https://maven.ornithemc.net/releases" }
+	maven { url = "https://matthewperiut.github.io/repository" }
+	maven { url = "https://jitpack.io/" }
+	maven { url = "https://maven.minecraftforge.net/" }
+	mavenCentral()
 	exclusiveContent {
 		forRepository {
-			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
-			}
+			maven{ url = "https://api.modrinth.com/maven" }
 		}
 		filter {
-			includeGroup "maven.modrinth"
+			includeGroup("maven.modrinth")
 		}
 	}
-	mavenCentral()
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "com.github.paulevsGitch:BIN-Mappings-BH:${project.mappings}"
-	modImplementation "babric:fabric-loader:${project.loader_version}"
+	mappings(ploceus.mappings("net.glasslauncher:biny-ornithe:b1.7.3+build.${project.biny_mappings}:mergedv2"))
+
+	clientExceptions ploceus.raven(project.client_raven_build, 'client')
+	serverExceptions ploceus.raven(project.server_raven_build, 'server')
+	clientSignatures ploceus.sparrow(project.client_sparrow_build, 'client')
+	serverSignatures ploceus.sparrow(project.server_sparrow_build, 'server')
+	"clientNests"("net.glasslauncher:biny-nests:b1.7.3-client+build.2")
+	"serverNests"("net.glasslauncher:biny-nests:b1.7.3-server+build.2")
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
 	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
 	implementation "blue.endless:jankson:1.2.1"
 
 	modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+
+	modImplementation "com.periut:starac:${project.starac_version}"
 }
+// Exclude Legacy Fabric LWJGL 2 wrapper (starac provides LWJGL 3)
+configurations.configureEach {
+	exclude group: 'org.lwjgl.lwjgl'
+}
+
 
 processResources {
 	inputs.property "version", project.version
@@ -75,7 +73,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {

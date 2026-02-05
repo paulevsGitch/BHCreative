@@ -37,16 +37,16 @@ public class BlockSelectAPI {
 	}
 	
 	static {
-		registerConverter(Block.SUGAR_CANES, Item.sugarCanes);
-		registerConverter(Block.WOOD_DOOR, Item.woodDoor);
-		registerConverter(Block.IRON_DOOR, Item.ironDoor);
-		registerConverter(Block.REDSTONE_TORCH, Block.REDSTONE_TORCH_LIT);
-		registerConverter(Block.REDSTONE_ORE_LIT, Block.REDSTONE_ORE);
-		registerConverter(Block.FURNACE_LIT, Block.FURNACE);
-		registerConverter(Block.STANDING_SIGN, Item.sign);
-		registerConverter(Block.WALL_SIGN, Item.sign);
-		registerConverter(Block.DOUBLE_STONE_SLAB, (state, meta) -> {
-			Item item = Block.STONE_SLAB.asItem();
+		registerConverter(Block.SUGAR_CANE, Item.SUGAR_CANE);
+		registerConverter(Block.DOOR, Item.WOODEN_DOOR);
+		registerConverter(Block.IRON_DOOR, Item.IRON_DOOR);
+		registerConverter(Block.REDSTONE_TORCH, Block.LIT_REDSTONE_TORCH);
+		registerConverter(Block.LIT_REDSTONE_ORE, Block.REDSTONE_ORE);
+		registerConverter(Block.LIT_FURNACE, Block.FURNACE);
+		registerConverter(Block.SIGN, Item.SIGN);
+		registerConverter(Block.WALL_SIGN, Item.SIGN);
+		registerConverter(Block.DOUBLE_SLAB, (state, meta) -> {
+			Item item = Block.SLAB.asItem();
 			return new ItemStack(item, 1, meta & 3);
 		});
 		registerConverter(Block.LEAVES, (state, meta) -> {
@@ -61,7 +61,7 @@ public class BlockSelectAPI {
 			Item item = Block.SAPLING.asItem();
 			return new ItemStack(item, 1, meta & 3);
 		});
-		registerConverter(Block.TALL_GRASS, (state, meta) -> {
+		registerConverter(Block.GRASS, (state, meta) -> {
 			Item item = CommonInitListener.tallGrass;
 			switch (meta & 3) {
 				case 0 -> item = Block.DEAD_BUSH.asItem();

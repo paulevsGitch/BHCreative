@@ -1,8 +1,8 @@
 package paulevs.bhcreative.mixin.client;
 
-import net.minecraft.level.LevelProperties;
-import net.minecraft.level.storage.LevelMetadata;
-import net.minecraft.util.io.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.world.WorldProperties;
+import net.minecraft.world.storage.WorldSaveInfo;
 import net.modificationstation.stationapi.impl.world.storage.FlattenedWorldStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,13 +18,13 @@ import java.util.List;
 @Mixin(FlattenedWorldStorage.class)
 public class FlattenedWorldStorageMixin {
 	@SuppressWarnings("rawtypes")
-	@Inject(method = "getMetadata", at = @At(
+	@Inject(method = "getAll", at = @At(
 		value = "INVOKE",
 		target = "Ljava/util/ArrayList;add(Ljava/lang/Object;)Z",
 		shift = Shift.AFTER
 	), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void creative_setMetadata(CallbackInfoReturnable<List> info, ArrayList worlds, File[] var2, int var3, int var4, File worldPath, String worldFolder, LevelProperties data, CompoundTag worldTag, boolean requiresUpdating, String worldName) {
-		LevelMetadata meta = (LevelMetadata) worlds.get(worlds.size() - 1);
+	private void creative_setMetadata(CallbackInfoReturnable<List> info, ArrayList worlds, File[] var2, int var3, int var4, File worldPath, String worldFolder, WorldProperties data, NbtCompound worldTag, boolean requiresUpdating, String worldName) {
+		WorldSaveInfo meta = (WorldSaveInfo) worlds.get(worlds.size() - 1);
 		boolean isCreative = data.creative_isCreative();
 		meta.creative_setCreative(isCreative);
 	}

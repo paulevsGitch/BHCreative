@@ -1,57 +1,52 @@
 {
-	"schemaVersion": 1,
-	"id": "bhcreative",
-	"version": "${version}",
-
-	"name": "BHCreative",
-	"description": "Simple creative mode with API",
-	"authors": [
-		"paulevs"
-	],
-	"contact": {
-		"homepage": "https://github.com/paulevsGitch/BHCreative/releases",
-		"sources": "https://github.com/paulevsGitch/BHCreative",
-		"issues": "https://github.com/paulevsGitch/BHCreative/issues",
-		"discord": "https://discord.gg/qxcP8EjkUC"
-	},
-
-	"license": "MIT",
-	"icon": "assets/bhcreative/icon.png",
-
-	"environment": "*",
-	"entrypoints": {
-		"stationapi:event_bus_client": [
-			"paulevs.bhcreative.listeners.ClientInitListener"
-		],
-		"stationapi:event_bus": [
-			"paulevs.bhcreative.listeners.CommonInitListener"
-		],
-		"bhcreative:event_bus": [
-			"paulevs.bhcreative.listeners.VanillaTabListener"
-		]
-	},
-	"mixins": [
-		"bhcreative.mixins.common.json",
-		"bhcreative.mixins.client.json",
-		"bhcreative.mixins.server.json"
-	],
-
-	"depends": {
-		"minecraft": "1.0.0-beta.7.3",
-		"stationapi": ">=2.0-alpha.4"
-	},
-	
-	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/class_54": [
-				"paulevs/bhcreative/interfaces/CreativePlayer"
-			],
-			"net/minecraft/class_591": [
-				"paulevs/bhcreative/interfaces/CreativeLevel"
-			],
-			"net/minecraft/class_7": [
-				"paulevs/bhcreative/interfaces/CreativeLevel"
-			]
-		}
-	}
+  "authors": [
+    "paulevs"
+  ],
+  "contact": {
+    "discord": "https://discord.gg/qxcP8EjkUC",
+    "homepage": "https://github.com/paulevsGitch/BHCreative/releases",
+    "issues": "https://github.com/paulevsGitch/BHCreative/issues",
+    "sources": "https://github.com/paulevsGitch/BHCreative"
+  },
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/unmapped/C_40996800": [
+        "paulevs/bhcreative/interfaces/CreativePlayer"
+      ],
+      "net/minecraft/unmapped/C_64676926": [
+        "paulevs/bhcreative/interfaces/CreativeLevel"
+      ],
+      "net/minecraft/unmapped/C_87007645": [
+        "paulevs/bhcreative/interfaces/CreativeLevel"
+      ]
+    }
+  },
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3",
+    "stationapi": ">=2.0-alpha.4"
+  },
+  "description": "Simple creative mode with API",
+  "entrypoints": {
+    "bhcreative:event_bus": [
+      "paulevs.bhcreative.listeners.VanillaTabListener"
+    ],
+    "stationapi:event_bus": [
+      "paulevs.bhcreative.listeners.CommonInitListener"
+    ],
+    "stationapi:event_bus_client": [
+      "paulevs.bhcreative.listeners.ClientInitListener"
+    ]
+  },
+  "environment": "*",
+  "icon": "assets/bhcreative/icon.png",
+  "id": "bhcreative",
+  "license": "MIT",
+  "mixins": [
+    "bhcreative.mixins.common.json",
+    "bhcreative.mixins.client.json",
+    "bhcreative.mixins.server.json"
+  ],
+  "name": "BHCreative",
+  "schemaVersion": 1,
+  "version": "${version}"
 }
