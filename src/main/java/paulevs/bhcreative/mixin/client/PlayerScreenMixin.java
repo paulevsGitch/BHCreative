@@ -1,17 +1,16 @@
 package paulevs.bhcreative.mixin.client;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.screen.container.ContainerScreen;
-import net.minecraft.client.gui.screen.container.PlayerScreen;
-import net.minecraft.client.render.RenderHelper;
-import net.minecraft.client.render.entity.ItemRenderer;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.platform.Lighting;
 import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.container.Container;
-import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.inventory.PlayerInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.maths.MCMath;
+import net.minecraft.screen.ScreenHandler;
 import net.modificationstation.stationapi.api.client.item.CustomTooltipProvider;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.util.math.MathHelper;
@@ -33,8 +32,8 @@ import paulevs.bhcreative.util.SlotUpdatePacket;
 
 import java.util.List;
 
-@Mixin(PlayerScreen.class)
-public abstract class PlayerScreenMixin extends ContainerScreen {
+@Mixin(InventoryScreen.class)
+public abstract class PlayerScreenMixin extends HandledScreen {
 	@Unique private static final int CREATIVE_COLOR_FILLER = MHelper.getColor(198, 198, 198, 128);
 	@Unique private static final ItemRenderer CREATIVE_ITEM_RENDERER = new ItemRenderer();
 	@Unique private static final String CREATIVE_KEY_INVENTORY = "title.bhcreative.selectGame.inventory";
@@ -60,14 +59,14 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	@Shadow private float mouseX;
 	@Shadow private float mouseY;
 	
-	public PlayerScreenMixin(Container container) {
+	public PlayerScreenMixin(ScreenHandler container) {
 		super(container);
 	}
 	
-	@Inject(method = "<init>(Lnet/minecraft/entity/living/player/PlayerEntity;)V", at = @At("TAIL"))
+	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;)V", at = @At("TAIL"))
 	private void creative_initPlayerInventory(PlayerEntity player, CallbackInfo info) {
-		creative_creativeIcon = new ItemStack(Item.diamond);
-		creative_survivalIcon = new ItemStack(Block.WORKBENCH);
+		creative_creativeIcon = new ItemStack(Item.DIAMOND);
+		creative_survivalIcon = new ItemStack(Block.CRAFTING_TABLE);
 		CreativeTab tab = TabRegistry.getTabByIndex(0);
 		creative_tabKey = tab.getTranslationKey();
 		creative_items = tab.getItems();
@@ -79,7 +78,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		creative_pagesCount = (int) Math.ceil(TabRegistry.getTabsCount() / 7.0F);
 	}
 	
-	@Inject(method = "renderContainerBackground(F)V", at = @At(
+	@Inject(method = "drawBackground(F)V", at = @At(
 		value = "INVOKE",
 		target = "Lorg/lwjgl/opengl/GL11;glDisable(I)V",
 		remap = false,
@@ -94,13 +93,13 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.textureManager.bindTexture(texture);
 		
-		int posX = (this.width - this.containerWidth) / 2;
-		int posY = (this.height - this.containerHeight) / 2;
-		this.blit(posX + 173, posY + 138, 176, 32, 25, 24);
+		int posX = (this.width - this.backgroundWidth) / 2;
+		int posY = (this.height - this.backgroundHeight) / 2;
+		this.drawTexture(posX + 173, posY + 138, 176, 32, 25, 24);
 		
 		GL11.glPushMatrix();
 		GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-		RenderHelper.enableLighting();
+		Lighting.turnOn();
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -108,7 +107,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		creative_renderItem(creative_creativeIcon, posX + 173 + 4, posY + 114 + 4);
 		creative_renderItem(creative_survivalIcon, posX + 173 + 4, posY + 138 + 4);
 		
-		RenderHelper.disableLighting();
+		Lighting.turnOff();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		int tabX = (int) mouseX - posX - 173;
@@ -123,55 +122,55 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		}
 	}
 	
-	@Inject(method = "renderContainerBackground", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "drawBackground", at = @At("HEAD"), cancellable = true)
 	private void creative_renderBackgroundStart(float delta, CallbackInfo info) {
 		if (!creative_isInCreative()) {
 			return;
 		}
 		
-		int posX = (this.width - this.containerWidth) / 2;
-		int posY = (this.height - this.containerHeight) / 2;
+		int posX = (this.width - this.backgroundWidth) / 2;
+		int posY = (this.height - this.backgroundHeight) / 2;
 		
 		int texture = this.minecraft.textureManager.getTextureId("/assets/bhcreative/textures/gui/creative_list.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.textureManager.bindTexture(texture);
 		
 		if (creative_normalGUI) {
-			this.blit(posX + 173, posY + 114, 176, 32, 25, 24); // Survival
+			this.drawTexture(posX + 173, posY + 114, 176, 32, 25, 24); // Survival
 		}
 		else {
 			PlayerInventory inventory = this.minecraft.player.inventory;
 			
 			for (int i = 0; i < creative_maxTabIndex; i++) {
 				if (i != creative_tabIndex) {
-					this.blit(posX + 4 + i * 24, posY - 21, 176, 0, 24, 24);
+					this.drawTexture(posX + 4 + i * 24, posY - 21, 176, 0, 24, 24);
 				}
 			}
 			
-			this.blit(posX + 173, posY + 138, 176, 32, 25, 24);
-			this.blit(posX, posY, 0, 0, this.containerWidth, this.containerHeight);
-			this.blit(posX + 173, posY + 114, 176, 32, 25, 24);
+			this.drawTexture(posX + 173, posY + 138, 176, 32, 25, 24);
+			this.drawTexture(posX, posY, 0, 0, this.backgroundWidth, this.backgroundHeight);
+			this.drawTexture(posX + 173, posY + 114, 176, 32, 25, 24);
 			
-			this.blit(posX + 150, posY + 4, 208, 0, 9, 8);
+			this.drawTexture(posX + 150, posY + 4, 208, 0, 9, 8);
 			if (creative_tabPage == 0) {
 				this.fill(posX + 150, posY + 4, posX + 150 + 9, posY + 4 + 8, CREATIVE_COLOR_FILLER);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
-			this.blit(posX + 160, posY + 4, 208, 8, 9, 8);
+			this.drawTexture(posX + 160, posY + 4, 208, 8, 9, 8);
 			if (creative_tabPage >= creative_pagesCount - 1) {
 				this.fill(posX + 160, posY + 4, posX + 160 + 9, posY + 4 + 8, CREATIVE_COLOR_FILLER);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			
 			int sliderX = posX + 154;
-			int sliderY = posY + 14 + MCMath.floor(creative_slider * 109);
-			this.blit(sliderX, sliderY, 240, 1, 14, 15);
+			int sliderY = posY + 14 + net.minecraft.util.math.MathHelper.floor(creative_slider * 109);
+			this.drawTexture(sliderX, sliderY, 240, 1, 14, 15);
 			
-			this.blit(posX + 4 + creative_tabIndex * 24, posY - 21, 176, 0, 24, 24);
+			this.drawTexture(posX + 4 + creative_tabIndex * 24, posY - 21, 176, 0, 24, 24);
 			
 			GL11.glPushMatrix();
 			GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-			RenderHelper.enableLighting();
+			Lighting.turnOn();
 			GL11.glPopMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -204,14 +203,14 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 				creative_renderItem(item, x, y);
 			}
 			
-			RenderHelper.disableLighting();
+			Lighting.turnOff();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			String translated = creative_translate(creative_tabKey);
-			this.textManager.drawText(translated, posX + 8, posY + 5, 0x373737);
+			this.textRenderer.draw(translated, posX + 8, posY + 5, 0x373737);
 			
-			int slotX = MCMath.floor((mouseX - posX - 8) / 18);
+			int slotX = net.minecraft.util.math.MathHelper.floor((mouseX - posX - 8) / 18);
 			if (slotX >= 0) {
-				int slotY = MCMath.floor((mouseY - posY - 14) / 18);
+				int slotY = net.minecraft.util.math.MathHelper.floor((mouseY - posY - 14) / 18);
 				if (slotX < 8 && slotY >= 0 && slotY < 7) {
 					int x = slotX * 18 + posX + 8;
 					int y = slotY * 18 + posY + 14;
@@ -219,16 +218,16 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 					
 					int index = slotY * 8 + slotX + creative_rowIndex;
 					ItemStack item = index < creative_items.size() ? creative_items.get(index) : null;
-					RenderHelper.disableLighting();
+					Lighting.turnOff();
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					creative_renderName(item);
 				}
-				slotY = MCMath.floor((mouseY - posY - 142) / 18);
+				slotY = net.minecraft.util.math.MathHelper.floor((mouseY - posY - 142) / 18);
 				if (slotX < 9 && slotY == 0) {
 					int x = slotX * 18 + posX + 8;
 					int y = posY + 142;
 					creative_renderSlotOverlay(x, y);
-					RenderHelper.disableLighting();
+					Lighting.turnOff();
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					creative_renderName(inventory.main[slotX]);
 				}
@@ -264,7 +263,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		if (item == null) return;
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		String name = creative_translate_2(item.getTranslationKey());
-		if (item.getType() instanceof CustomTooltipProvider provider) {
+		if (item.getItem() instanceof CustomTooltipProvider provider) {
 			String[] tooltip = provider.getTooltip(item, name);
 			creative_renderStrings(tooltip);
 		}
@@ -282,9 +281,9 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		
 		int x = (int) mouseX + 12;
 		int y = (int) mouseY - 12;
-		int width = this.textManager.getTextWidth(string);
+		int width = this.textRenderer.getWidth(string);
 		this.fillGradient(x - 3, y - 3, x + width + 3, y + 8 + 3, -1073741824, -1073741824);
-		this.textManager.drawTextWithShadow(string, x, y, -1);
+		this.textRenderer.drawWithShadow(string, x, y, -1);
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
@@ -298,20 +297,20 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		int width = 0;
 		
 		for (String line : strings) {
-			width = Math.max(width, this.textManager.getTextWidth(line));
+			width = Math.max(width, this.textRenderer.getWidth(line));
 		}
 		
 		this.fillGradient(x - 3, y - 3, x + width + 3, y + 8 + 3 + (strings.length - 1) * 12, -1073741824, -1073741824);
 		
 		for (int i = 0; i < strings.length; i++) {
-			this.textManager.drawTextWithShadow(strings[i], x, y + i * 12, -1);
-			width = Math.max(width, this.textManager.getTextWidth(strings[i]));
+			this.textRenderer.drawWithShadow(strings[i], x, y + i * 12, -1);
+			width = Math.max(width, this.textRenderer.getWidth(strings[i]));
 		}
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 	
-	@Inject(method = "renderForeground", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "drawForeground", at = @At("HEAD"), cancellable = true)
 	private void creative_renderForeground(CallbackInfo info) {
 		if (creative_isInCreative() && !creative_normalGUI) {
 			info.cancel();
@@ -328,8 +327,8 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 		if (instance == null) {
 			return;
 		}
-		CREATIVE_ITEM_RENDERER.renderStackInGUI(this.textManager, this.minecraft.textureManager, instance, x, y);
-		CREATIVE_ITEM_RENDERER.renderStackInGUIWithDamage(this.textManager, this.minecraft.textureManager, instance, x, y);
+		CREATIVE_ITEM_RENDERER.renderGuiItem(this.textRenderer, this.minecraft.textureManager, instance, x, y);
+		CREATIVE_ITEM_RENDERER.renderGuiItemDecoration(this.textRenderer, this.minecraft.textureManager, instance, x, y);
 	}
 	
 	@Unique
@@ -347,13 +346,13 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			creative_mouseScroll();
 			
 			this.renderBackground();
-			int posX = (this.width - this.containerWidth) / 2;
-			int posY = (this.height - this.containerHeight) / 2;
-			this.renderContainerBackground(delta);
+			int posX = (this.width - this.backgroundWidth) / 2;
+			int posY = (this.height - this.backgroundHeight) / 2;
+			this.drawBackground(delta);
 			
 			GL11.glPushMatrix();
 			GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-			RenderHelper.enableLighting();
+			Lighting.turnOn();
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
@@ -362,17 +361,17 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	
 			PlayerInventory inventory = this.minecraft.player.inventory;
-			if (inventory.getCursorItem() != null) {
+			if (inventory.getCursorStack() != null) {
 				GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-				CREATIVE_ITEM_RENDERER.renderStackInGUI(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
-				CREATIVE_ITEM_RENDERER.renderStackInGUIWithDamage(this.textManager, this.minecraft.textureManager, inventory.getCursorItem(), mouseX - posX - 8, mouseY - posY - 8);
+				CREATIVE_ITEM_RENDERER.renderGuiItem(this.textRenderer, this.minecraft.textureManager, inventory.getCursorStack(), mouseX - posX - 8, mouseY - posY - 8);
+				CREATIVE_ITEM_RENDERER.renderGuiItemDecoration(this.textRenderer, this.minecraft.textureManager, inventory.getCursorStack(), mouseX - posX - 8, mouseY - posY - 8);
 			}
 	
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-			RenderHelper.disableLighting();
+			Lighting.turnOff();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			this.renderForeground();
+			this.drawForeground();
 	
 			GL11.glPopMatrix();
 			GL11.glEnable(GL11.GL_LIGHTING);
@@ -387,8 +386,8 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
 		if (creative_isInCreative()) {
-			int posX = (this.width - this.containerWidth) / 2;
-			int posY = (this.height - this.containerHeight) / 2;
+			int posX = (this.width - this.backgroundWidth) / 2;
+			int posY = (this.height - this.backgroundHeight) / 2;
 			
 			int tabX = mouseX - posX - 173;
 			int tabY = mouseY - posY - 114;
@@ -470,37 +469,37 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 			}
 			
 			int sliderX = mouseX - posX - 154;
-			int sliderY = mouseY - posY - 14 - MCMath.floor(creative_slider * 109);
+			int sliderY = mouseY - posY - 14 - net.minecraft.util.math.MathHelper.floor(creative_slider * 109);
 			if (sliderX > 0 && sliderX < 14 && sliderY > 0 && sliderY < 15) {
 				creative_mouseDelta = posY + 14 + sliderY;
 				creative_drag = true;
 				return;
 			}
 			
-			int slotX = MCMath.floor((mouseX - posX - 8) / 18F);
-			int slotY = MCMath.floor((mouseY - posY - 14) / 18F);
+			int slotX = net.minecraft.util.math.MathHelper.floor((mouseX - posX - 8) / 18F);
+			int slotY = net.minecraft.util.math.MathHelper.floor((mouseY - posY - 14) / 18F);
 			
 			PlayerInventory inventory = this.minecraft.player.inventory;
 			if (slotY >= 0 && slotY < 7 && slotX >= 0 && slotX < 8) {
 				int index = slotY * 8 + slotX + creative_rowIndex;
-				ItemStack cursor = inventory.getCursorItem();
+				ItemStack cursor = inventory.getCursorStack();
 				if (index < creative_items.size()) {
 					ItemStack item = creative_items.get(index);
-					boolean isSame = cursor != null && item != null && cursor.isDamageAndIDIdentical(item);
+					boolean isSame = cursor != null && item != null && cursor.isItemEqual(item);
 					if (item != null && button == 2) {
 						cursor = item.copy();
-						cursor.count = cursor.getMaxStackSize();
-						inventory.setCursorItem(cursor);
+						cursor.count = cursor.getMaxCount();
+						inventory.setCursorStack(cursor);
 						creative_updateInventory(inventory);
 						return;
 					}
 					else if (item != null && (cursor == null || isSame)) {
 						if (button == 0) {
 							if (isSame) {
-								if (cursor.count < cursor.getMaxStackSize()) cursor.count++;
+								if (cursor.count < cursor.getMaxCount()) cursor.count++;
 							}
 							else {
-								inventory.setCursorItem(item.copy());
+								inventory.setCursorStack(item.copy());
 								creative_updateInventory(inventory);
 							}
 						}
@@ -508,10 +507,10 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 					}
 				}
 				if (button == 1 && cursor != null && cursor.count > 1) {
-					inventory.getCursorItem().count--;
+					inventory.getCursorStack().count--;
 				}
 				else {
-					inventory.setCursorItem(null);
+					inventory.setCursorStack(null);
 					creative_updateInventory(inventory);
 				}
 				return;
@@ -540,7 +539,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private void creative_updateInventory(PlayerInventory inventory) {
-		PacketHelper.send(new SlotUpdatePacket(-1, inventory.getCursorItem()));
+		PacketHelper.send(new SlotUpdatePacket(-1, inventory.getCursorStack()));
 	}
 	
 	@Unique
@@ -582,7 +581,7 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	
 	@Unique
 	private void creative_playSound() {
-		this.minecraft.soundHelper.playSound("random.click", 1.0F, 1.0F);
+		this.minecraft.soundManager.playSound("random.click", 1.0F, 1.0F);
 	}
 	
 	@Unique
@@ -601,13 +600,13 @@ public abstract class PlayerScreenMixin extends ContainerScreen {
 	@Unique
 	private String creative_translate(String key) {
 		if (key == null) return "null";
-		return TranslationStorage.getInstance().translate(key, key);
+		return TranslationStorage.getInstance().get(key, key);
 	}
 	
 	@Unique
 	private String creative_translate_2(String key) {
 		if (key == null) return "null";
-		String translated = TranslationStorage.getInstance().method_995(key);
+		String translated = TranslationStorage.getInstance().getClientTranslation(key);
 		return translated.isEmpty() ? key : translated;
 	}
 }

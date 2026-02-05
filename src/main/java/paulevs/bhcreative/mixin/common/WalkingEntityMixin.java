@@ -1,22 +1,22 @@
 package paulevs.bhcreative.mixin.common;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.living.WalkingEntity;
-import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WalkingEntity.class)
+@Mixin(MobEntity.class)
 public class WalkingEntityMixin {
-	@Shadow protected Entity entity;
+	@Shadow protected Entity target;
 	
-	@Inject(method = "tickHandSwing()V", at = @At("RETURN"))
+	@Inject(method = "tickLiving()V", at = @At("RETURN"))
 	protected void tickHandSwing(CallbackInfo info) {
-		if (entity instanceof PlayerEntity player && player.creative_isCreative()) {
-			entity = null;
+		if (target instanceof PlayerEntity player && player.creative_isCreative()) {
+			target = null;
 		}
 	}
 }

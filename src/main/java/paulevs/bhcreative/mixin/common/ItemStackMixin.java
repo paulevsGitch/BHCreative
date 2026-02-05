@@ -1,9 +1,9 @@
 package paulevs.bhcreative.mixin.common;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.level.Level;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,7 +20,7 @@ public class ItemStackMixin {
 	@Shadow private int damage;
 	
 	@Inject(method = "useOnBlock", at = @At("HEAD"))
-	private void creative_beforeUseOnBlock(PlayerEntity player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
+	private void creative_beforeUseOnBlock(PlayerEntity player, World arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
 		if (player.creative_isCreative()) {
 			creative_count = count;
 			creative_damage = damage;
@@ -28,7 +28,7 @@ public class ItemStackMixin {
 	}
 	
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	private void creative_afterUseOnBlock(PlayerEntity player, Level arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
+	private void creative_afterUseOnBlock(PlayerEntity player, World arg2, int i, int j, int k, int l, CallbackInfoReturnable<Boolean> info) {
 		if (player.creative_isCreative()) {
 			count = creative_count;
 			damage = creative_damage;
@@ -36,7 +36,7 @@ public class ItemStackMixin {
 	}
 	
 	@Inject(method = "use", at = @At("HEAD"))
-	private void creative_beforeUse(Level level, PlayerEntity player, CallbackInfoReturnable<ItemStack> info) {
+	private void creative_beforeUse(World level, PlayerEntity player, CallbackInfoReturnable<ItemStack> info) {
 		if (player.creative_isCreative()) {
 			creative_count = count;
 			creative_damage = damage;
@@ -44,14 +44,14 @@ public class ItemStackMixin {
 	}
 	
 	@Inject(method = "use", at = @At("RETURN"))
-	private void creative_afterUse(Level level, PlayerEntity player, CallbackInfoReturnable<ItemStack> info) {
+	private void creative_afterUse(World level, PlayerEntity player, CallbackInfoReturnable<ItemStack> info) {
 		if (player.creative_isCreative()) {
 			count = creative_count;
 			damage = creative_damage;
 		}
 	}
 	
-	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
 	private void creative_applyDamage(int damage, Entity entity, CallbackInfo info) {
 		if (!(entity instanceof PlayerEntity player)) return;
 		if (!player.creative_isCreative()) return;

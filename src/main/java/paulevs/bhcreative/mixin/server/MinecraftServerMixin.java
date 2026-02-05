@@ -11,14 +11,14 @@ import paulevs.bhcreative.BHCreative;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-	@Shadow public ServerProperties serverProperties;
+	@Shadow public ServerProperties properties;
 	
-	@Inject(method = "start", at = @At(
+	@Inject(method = "init", at = @At(
 		value = "FIELD",
-		target = "Lnet/minecraft/server/MinecraftServer;allowFlight:Z"
+		target = "Lnet/minecraft/server/MinecraftServer;flightEnabled:Z"
 	))
 	private void creative_onServerStart(CallbackInfoReturnable<Boolean> info) {
-		int gamemode = this.serverProperties.getInteger("default-gamemode", 0);
+		int gamemode = this.properties.getProperty("default-gamemode", 0);
 		BHCreative.serverIsCreative = gamemode > 0;
 	}
 }

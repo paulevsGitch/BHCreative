@@ -1,11 +1,11 @@
 package paulevs.bhcreative.mixin.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.living.player.AbstractClientPlayer;
-import net.minecraft.inventory.PlayerInventory;
+import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
@@ -23,17 +23,17 @@ import paulevs.bhcreative.util.SlotUpdatePacket;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-	@Shadow public AbstractClientPlayer player;
-	@Shadow public HitResult hitResult;
-	@Shadow public Level level;
+	@Shadow public ClientPlayerEntity player;
+	@Shadow public HitResult crosshairTarget;
+	@Shadow public World world;
 	@Shadow private int attackCooldown;
 	
-	@Inject(method = "pickupHitBlock", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "handlePickBlock", at = @At("HEAD"), cancellable = true)
 	private void creative_setMouseButtonItem(CallbackInfo info) {
-		if (!this.player.creative_isCreative() || this.hitResult == null) return;
+		if (!this.player.creative_isCreative() || this.crosshairTarget == null) return;
 		
-		BlockState state = level.getBlockState(this.hitResult.x, this.hitResult.y, this.hitResult.z);
-		int meta = level.getBlockMeta(this.hitResult.x, this.hitResult.y, this.hitResult.z);
+		BlockState state = world.getBlockState(this.crosshairTarget.blockX, this.crosshairTarget.blockY, this.crosshairTarget.blockZ);
+		int meta = world.getBlockMeta(this.crosshairTarget.blockX, this.crosshairTarget.blockY, this.crosshairTarget.blockZ);
 		ItemStack stack = BlockSelectAPI.convert(state, meta);
 		
 		if (stack == null) return;
@@ -42,11 +42,11 @@ public class MinecraftMixin {
 		
 		info.cancel();
 		
-		int selectedSlot = inventory.selectedHotbarSlot;
+		int selectedSlot = inventory.selectedSlot;
 		boolean selectEmpty = true;
 		
 		for (byte slot = 0; slot < 9; slot++) {
-			ItemStack itemInv = inventory.getItem(slot);
+			ItemStack itemInv = inventory.getStack(slot);
 			if (itemInv == null) {
 				if (selectEmpty) {
 					selectedSlot = slot;
@@ -54,19 +54,19 @@ public class MinecraftMixin {
 				}
 			}
 			else if (itemInv.itemId == stack.itemId && itemInv.getDamage() == stack.getDamage()) {
-				inventory.selectedHotbarSlot = slot;
+				inventory.selectedSlot = slot;
 				return;
 			}
 		}
 		
-		inventory.selectedHotbarSlot = selectedSlot;
-		inventory.setItem(selectedSlot, stack);
+		inventory.selectedSlot = selectedSlot;
+		inventory.setStack(selectedSlot, stack);
 		PacketHelper.send(new SlotUpdatePacket(selectedSlot, stack));
 	}
 	
-	@Inject(method = "processAttack", at = @At(
+	@Inject(method = "handleMouseClick", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/client/ClientInteractionManager;playerDigBlock(IIII)V",
+		target = "Lnet/minecraft/client/InteractionManager;attackBlock(IIII)V",
 		shift = Shift.AFTER
 	))
 	private void creative_blockBreakDelay(int type, CallbackInfo info) {

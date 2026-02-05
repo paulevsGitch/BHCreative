@@ -1,9 +1,9 @@
 package paulevs.bhcreative.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.level.Level;
+import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.item.BlockStateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
@@ -12,13 +12,13 @@ public class GrassPlacerItem extends BlockStateItem {
 	private final int meta;
 	
 	public GrassPlacerItem(Identifier identifier, int meta) {
-		super(identifier, Block.TALL_GRASS.getDefaultState());
+		super(identifier, Block.GRASS.getDefaultState());
 		setTranslationKey(identifier);
 		this.meta = meta;
 	}
 	
 	@Override
-	public boolean useOnBlock(ItemStack item, PlayerEntity player, Level level, int x, int y, int z, int side) {
+	public boolean useOnBlock(ItemStack item, PlayerEntity player, World level, int x, int y, int z, int side) {
 		boolean isSnow = level.getBlockState(x, y, z).isOf(Block.SNOW);
 		boolean result = super.useOnBlock(item, player, level, x, y, z, side);
 		if (result) {

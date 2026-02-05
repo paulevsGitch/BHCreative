@@ -1,11 +1,11 @@
 package paulevs.bhcreative.mixin.common;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.living.LivingEntity;
-import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Vec3D;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,11 +20,11 @@ import paulevs.bhcreative.interfaces.CreativePlayer;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements CreativePlayer {
-	@Unique private final Vec3D creative_flightSpeed = Vec3D.make(0, 0, 0);
+	@Unique private final Vec3d creative_flightSpeed = Vec3d.create(0, 0, 0);
 	
 	@Shadow public abstract void tickRiding();
 	
-	public PlayerEntityMixin(Level arg) {
+	public PlayerEntityMixin(World arg) {
 		super(arg);
 	}
 	
@@ -35,8 +35,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 	
 	@Override
 	public void creative_setCreative(boolean creative) {
-		this.dataTracker.setData(BHCreative.IS_CREATIVE_ID, BHCreative.toByte(creative));
-		this.immuneToFire = creative;
+		this.dataTracker.set(BHCreative.IS_CREATIVE_ID, BHCreative.toByte(creative));
+		this.fireImmune = creative;
 	}
 	
 	@Override
@@ -57,11 +57,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 			creative_flightSpeed.y = 0;
 			creative_flightSpeed.z = 0;
 		}
-		this.dataTracker.setData(BHCreative.IS_FLYING_ID, BHCreative.toByte(flying));
-		markToUpdateVelocity();
+		this.dataTracker.set(BHCreative.IS_FLYING_ID, BHCreative.toByte(flying));
+		scheduleVelocityUpdate();
 	}
 	
-	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "damage(Lnet/minecraft/entity/Entity;I)Z", at = @At("HEAD"), cancellable = true)
 	private void creative_damage(Entity target, int amount, CallbackInfoReturnable<Boolean> info) {
 		if (this.creative_isCreative()) {
 			info.setReturnValue(false);
@@ -76,14 +76,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 		}
 	}
 	
-	@Inject(method = "writeCustomDataToTag", at = @At("HEAD"))
-	private void creative_writeCustomDataToTag(CompoundTag tag, CallbackInfo info) {
-		tag.put("Creative", creative_isCreative());
-		tag.put("Flying", creative_isFlying());
+	@Inject(method = "writeNbt", at = @At("HEAD"))
+	private void creative_writeCustomDataToTag(NbtCompound tag, CallbackInfo info) {
+		tag.putBoolean("Creative", creative_isCreative());
+		tag.putBoolean("Flying", creative_isFlying());
 	}
 
-	@Inject(method = "readCustomDataFromTag", at = @At("HEAD"))
-	private void creative_readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
+	@Inject(method = "readNbt", at = @At("HEAD"))
+	private void creative_readCustomDataFromTag(NbtCompound tag, CallbackInfo info) {
 		creative_setCreative(tag.getBoolean("Creative"));
 		creative_setFlying(tag.getBoolean("Flying"));
 	}
@@ -116,7 +116,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 		creative_flightSpeed.x = MathHelper.lerp(0.15, creative_flightSpeed.x, dx * 0.4);
 		creative_flightSpeed.z = MathHelper.lerp(0.15, creative_flightSpeed.z, dz * 0.4);
 		
-		boolean sneaking = this.isChild();
+		boolean sneaking = this.isSneaking();
 		
 		dx = 0;
 		if (jumping) dx += 0.4F;
@@ -131,7 +131,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 	
 	@Inject(method = "initDataTracker", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/entity/living/LivingEntity;initDataTracker()V",
+		target = "Lnet/minecraft/entity/LivingEntity;initDataTracker()V",
 		shift = Shift.AFTER
 	))
 	private void creative_trackData(CallbackInfo info) {

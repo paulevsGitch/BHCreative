@@ -1,10 +1,10 @@
 package paulevs.bhcreative.util;
 
-import net.minecraft.entity.living.player.ServerPlayer;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.packet.AbstractPacket;
-import net.minecraft.packet.PacketHandler;
-import net.minecraft.server.network.ServerPlayerPacketHandler;
+import net.minecraft.network.NetworkHandler;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
@@ -17,7 +17,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class SlotUpdatePacket extends AbstractPacket implements ManagedPacket<SlotUpdatePacket> {
+public class SlotUpdatePacket extends Packet implements ManagedPacket<SlotUpdatePacket> {
 	public static final PacketType<SlotUpdatePacket> TYPE = PacketType.builder(true, true, SlotUpdatePacket::new).build();
 	private static final String STATION_ID = StationAPI.NAMESPACE.id("id").toString();
 	private static final Identifier ID = BHCreative.id("update_slot");
@@ -68,17 +68,17 @@ public class SlotUpdatePacket extends AbstractPacket implements ManagedPacket<Sl
 	}
 	
 	@Override
-	public void apply(PacketHandler handler) {
-		if (handler instanceof ServerPlayerPacketHandler serverHandler) {
+	public void apply(NetworkHandler handler) {
+		if (handler instanceof ServerPlayNetworkHandler serverHandler) {
 			ServerPlayerPacketHandlerAccessor accessor = (ServerPlayerPacketHandlerAccessor) serverHandler;
-			ServerPlayer player = accessor.creative_getServerPlayer();
-			if (slot == -1) player.inventory.setCursorItem(stack);
-			else player.inventory.setItem(slot, stack);
+			ServerPlayerEntity player = accessor.creative_getServerPlayer();
+			if (slot == -1) player.inventory.setCursorStack(stack);
+			else player.inventory.setStack(slot, stack);
 		}
 	}
 	
 	@Override
-	public int length() {
+	public int size() {
 		return 11;
 	}
 
