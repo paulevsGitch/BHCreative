@@ -49,7 +49,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 		boolean selfFly = this.creative_isFlying();
 		if (flying && !selfFly) {
 			creative_flightSpeed.x = velocityX;
-			creative_flightSpeed.y = velocityY;
+			creative_flightSpeed.y = 0;
 			creative_flightSpeed.z = velocityZ;
 		}
 		else if (!flying && selfFly) {
@@ -94,11 +94,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Creative
 		if (!this.creative_isFlying()) return;
 		
 		if (this.isSleeping() || this.vehicle != null) {
-			this.creative_setFlying(false);
-			return;
-		}
-		
-		if (this.onGround) {
 			this.creative_setFlying(false);
 			return;
 		}

@@ -37,18 +37,20 @@ public abstract class AbstractClientPlayerMixin extends PlayerEntity {
 	public void creative_onKeyPress(int key, boolean pressed, CallbackInfo info) {
 		if (key != minecraft.options.jumpKey.key) return;
 		if (!creative_isCreative()) return;
-		
+
 		if (pressed) {
 			long time = System.currentTimeMillis();
-			creative_timeout = time - creative_timeout;
-			if (creative_count > 0 && creative_timeout < 500) {
+			long elapsed = time - creative_timeout;
+			if (creative_count > 0 && elapsed < 500) {
 				boolean flying = !creative_isFlying();
 				creative_setFlying(flying);
 				if (level.isRemote) PacketHelper.send(new IsFlyingPacket(flying));
 				creative_count = 0;
+				creative_timeout = 0;
+			} else {
+				creative_timeout = time;
+				creative_count = 0;
 			}
-			creative_timeout = System.currentTimeMillis();
-			creative_count = 0;
 		}
 		else {
 			creative_count++;

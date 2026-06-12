@@ -14,6 +14,7 @@ public class LivingEntityMixin {
 	private void creative_noObstaclesTo(Entity entity, CallbackInfoReturnable<Boolean> info) {
 		if (entity instanceof PlayerEntity player && player.creative_isCreative()) {
 			info.setReturnValue(false);
+			info.cancel();
 		}
 	}
 }
