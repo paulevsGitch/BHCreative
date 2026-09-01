@@ -1,0 +1,14 @@
+tab.bhcreative.full_blocks.name=Blocs pleins de Minecraft
+tab.bhcreative.other_blocks.name=Autres blocs de Minecraft
+tab.bhcreative.tools.name=Outils de Minecraft
+tab.bhcreative.weapons.name=Armes de Minecraft
+tab.bhcreative.resources.name=Ressources de Minecraft
+tab.bhcreative.food.name=Nourriture de Minecraft
+tab.bhcreative.other_items.name=Objets de Minecraft
+title.bhcreative.selectWorld.survival=Survie
+title.bhcreative.selectWorld.creative=Créatif
+title.bhcreative.selectGame.inventory=Inventaire
+title.bhcreative.selectGame.creative=Créatif
+item.bhcreative.tall_grass.name=Herbe haute
+item.bhcreative.fern.name=Fourgère
+tile.bhcreative.dead_bush.name=Arbuste mort
